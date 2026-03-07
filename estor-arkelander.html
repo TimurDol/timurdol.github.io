@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estor Arkelander — The Ghost Captain</title>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080C0E;
+    --bg-mid:    #0D1417;
+    --bg-card:   #0F1A1C;
+    --mint:      #4FFFC4;
+    --mint-dim:  #2BBFA0;
+    --mint-dark: #0E4A3A;
+    --mint-glow: rgba(79,255,196,.18);
+    --mint-faint:rgba(79,255,196,.07);
+    --ghost:     rgba(79,255,196,.55);
+    --text:      #C8E8E0;
+    --text-dim:  #6B9E93;
+    --red-pos:   #FF4F4F;
+    --border:    rgba(79,255,196,.22);
+    --border-hi: rgba(79,255,196,.5);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 30% 20%, rgba(79,255,196,.06) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(79,255,196,.04) 0%, transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+    font-family: 'EB Garamond', serif;
+    color: var(--text);
+    padding: 40px 20px 60px;
+    min-height: 100vh;
+  }
+
+  /* ── Ambient drift particles (CSS-only) ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(79,255,196,.35) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 60%, rgba(79,255,196,.2) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 70% 30%, rgba(79,255,196,.28) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 75%, rgba(79,255,196,.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 88%, rgba(79,255,196,.22) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 25% 50%, rgba(79,255,196,.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 15%, rgba(79,255,196,.25) 0%, transparent 100%);
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0%   { transform:translate(0,0) scale(1); opacity:.7; }
+    33%  { transform:translate(6px,-8px) scale(1.01); opacity:.9; }
+    66%  { transform:translate(-4px,5px) scale(.99); opacity:.75; }
+    100% { transform:translate(3px,-3px) scale(1); opacity:.8; }
+  }
+
+  /* ── Language rules ── */
+  .ru { display: none !important; }
+  body.lang-ru .en { display: none !important; }
+  body.lang-ru .ru { display: revert !important; }
+  body.lang-ru p.ru       { display: block !important; }
+  body.lang-ru li.ru      { display: list-item !important; }
+  body.lang-ru tr.ru      { display: table-row !important; }
+  body.lang-ru td.ru,
+  body.lang-ru th.ru      { display: table-cell !important; }
+  body.lang-ru span.ru    { display: inline !important; }
+  body.lang-ru div.ru     { display: block !important; }
+  body.lang-ru .phase-name.ru { display: block !important; }
+
+  /* ── Lang Toggle ── */
+  .lang-toggle-wrap { display:flex; justify-content:center; margin-bottom:24px; position:relative; z-index:10; }
+  .lang-toggle { display:flex; background:rgba(8,12,14,.9); border:1px solid var(--border-hi); border-radius:3px; overflow:hidden; box-shadow:0 0 20px rgba(79,255,196,.1); }
+  .lang-btn { padding:9px 30px; font-family:'Philosopher',serif; font-weight:700; font-size:12px; letter-spacing:1.5px; color:var(--mint-dim); background:transparent; border:none; cursor:pointer; transition:background .25s,color .25s,opacity .25s; text-transform:uppercase; opacity:.5; }
+  .lang-btn.active { background:var(--mint-dark); color:var(--mint); opacity:1; box-shadow:inset 0 0 12px rgba(79,255,196,.1); }
+  .lang-btn:hover:not(.active) { opacity:.8; }
+  .lang-sep { width:1px; background:var(--border-hi); opacity:.5; }
+
+  /* ── Page ── */
+  .page-wrap { max-width:860px; margin:0 auto; position:relative; z-index:1; }
+  .scroll-container {
+    background: var(--bg-card);
+    background-image: linear-gradient(180deg, #0A1012 0%, var(--bg-card) 6%, var(--bg-card) 94%, #0A1012 100%);
+    border:1px solid var(--border);
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 0 60px rgba(79,255,196,.08),
+      0 0 120px rgba(79,255,196,.04),
+      inset 0 0 80px rgba(79,255,196,.03);
+    position:relative; overflow:hidden;
+  }
+
+  /* Ghostly mist edge */
+  .scroll-container::before {
+    content:'';
+    position:absolute; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(79,255,196,.07) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(79,255,196,.05) 0%, transparent 55%);
+  }
+
+  /* ── Decorative corners ── */
+  .corner { position:absolute; width:70px; height:70px; z-index:10; pointer-events:none; }
+  .corner svg { width:100%; height:100%; }
+  .corner.tl{top:8px;left:8px;} .corner.tr{top:8px;right:8px;transform:scaleX(-1);}
+  .corner.bl{bottom:8px;left:8px;transform:scaleY(-1);} .corner.br{bottom:8px;right:8px;transform:scale(-1);}
+
+  /* ── Wave bands ── */
+  .wave-band {
+    height:24px; position:relative; z-index:2;
+    background:#060A0C;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q15 3 30 12 Q45 21 60 12 Q75 3 90 12 Q105 21 120 12 L120 0 L0 0 Z' fill='%230D1417'/%3E%3Cpath d='M0 17 Q15 8 30 17 Q45 26 60 17 Q75 8 90 17 Q105 26 120 17 L120 0 L0 0 Z' fill='%234FFFC4' opacity='.12'/%3E%3C/svg%3E");
+    background-size:120px 24px; background-repeat:repeat-x;
+  }
+  .wave-band.bottom { transform:scaleY(-1); }
+
+  .content-inner { padding:44px 62px 52px; position:relative; z-index:2; }
+
+  /* ── Typography ── */
+  .subtitle-pre {
+    font-family:'Philosopher',serif; font-size:10px;
+    letter-spacing:5px; color:var(--text-dim); text-transform:uppercase; margin-bottom:12px;
+  }
+  h1 {
+    font-family:'Philosopher',serif; font-weight:700;
+    font-size:clamp(30px,5vw,50px);
+    color:var(--mint); letter-spacing:5px; text-transform:uppercase;
+    text-shadow: 0 0 30px rgba(79,255,196,.5), 0 0 60px rgba(79,255,196,.2), 0 0 90px rgba(79,255,196,.08);
+    line-height:1.1; margin-bottom:6px;
+  }
+  .title-sub {
+    font-family:'EB Garamond',serif; font-style:italic;
+    font-size:14px; color:var(--mint-dim); letter-spacing:2px;
+    text-shadow:0 0 20px rgba(79,255,196,.3);
+  }
+  .title-block { text-align:center; margin-bottom:32px; }
+  .title-divider { display:flex; align-items:center; gap:14px; margin:16px auto; max-width:420px; }
+  .title-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--mint-dim),transparent); }
+  .title-divider .orn { color:var(--mint); font-size:15px; text-shadow:0 0 10px var(--mint); }
+
+  h2 {
+    font-family:'Philosopher',serif; font-weight:700;
+    font-size:16px; color:var(--mint); text-transform:uppercase; letter-spacing:2px;
+    border-bottom:1px solid var(--border-hi); padding-bottom:7px; margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+    text-shadow:0 0 15px rgba(79,255,196,.4);
+  }
+  h2 .num { font-style:italic; font-size:20px; color:var(--ghost); line-height:1; font-weight:400; }
+
+  h3 { font-family:'Philosopher',serif; font-weight:700; font-size:12px; color:var(--mint-dim); text-transform:uppercase; letter-spacing:1.5px; margin:16px 0 8px; }
+
+  p { font-size:14.5px; line-height:1.78; color:var(--text); margin-bottom:9px; }
+  .section { margin-bottom:28px; }
+  .ornament-divider { text-align:center; color:var(--mint-dim); font-size:16px; letter-spacing:10px; margin:22px 0; opacity:.45; text-shadow:0 0 8px var(--mint); }
+  .footer { text-align:center; padding:14px 0 8px; font-family:'Philosopher',serif; font-size:10px; color:var(--text-dim); letter-spacing:2px; text-transform:uppercase; border-top:1px solid var(--border); margin-top:14px; }
+
+  /* ── Tables ── */
+  .rules-table { width:100%; border-collapse:collapse; margin:8px 0 16px; font-size:13.5px; }
+  .rules-table thead tr { background:rgba(79,255,196,.08); }
+  .rules-table thead th {
+    font-family:'Philosopher',serif; font-size:10px; letter-spacing:1.5px;
+    padding:8px 12px; text-align:left; text-transform:uppercase;
+    color:var(--mint-dim); border-bottom:1px solid var(--border-hi);
+  }
+  .rules-table tbody tr { border-bottom:1px solid var(--border); }
+  .rules-table tbody tr:nth-child(even) { background:rgba(79,255,196,.03); }
+  .rules-table tbody td { padding:8px 12px; vertical-align:top; line-height:1.6; font-size:13.5px; color:var(--text); }
+  .rules-table td.b { font-family:'Philosopher',serif; font-weight:700; font-size:12.5px; color:var(--mint); white-space:nowrap; text-shadow:0 0 8px rgba(79,255,196,.3); }
+  .rules-table td.dc { text-align:center; font-family:'Philosopher',serif; font-weight:700; font-size:13px; color:var(--mint); white-space:nowrap; }
+  .rules-table td.attr { font-style:italic; color:var(--mint-dim); font-size:13px; }
+
+  /* ── Callout ── */
+  .callout { border-left:3px solid var(--mint-dim); background:rgba(79,255,196,.05); padding:11px 16px; margin:12px 0; border-radius:0 3px 3px 0; font-size:14px; line-height:1.65; color:var(--text); }
+  .callout strong { font-family:'Philosopher',serif; font-weight:700; font-size:11px; color:var(--mint); text-transform:uppercase; letter-spacing:.8px; display:block; margin-bottom:5px; text-shadow:0 0 10px rgba(79,255,196,.4); }
+
+  /* ══════════════════════════════════
+     POSSESSION TRACKER
+  ══════════════════════════════════ */
+  .tracker-section {
+    margin:0 0 28px;
+    position:relative;
+  }
+  .tracker-title {
+    font-family:'Philosopher',serif; font-weight:700;
+    font-size:14px; color:var(--mint); text-transform:uppercase; letter-spacing:2.5px;
+    text-align:center; margin-bottom:18px; text-shadow:0 0 14px rgba(79,255,196,.45);
+  }
+  .tracker-title .ru { font-size:15px; }
+
+  .possession-orbs {
+    display:flex; justify-content:center; gap:16px; margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .orb-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; }
+  .orb {
+    width:52px; height:52px; border-radius:50%;
+    border:2px solid var(--border);
+    background: radial-gradient(circle at 38% 36%, rgba(79,255,196,.08) 0%, transparent 70%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Philosopher',serif; font-style:italic; font-size:22px; color:var(--border-hi);
+    transition:all .35s cubic-bezier(.22,.68,0,1.3);
+    box-shadow: 0 0 0 0 transparent;
+    position:relative; overflow:hidden;
+  }
+  .orb::after {
+    content:''; position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(circle at 40% 35%, rgba(79,255,196,.18) 0%, transparent 65%);
+    opacity:0; transition:opacity .3s;
+  }
+  .orb-label {
+    font-family:'Philosopher',serif; font-size:9.5px; letter-spacing:1.5px;
+    color:var(--text-dim); text-transform:uppercase; text-align:center;
+    transition:color .3s;
+    min-height:28px; display:flex; align-items:center; justify-content:center;
+  }
+  .orb-label .en, .orb-label .ru { font-size:9.5px; }
+
+  /* Active / filled orb */
+  .orb-wrap.filled .orb {
+    border-color:var(--mint-dim);
+    background: radial-gradient(circle at 38% 36%, rgba(79,255,196,.28) 0%, rgba(14,74,58,.6) 60%, rgba(8,12,14,.8) 100%);
+    color:var(--mint);
+    box-shadow:0 0 16px rgba(79,255,196,.35), 0 0 32px rgba(79,255,196,.15), inset 0 0 10px rgba(79,255,196,.1);
+  }
+  .orb-wrap.filled .orb::after { opacity:1; }
+  .orb-wrap.filled .orb-label { color:var(--mint-dim); }
+
+  .orb-wrap:hover .orb {
+    border-color:var(--mint-dim);
+    transform:scale(1.08);
+    box-shadow:0 0 10px rgba(79,255,196,.2);
+  }
+
+  /* FINAL ORB — 5th level / possessed */
+  .orb-wrap.orb-final .orb {
+    border-color: rgba(255,79,79,.4);
+  }
+  .orb-wrap.orb-final .orb-label { color:#c06060; }
+  .orb-wrap.orb-final.filled .orb {
+    border-color: #FF4F4F;
+    background: radial-gradient(circle at 38% 36%, rgba(255,79,79,.22) 0%, rgba(60,8,8,.7) 60%, rgba(8,12,14,.9) 100%);
+    color:#FF4F4F;
+    box-shadow:0 0 20px rgba(255,79,79,.4), 0 0 40px rgba(255,79,79,.15), inset 0 0 12px rgba(255,79,79,.12);
+    animation: possessed-pulse 2s ease-in-out infinite;
+  }
+  .orb-wrap.orb-final.filled .orb-label { color:#FF4F4F; }
+  @keyframes possessed-pulse {
+    0%,100% { box-shadow:0 0 20px rgba(255,79,79,.4), 0 0 40px rgba(255,79,79,.15); }
+    50%      { box-shadow:0 0 30px rgba(255,79,79,.6), 0 0 60px rgba(255,79,79,.25), 0 0 90px rgba(255,79,79,.08); }
+  }
+
+  /* Status display */
+  .tracker-status {
+    background:rgba(79,255,196,.05); border:1px solid var(--border);
+    padding:14px 20px; text-align:center; margin-bottom:16px;
+    position:relative; overflow:hidden;
+    transition:border-color .4s, background .4s;
+  }
+  .tracker-status::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(90deg, transparent, rgba(79,255,196,.04), transparent);
+    animation:shimmer 4s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%   { transform:translateX(-100%); opacity:0; }
+    30%  { opacity:1; }
+    70%  { opacity:1; }
+    100% { transform:translateX(100%); opacity:0; }
+  }
+
+  .tracker-status.possessed {
+    border-color: rgba(255,79,79,.5);
+    background: rgba(255,79,79,.06);
+    animation:status-flicker 3s ease-in-out infinite;
+  }
+  @keyframes status-flicker {
+    0%,96%,100% { opacity:1; }
+    97%          { opacity:.85; }
+    98%          { opacity:1; }
+    99%          { opacity:.9; }
+  }
+  .tracker-status.possessed::before {
+    background:linear-gradient(90deg, transparent, rgba(255,79,79,.06), transparent);
+  }
+
+  .status-level {
+    font-family:'Philosopher',serif; font-weight:700; font-size:11px;
+    letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px;
+  }
+  .status-text {
+    font-family:'EB Garamond',serif; font-style:italic;
+    font-size:15px; color:var(--mint-dim); line-height:1.5;
+    text-shadow:0 0 12px rgba(79,255,196,.2);
+    transition:color .4s;
+  }
+  .tracker-status.possessed .status-level { color:#c06060; }
+  .tracker-status.possessed .status-text { color:#FF4F4F; text-shadow:0 0 16px rgba(255,79,79,.4); }
+
+  .tracker-reset {
+    display:block; margin:10px auto 0; padding:7px 20px;
+    background:transparent; border:1px solid var(--border);
+    color:var(--text-dim); font-family:'Philosopher',serif; font-size:10px;
+    letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
+    transition:all .25s; border-radius:2px;
+  }
+  .tracker-reset:hover { border-color:var(--mint-dim); color:var(--mint-dim); background:rgba(79,255,196,.04); }
+
+  /* ══════════════════════════════════
+     ACTION CARDS
+  ══════════════════════════════════ */
+  .action-card {
+    border:1px solid var(--border);
+    background: linear-gradient(135deg, rgba(14,26,28,.9) 0%, rgba(8,12,14,.95) 100%);
+    margin-bottom:14px; overflow:hidden;
+    box-shadow:0 2px 20px rgba(0,0,0,.3), 0 0 0 0 transparent;
+    transition:box-shadow .3s, border-color .3s;
+    position:relative;
+  }
+  .action-card::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg, var(--mint-dim), transparent);
+    opacity:.6;
+  }
+  .action-card:hover {
+    border-color:var(--border-hi);
+    box-shadow:0 4px 28px rgba(0,0,0,.4), 0 0 20px rgba(79,255,196,.06);
+  }
+
+  .action-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 16px 10px 20px;
+    background:rgba(79,255,196,.04);
+    border-bottom:1px solid var(--border);
+  }
+  .action-name-block { display:flex; flex-direction:column; gap:2px; }
+  .action-name {
+    font-family:'Philosopher',serif; font-weight:700; font-size:15px;
+    color:var(--mint); letter-spacing:.5px;
+    text-shadow:0 0 10px rgba(79,255,196,.35);
+  }
+  .action-greek {
+    font-family:'EB Garamond',serif; font-style:italic;
+    font-size:12px; color:var(--text-dim); letter-spacing:.5px;
+  }
+  .action-badge {
+    font-family:'Philosopher',serif; font-size:9.5px; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--mint-dim);
+    border:1px solid var(--border-hi); padding:3px 8px; white-space:nowrap;
+    background:rgba(79,255,196,.05);
+    text-shadow:0 0 8px rgba(79,255,196,.3);
+  }
+
+  .action-body { padding:12px 16px 14px 20px; }
+  .action-body .attr-line {
+    font-style:italic; font-size:12.5px; color:var(--mint-dim); margin-bottom:8px;
+  }
+
+  ul.ghost-list { list-style:none; padding:0; margin:0; }
+  ul.ghost-list li { font-size:14px; line-height:1.65; color:var(--text); padding:4px 0 4px 18px; position:relative; border-bottom:1px solid rgba(79,255,196,.06); }
+  ul.ghost-list li:last-child { border-bottom:none; }
+  ul.ghost-list li::before { content:'⟡'; position:absolute; left:0; color:var(--mint-dim); font-size:11px; top:5px; text-shadow:0 0 6px var(--mint); }
+  ul.ghost-list li strong { color:var(--mint); font-family:'Philosopher',serif; font-weight:700; }
+
+  /* Advantage badge */
+  .adv-pill {
+    display:inline-block; background:rgba(79,255,196,.1); border:1px solid var(--border-hi);
+    color:var(--mint); font-family:'Philosopher',serif; font-weight:700;
+    font-size:10px; letter-spacing:1.2px; text-transform:uppercase;
+    padding:2px 8px; margin-left:6px; vertical-align:middle;
+    text-shadow:0 0 6px rgba(79,255,196,.4); border-radius:2px;
+  }
+
+  @media (max-width:640px) {
+    .content-inner { padding:26px 16px 32px; }
+    h1 { font-size:26px; letter-spacing:3px; }
+    .possession-orbs { gap:10px; }
+    .orb { width:44px; height:44px; font-size:19px; }
+    .rules-table { font-size:12px; }
+    .rules-table td.b { white-space:normal; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-toggle-wrap">
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">&#127468;&#127463; English</button>
+    <div class="lang-sep"></div>
+    <button class="lang-btn" id="btn-ru" onclick="setLang('ru')">&#127479;&#127482; Русский</button>
+  </div>
+</div>
+
+<div class="page-wrap"><div class="scroll-container">
+
+  <!-- Corners -->
+  <div class="corner tl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 64M6 6L64 6" stroke="#0E4A3A" stroke-width="2"/><path d="M13 13L13 57M13 13L57 13" stroke="#2BBFA0" stroke-width="1" opacity=".6"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 64 58 64 58" stroke="#4FFFC4" stroke-width="1" fill="none" opacity=".4"/><circle cx="6" cy="6" r="3.5" fill="#2BBFA0" opacity=".7"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 64M6 6L64 6" stroke="#0E4A3A" stroke-width="2"/><path d="M13 13L13 57M13 13L57 13" stroke="#2BBFA0" stroke-width="1" opacity=".6"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 64 58 64 58" stroke="#4FFFC4" stroke-width="1" fill="none" opacity=".4"/><circle cx="6" cy="6" r="3.5" fill="#2BBFA0" opacity=".7"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 64M6 6L64 6" stroke="#0E4A3A" stroke-width="2"/><path d="M13 13L13 57M13 13L57 13" stroke="#2BBFA0" stroke-width="1" opacity=".6"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 64 58 64 58" stroke="#4FFFC4" stroke-width="1" fill="none" opacity=".4"/><circle cx="6" cy="6" r="3.5" fill="#2BBFA0" opacity=".7"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 64M6 6L64 6" stroke="#0E4A3A" stroke-width="2"/><path d="M13 13L13 57M13 13L57 13" stroke="#2BBFA0" stroke-width="1" opacity=".6"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 64 58 64 58" stroke="#4FFFC4" stroke-width="1" fill="none" opacity=".4"/><circle cx="6" cy="6" r="3.5" fill="#2BBFA0" opacity=".7"/></svg></div>
+
+  <div class="wave-band"></div>
+  <div class="content-inner">
+
+    <!-- TITLE -->
+    <div class="title-block">
+      <div class="subtitle-pre en">Captain's Curse &middot; Ghost Possession &middot; D&D 2024 Supplement</div>
+      <div class="subtitle-pre ru">Проклятие капитана &middot; Одержимость призраком &middot; Дополнение к D&amp;D 2024</div>
+      <h1>Estor Arkelander</h1>
+      <div class="title-sub en">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; First Captain of the Ultros</div>
+      <div class="title-sub ru">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; Первый капитан Ультроса</div>
+      <div class="title-divider"><div class="line"></div><div class="orn">&#10022;</div><div class="line"></div></div>
+    </div>
+
+    <!-- POSSESSION TRACKER -->
+    <div class="section tracker-section">
+      <div class="tracker-title">
+        <span class="en">Ghost Possession</span>
+        <span class="ru">Одержимость призраком</span>
+      </div>
+
+      <div class="possession-orbs" id="orbContainer">
+        <!-- Orbs injected by JS -->
+      </div>
+
+      <div class="tracker-status" id="trackerStatus">
+        <div class="status-level" id="statusLevel">—</div>
+        <div class="status-text" id="statusText">—</div>
+      </div>
+
+      <button class="tracker-reset" onclick="resetTracker()">
+        <span class="en">Reset Tracker</span>
+        <span class="ru">Сбросить трекер</span>
+      </button>
+    </div>
+
+    <div class="ornament-divider">· · &#10022; · ·</div>
+
+    <!-- OVERVIEW -->
+    <div class="section">
+      <h2><span class="num">I</span><span class="en">The Ghost Captain</span><span class="ru">Капитан-призрак</span></h2>
+      <p class="en">When a captain aboard the Ultros invokes the spirit of Estor Arkelander, the ghost of the legendary first captain stirs within the hull. Spectral oarsmen materialize at their benches, phantom marines take their positions at the rails, and Estor's iron will flows through the living captain's voice.</p>
+      <p class="ru">Когда капитан на борту Ультроса взывает к духу Эстора Аркеландера, призрак легендарного первого капитана пробуждается в корпусе корабля. На скамьях материализуются призрачные гребцы, фантомные морпехи занимают позиции у бортов, и железная воля Эстора течёт через голос живого капитана.</p>
+      <div class="callout">
+        <strong><span class="en">Using These Actions</span><span class="ru">Использование этих действий</span></strong>
+        <span class="en">Ghost Captain Actions replace the normal Ship Action for that round. They are made with <span class="adv-pill">Advantage</span> on the D20 Test. Each use increases Ghost Possession by one level. At level 5, the possession is total and irreversible — Estor takes permanent control of the body.</span>
+        <span class="ru">Действия Капитана-призрака заменяют обычное Корабельное действие в этом раунде. Тест к20 совершается с <span class="adv-pill">Преимуществом</span>. Каждое использование увеличивает Одержимость призраком на один уровень. На уровне 5 одержимость становится полной и необратимой — Эстор навсегда берёт контроль над телом.</span>
+      </div>
+    </div>
+
+    <!-- GHOST ACTIONS -->
+    <div class="section">
+      <h2><span class="num">II</span><span class="en">Ghost Captain Actions</span><span class="ru">Действия Капитана-призрака</span></h2>
+
+      <!-- RAM -->
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-name-block">
+            <div class="action-name en">Spectral Ram <span class="adv-pill">Advantage</span></div>
+            <div class="action-name ru">Призрачный таран <span class="adv-pill">Преимущество</span></div>
+            <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#956;&#946;&#959;&#955;&#942; — Phantasmatikí Emvolí</div>
+            <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#956;&#946;&#959;&#955;&#942;</div>
+          </div>
+          <div class="action-badge en">+1 Possession</div>
+          <div class="action-badge ru">+1 Одержимость</div>
+        </div>
+        <div class="action-body">
+          <div class="attr-line en">Dexterity (Acrobatics or Insight) · DC 13 · Replaces: Ram</div>
+          <div class="attr-line ru">Ловкость (Акробатика или Проницательность) · КС 13 · Заменяет: Таран</div>
+          <ul class="ghost-list">
+            <li class="en">The Ultros's bronze ram takes on the form of a spectral serpent's head. It strikes through the enemy hull and <strong>passes through</strong> any defensive Ward or magical protection, dealing Ram damage as if the target had no damage threshold.</li>
+            <li class="ru">Бронзовый таран Ультроса принимает форму головы призрачной змеи. Он пробивает корпус врага и <strong>проходит сквозь</strong> любую Защиту или магическую защиту, нанося урон тараном, как если бы у цели не было порога урона.</li>
+            <li class="en">On a <strong>failure</strong>, both ships still take half damage as normal — but the spectral impact <strong>Frightens</strong> all creatures on the enemy deck until the start of the next round. Wisdom saving throw (DC 14) negates the Frightened condition.</li>
+            <li class="ru">При <strong>провале</strong> оба корабля всё равно получают половину урона как обычно — но призрачный удар <strong>пугает</strong> всех существ на вражеской палубе до начала следующего раунда. Спасбросок Мудрости (КС 14) отменяет состояние Испуга.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SURGE -->
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-name-block">
+            <div class="action-name en">Phantom Surge <span class="adv-pill">Advantage</span></div>
+            <div class="action-name ru">Фантомный рывок <span class="adv-pill">Преимущество</span></div>
+            <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#714;&#927;&#961;&#956;&#951; — Phantasmatikí Ormí</div>
+            <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#714;&#927;&#961;&#956;&#951;</div>
+          </div>
+          <div class="action-badge en">+1 Possession</div>
+          <div class="action-badge ru">+1 Одержимость</div>
+        </div>
+        <div class="action-body">
+          <div class="attr-line en">Constitution (Athletics or Performance) · DC 12 · Replaces: Surge</div>
+          <div class="attr-line ru">Телосложение (Атлетика или Выступление) · КС 12 · Заменяет: Рывок</div>
+          <ul class="ghost-list">
+            <li class="en">Estor's dead crew materializes on all three banks of oars and rows with the strength of the grave. On a <strong>success</strong>, move the ship <strong>three</strong> distance bands instead of two — and the movement cannot be countered by an enemy Surge this round.</li>
+            <li class="ru">Мёртвая команда Эстора материализуется на всех трёх рядах вёсел и гребёт с силой могилы. При <strong>успехе</strong> корабль перемещается на <strong>три</strong> дистанционные полосы вместо двух — и это движение не может быть нейтрализовано вражеским Рывком в этом раунде.</li>
+            <li class="en">This action is available regardless of the ship's current Oarsmen count. The ghost oarsmen suffer no Exhaustion penalties.</li>
+            <li class="ru">Это действие доступно вне зависимости от текущего количества Гребцов на корабле. Призрачные гребцы не получают штрафов Истощения.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BOARD -->
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-name-block">
+            <div class="action-name en">Ghost Boarding <span class="adv-pill">Advantage</span></div>
+            <div class="action-name ru">Призрачный абордаж <span class="adv-pill">Преимущество</span></div>
+            <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#960;&#953;&#946;&#943;&#946;&#945;&#963;&#951; — Phantasmatikí Epivási</div>
+            <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#960;&#953;&#946;&#943;&#946;&#945;&#963;&#951;</div>
+          </div>
+          <div class="action-badge en">+1 Possession</div>
+          <div class="action-badge ru">+1 Одержимость</div>
+        </div>
+        <div class="action-body">
+          <div class="attr-line en">Strength (Intimidation or Sleight of Hand) · Contested · Replaces: Board</div>
+          <div class="attr-line ru">Сила (Запугивание или Ловкость рук) · Состязание · Заменяет: Абордаж</div>
+          <ul class="ghost-list">
+            <li class="en">Spectral marines pour over the rails before the grapple lines are even thrown — no Locked distance is required. This action may be used at <strong>Close</strong> or <strong>Locked</strong>. On a success, the boarding attempt begins on the enemy deck as normal.</li>
+            <li class="ru">Призрачные морпехи перехлёстывают через борт ещё до того, как брошены абордажные крюки — дистанция Сцепление не требуется. Это действие можно использовать при <strong>Близко</strong> или <strong>Сцеплены</strong>. При успехе абордаж начинается на вражеской палубе как обычно.</li>
+            <li class="en">All enemy creatures on deck must succeed on a DC 15 Wisdom saving throw at the start of the boarding combat or gain the <strong>Frightened</strong> condition. Creatures that are already Frightened are <strong>Paralyzed</strong> instead until the end of their next turn.</li>
+            <li class="ru">Все вражеские существа на палубе должны пройти спасбросок Мудрости КС 15 в начале абордажного боя, иначе получат состояние <strong>Испуга</strong>. Существа, уже находящиеся в Испуге, вместо этого получают состояние <strong>Паралича</strong> до конца своего следующего хода.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BALLISTAS -->
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-name-block">
+            <div class="action-name en">Undead Ballistas <span class="adv-pill">Advantage</span></div>
+            <div class="action-name ru">Мёртвые баллисты <span class="adv-pill">Преимущество</span></div>
+            <div class="action-greek en">&#925;&#949;&#954;&#961;&#972;&#962; &#914;&#945;&#955;&#955;&#943;&#963;&#964;&#945; — Nekrós Valísta</div>
+            <div class="action-greek ru">&#925;&#949;&#954;&#961;&#972;&#962; &#914;&#945;&#955;&#955;&#943;&#963;&#964;&#945;</div>
+          </div>
+          <div class="action-badge en">+1 Possession</div>
+          <div class="action-badge ru">+1 Одержимость</div>
+        </div>
+        <div class="action-body">
+          <div class="attr-line en">Wisdom (Perception or Investigation) · DC 12 · Replaces: Ballistas</div>
+          <div class="attr-line ru">Мудрость (Восприятие или Расследование) · КС 12 · Заменяет: Баллисты</div>
+          <ul class="ghost-list">
+            <li class="en">Ghost artillerists load and loose bolts of pale fire simultaneously from every ballista. On a <strong>success</strong>, the shot hits its intended target as normal, but the bolt carries the cold of the Underworld — damage dealt is <strong>half bludgeoning, half necrotic</strong> and ignores resistance to bludgeoning damage.</li>
+            <li class="ru">Призрачные артиллеристы одновременно заряжают и выпускают болты бледного пламени из каждой баллисты. При <strong>успехе</strong> выстрел поражает намеченную цель как обычно, но болт несёт холод Подземного царства — урон <strong>наполовину дробящий, наполовину некротический</strong> и игнорирует сопротивление дробящему урону.</li>
+            <li class="en">Any creature hit must succeed on a DC 13 Constitution saving throw or have its Speed reduced to 0 until the start of the next round, as the necrotic chill seizes its limbs.</li>
+            <li class="ru">Любое поражённое существо должно пройти спасбросок Телосложения КС 13, иначе его Скорость снижается до 0 до начала следующего раунда, пока некротический холод сковывает его конечности.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MANEUVER -->
+      <div class="action-card">
+        <div class="action-header">
+          <div class="action-name-block">
+            <div class="action-name en">Dead Man's Wake <span class="adv-pill">Advantage</span></div>
+            <div class="action-name ru">След мертвеца <span class="adv-pill">Преимущество</span></div>
+            <div class="action-greek en">&#925;&#949;&#954;&#961;&#972;&#962; &#913;&#960;&#972;&#960;&#955;&#959;&#965;&#962; — Nekrós Ápoplous</div>
+            <div class="action-greek ru">&#925;&#949;&#954;&#961;&#972;&#962; &#913;&#960;&#972;&#960;&#955;&#959;&#965;&#962;</div>
+          </div>
+          <div class="action-badge en">+1 Possession</div>
+          <div class="action-badge ru">+1 Одержимость</div>
+        </div>
+        <div class="action-body">
+          <div class="attr-line en">Intelligence (Survival or History) · DC 11 · Replaces: Maneuver</div>
+          <div class="attr-line ru">Интеллект (Выживание или История) · КС 11 · Заменяет: Манёвр</div>
+          <ul class="ghost-list">
+            <li class="en">Estor's centuries of tactical memory flow through the captain's mind in an instant. On a <strong>success</strong>, this action applies <strong>both</strong> effects simultaneously — your ship's current Ship Action is made with Advantage <em>and</em> all enemy Ship Actions suffer Disadvantage until the end of their next Ship Action phase.</li>
+            <li class="ru">Вековая тактическая память Эстора мгновенно вливается в разум капитана. При <strong>успехе</strong> это действие применяет <strong>оба</strong> эффекта одновременно — текущее Корабельное действие вашего корабля совершается с Преимуществом, <em>и</em> все Корабельные действия врагов получают Помеху до конца их следующей фазы Корабельных действий.</li>
+            <li class="en">In addition, the ghostly wake left by the Ultros renders the ship <strong>immune</strong> to enemy Surge this round — no opposing movement can close the distance if the Maneuver succeeds.</li>
+            <li class="ru">Кроме того, призрачный след, оставленный Ультросом, делает корабль <strong>невосприимчивым</strong> к вражескому Рывку в этом раунде — никакое вражеское движение не может сократить дистанцию при успехе Манёвра.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- POSSESSION WARNING -->
+    <div class="section">
+      <h2><span class="num">III</span><span class="en">Full Possession</span><span class="ru">Полная одержимость</span></h2>
+      <div class="callout" style="border-left-color:#FF4F4F; background:rgba(255,79,79,.06);">
+        <strong style="color:#FF4F4F;text-shadow:0 0 10px rgba(255,79,79,.4);"><span class="en">The Point of No Return</span><span class="ru">Точка невозврата</span></strong>
+        <span class="en">When the fifth Ghost Captain Action is used, Estor Arkelander's possession becomes total. The captain's body is no longer their own. Estor speaks through their mouth, sees through their eyes, and commands the Ultros with the authority of the dead. This process is <strong>irreversible</strong>. No spell of lesser than 9th level, no divine intervention short of a Wish, and no mortal effort can restore the captain's original soul. The character becomes an NPC under the DM's control.</span>
+        <span class="ru">Когда используется пятое Действие Капитана-призрака, одержимость Эстора Аркеландера становится полной. Тело капитана больше ему не принадлежит. Эстор говорит его устами, видит его глазами и командует Ультросом властью мёртвых. Этот процесс <strong>необратим</strong>. Никакое заклинание ниже 9-го уровня, никакое божественное вмешательство кроме Желания и никакие смертные усилия не могут вернуть исходную душу капитана. Персонаж переходит под контроль Мастера как НПС.</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="en">Estor Arkelander &middot; Ghost Captain &middot; D&amp;D 2024 Supplement &middot; Not official Wizards of the Coast material</span>
+      <span class="ru">Эстор Аркеландер &middot; Капитан-призрак &middot; Дополнение к D&amp;D 2024 &middot; Не является официальным материалом Wizards of the Coast</span>
+    </div>
+
+  </div><!-- content-inner -->
+  <div class="wave-band bottom"></div>
+</div></div>
+
+<script>
+  /* ─── Lang ─── */
+  function setLang(lang) {
+    document.body.classList.toggle('lang-ru', lang === 'ru');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+    document.documentElement.lang = lang;
+    localStorage.setItem('estor_lang', lang);
+    updateStatus();
+  }
+
+  /* ─── Status content ─── */
+  const STATUS = {
+    en: [
+      { level: 'No Possession', text: 'The Ultros sails under mortal command. Estor sleeps.' },
+      { level: 'Possession — Level I', text: 'A cold breath moves through the captain. The crew feels watched.' },
+      { level: 'Possession — Level II', text: 'Estor\'s voice echoes beneath the captain\'s own. Old memories surface unbidden.' },
+      { level: 'Possession — Level III', text: 'The captain\'s eyes sometimes glow a faint green. They dream only of the sea.' },
+      { level: 'Possession — Level IV', text: 'Estor\'s will dominates waking hours. The captain\'s own desires fade like morning mist.' },
+      { level: 'Possession — Level V', text: '⚠ Total Possession. Estor Arkelander commands the Ultros once more. This soul is lost.' },
+    ],
+    ru: [
+      { level: 'Нет одержимости', text: 'Ультрос плывёт под смертным командованием. Эстор спит.' },
+      { level: 'Одержимость — Уровень I', text: 'Сквозь капитана проходит холодное дыхание. Экипаж чувствует чужой взгляд.' },
+      { level: 'Одержимость — Уровень II', text: 'Голос Эстора эхом звучит под голосом капитана. Старые воспоминания всплывают без спроса.' },
+      { level: 'Одержимость — Уровень III', text: 'Глаза капитана иногда слабо светятся зелёным. Ему снится только море.' },
+      { level: 'Одержимость — Уровень IV', text: 'Воля Эстора доминирует в часы бодрствования. Собственные желания капитана тают, как утренний туман.' },
+      { level: 'Одержимость — Уровень V', text: '⚠ Полная одержимость. Эстор Аркеландер снова командует Ультросом. Эта душа потеряна.' },
+    ]
+  };
+
+  const ORB_LABELS = {
+    en: ['I','II','III','IV','V'],
+    ru: ['I','II','III','IV','V'],
+  };
+
+  let currentLevel = parseInt(localStorage.getItem('estor_possession') || '0', 10);
+
+  function buildOrbs() {
+    const container = document.getElementById('orbContainer');
+    container.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+      const wrap = document.createElement('div');
+      wrap.className = 'orb-wrap' + (i === 5 ? ' orb-final' : '');
+      wrap.setAttribute('data-level', i);
+      wrap.onclick = () => setLevel(i);
+
+      const orb = document.createElement('div');
+      orb.className = 'orb';
+      orb.textContent = i;
+
+      const labelDiv = document.createElement('div');
+      labelDiv.className = 'orb-label';
+
+      const lblEn = document.createElement('span');
+      lblEn.className = 'en';
+      lblEn.textContent = ORB_LABELS.en[i-1];
+      const lblRu = document.createElement('span');
+      lblRu.className = 'ru';
+      lblRu.textContent = ORB_LABELS.ru[i-1];
+
+      labelDiv.appendChild(lblEn);
+      labelDiv.appendChild(lblRu);
+      wrap.appendChild(orb);
+      wrap.appendChild(labelDiv);
+      container.appendChild(wrap);
+    }
+    refreshOrbs();
+  }
+
+  function refreshOrbs() {
+    document.querySelectorAll('.orb-wrap').forEach(wrap => {
+      const lvl = parseInt(wrap.getAttribute('data-level'), 10);
+      wrap.classList.toggle('filled', lvl <= currentLevel);
+    });
+  }
+
+  function setLevel(lvl) {
+    if (currentLevel === 5 && lvl !== 5) return; // locked at 5
+    currentLevel = (currentLevel === lvl) ? lvl - 1 : lvl; // toggle off if re-clicking same
+    if (currentLevel < 0) currentLevel = 0;
+    localStorage.setItem('estor_possession', currentLevel);
+    refreshOrbs();
+    updateStatus();
+  }
+
+  function resetTracker() {
+    if (currentLevel === 5) {
+      // require double-confirm for full possession
+      if (!confirm('Estor has fully taken this soul. Are you certain you wish to reset the possession tracker?')) return;
+    }
+    currentLevel = 0;
+    localStorage.setItem('estor_possession', 0);
+    refreshOrbs();
+    updateStatus();
+  }
+
+  function updateStatus() {
+    const lang = document.body.classList.contains('lang-ru') ? 'ru' : 'en';
+    const data = STATUS[lang][currentLevel];
+    const statusEl = document.getElementById('trackerStatus');
+    document.getElementById('statusLevel').textContent = data.level;
+    document.getElementById('statusText').textContent  = data.text;
+    statusEl.classList.toggle('possessed', currentLevel === 5);
+  }
+
+  /* ─── Init ─── */
+  buildOrbs();
+
+  const savedLang = localStorage.getItem('estor_lang') || 'en';
+  if (savedLang === 'ru') {
+    document.body.classList.add('lang-ru');
+    document.getElementById('btn-en').classList.remove('active');
+    document.getElementById('btn-ru').classList.add('active');
+    document.documentElement.lang = 'ru';
+  }
+
+  updateStatus();
+</script>
+</body>
+</html>
