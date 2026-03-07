@@ -3,138 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odyssey Naval Combat — D&D 2024</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<title>Naumachia — D&D 2024</title>
+<link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #C9A84C; --gold-light: #E8CC7A; --gold-dark: #8B6914;
-    --ink: #1A1208; --parchment: #F5EDD8; --parchment-dark: #E8DCC0;
+    --ink: #1A1208; --parchment: #F5EDD8; --parchment-dark: #E2D4B4;
     --red: #8B1A1A; --navy: #1A2744; --bronze: #7A4E2D; --wave: #2C5F7A;
   }
+
   * { margin:0; padding:0; box-sizing:border-box; }
+
   body {
     background-color: var(--navy);
-    background-image: radial-gradient(ellipse at 20% 50%,rgba(44,95,122,.4) 0%,transparent 60%),
-      radial-gradient(ellipse at 80% 20%,rgba(26,39,68,.8) 0%,transparent 50%);
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(44,95,122,.4) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(26,39,68,.8) 0%, transparent 50%);
     font-family: 'EB Garamond', serif;
     color: var(--ink);
     padding: 40px 20px;
     min-height: 100vh;
   }
 
+  /* ── Language rules — !important prevents layout-class conflicts ── */
+  .ru { display: none !important; }
+  body.lang-ru .en { display: none !important; }
+  body.lang-ru .ru { display: revert !important; }
+
+  /* Restore correct display types when shown in RU mode */
+  body.lang-ru p.ru       { display: block !important; }
+  body.lang-ru li.ru      { display: list-item !important; }
+  body.lang-ru tr.ru      { display: table-row !important; }
+  body.lang-ru td.ru,
+  body.lang-ru th.ru      { display: table-cell !important; }
+  body.lang-ru div.ru     { display: block !important; }
+  body.lang-ru span.ru    { display: inline !important; }
+  body.lang-ru .phase-name.ru,
+  body.lang-ru .dist-label.ru,
+  body.lang-ru .role-hdr-inner.ru { display: block !important; }
+
   /* ── Lang Toggle ── */
   .lang-toggle-wrap { display:flex; justify-content:center; margin-bottom:20px; }
-  .lang-toggle { display:flex; background:rgba(26,39,68,.85); border:1px solid var(--gold-dark); border-radius:4px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.4); }
-  .lang-btn { padding:9px 28px; font-family:'Cinzel',serif; font-size:13px; letter-spacing:2px; color:var(--gold-light); background:transparent; border:none; cursor:pointer; transition:background .2s,opacity .2s; text-transform:uppercase; opacity:.55; }
+  .lang-toggle { display:flex; background:rgba(26,39,68,.9); border:1px solid var(--gold-dark); border-radius:3px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.5); }
+  .lang-btn { padding:9px 30px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1.5px; color:var(--gold-light); background:transparent; border:none; cursor:pointer; transition:background .2s, opacity .2s; text-transform:uppercase; opacity:.5; }
   .lang-btn.active { background:var(--gold-dark); color:var(--parchment); opacity:1; }
-  .lang-btn:hover:not(.active) { opacity:.85; }
-  .lang-sep { width:1px; background:var(--gold-dark); opacity:.5; }
+  .lang-btn:hover:not(.active) { opacity:.8; }
+  .lang-sep { width:1px; background:var(--gold-dark); opacity:.6; }
 
-  /* ── Lang Switch ── */
-  .ru { display:none; }
-  body.lang-ru .en { display:none; }
-  body.lang-ru .ru { display:revert; }
-
-  /* Cyrillic heading fix */
-  h1 .ru, h2 .ru, h3 .ru, .phase-name.ru, .role-hdr.ru, .subtitle-pre.ru,
-  .title-sub.ru, .track-step .ru { font-family:'EB Garamond',serif; font-weight:700; }
-
-  /* ── Page ── */
+  /* ── Page & Scroll ── */
   .page-wrap { max-width:860px; margin:0 auto; }
   .scroll-container {
     background: var(--parchment);
-    background-image: linear-gradient(180deg, var(--parchment-dark) 0%, var(--parchment) 4%, var(--parchment) 96%, var(--parchment-dark) 100%);
+    background-image: linear-gradient(180deg, var(--parchment-dark) 0%, var(--parchment) 5%, var(--parchment) 95%, var(--parchment-dark) 100%);
     border:3px solid var(--gold-dark);
-    box-shadow:0 0 0 1px var(--gold),0 0 40px rgba(0,0,0,.6),inset 0 0 60px rgba(139,105,20,.07);
+    box-shadow:0 0 0 1px var(--gold), 0 0 50px rgba(0,0,0,.65), inset 0 0 80px rgba(139,105,20,.06);
     position:relative; overflow:hidden;
   }
-  .corner { position:absolute; width:72px; height:72px; z-index:10; }
+
+  /* Corners */
+  .corner { position:absolute; width:68px; height:68px; z-index:10; pointer-events:none; }
   .corner svg { width:100%; height:100%; }
   .corner.tl{top:8px;left:8px;} .corner.tr{top:8px;right:8px;transform:scaleX(-1);}
   .corner.bl{bottom:8px;left:8px;transform:scaleY(-1);} .corner.br{bottom:8px;right:8px;transform:scale(-1);}
-  .wave-band { height:26px; background:var(--wave);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 26' preserveAspectRatio='none'%3E%3Cpath d='M0 13 Q15 4 30 13 Q45 22 60 13 Q75 4 90 13 Q105 22 120 13 L120 0 L0 0 Z' fill='%231A2744'/%3E%3Cpath d='M0 19 Q15 10 30 19 Q45 28 60 19 Q75 10 90 19 Q105 28 120 19 L120 0 L0 0 Z' fill='%23C9A84C' opacity='.3'/%3E%3C/svg%3E");
-    background-size:120px 26px; background-repeat:repeat-x; }
+
+  /* Wave bands */
+  .wave-band {
+    height:24px; background:var(--wave);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q15 3 30 12 Q45 21 60 12 Q75 3 90 12 Q105 21 120 12 L120 0 L0 0 Z' fill='%231A2744'/%3E%3Cpath d='M0 17 Q15 8 30 17 Q45 26 60 17 Q75 8 90 17 Q105 26 120 17 L120 0 L0 0 Z' fill='%23C9A84C' opacity='.25'/%3E%3C/svg%3E");
+    background-size:120px 24px; background-repeat:repeat-x;
+  }
   .wave-band.bottom { transform:scaleY(-1); }
-  .content-inner { padding:46px 66px 56px; }
+
+  .content-inner { padding:46px 64px 54px; }
 
   /* ── Typography ── */
-  .subtitle-pre { font-family:'Cinzel',serif; font-size:10.5px; letter-spacing:5px; color:var(--gold-dark); text-transform:uppercase; margin-bottom:14px; }
-  h1 { font-family:'Cinzel Decorative',serif; font-size:clamp(22px,3.8vw,38px); color:var(--red); text-shadow:2px 2px 0 rgba(139,105,20,.18); line-height:1.2; margin-bottom:8px; }
-  .title-sub { font-family:'Cinzel',serif; font-size:13px; color:var(--gold-dark); letter-spacing:2.5px; }
-  .title-divider { display:flex; align-items:center; gap:14px; margin:18px auto; max-width:460px; }
-  .title-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dark),transparent); }
-  .title-divider .orn { color:var(--gold); font-size:17px; }
+  h1 {
+    font-family:'Philosopher', serif; font-weight:700;
+    font-size:clamp(32px, 5vw, 52px);
+    color:var(--red); letter-spacing:4px; text-transform:uppercase;
+    text-shadow:2px 3px 0 rgba(139,105,20,.15), 0 0 40px rgba(139,26,26,.1);
+    line-height:1.1; margin-bottom:8px;
+  }
+  .title-sub {
+    font-family:'EB Garamond', serif; font-style:italic;
+    font-size:15px; color:var(--gold-dark); letter-spacing:2px;
+  }
+  .subtitle-pre {
+    font-family:'Philosopher', serif; font-size:10px;
+    letter-spacing:5px; color:var(--bronze); text-transform:uppercase; margin-bottom:14px;
+  }
   .title-block { text-align:center; margin-bottom:36px; }
+  .title-divider { display:flex; align-items:center; gap:14px; margin:16px auto; max-width:440px; }
+  .title-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dark),transparent); }
+  .title-divider .orn { color:var(--gold); font-size:16px; }
 
-  h2 { font-family:'Cinzel',serif; font-size:17px; color:var(--red); border-bottom:2px solid var(--gold); padding-bottom:7px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
-  h2 .num { font-family:'Cinzel Decorative',serif; font-size:20px; color:var(--gold); line-height:1; }
-  h3 { font-family:'Cinzel',serif; font-size:12px; color:var(--bronze); text-transform:uppercase; letter-spacing:1.8px; margin:16px 0 8px; }
-  body.lang-ru h3 { font-family:'EB Garamond',serif; font-weight:700; font-size:14px; letter-spacing:1px; }
+  h2 {
+    font-family:'Philosopher', serif; font-weight:700;
+    font-size:18px; color:var(--red); text-transform:uppercase; letter-spacing:1.5px;
+    border-bottom:2px solid var(--gold); padding-bottom:7px; margin-bottom:16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  h2 .num { font-family:'Philosopher', serif; font-style:italic; font-size:22px; color:var(--gold); line-height:1; font-weight:400; }
+  h3 { font-family:'Philosopher', serif; font-weight:700; font-size:13px; color:var(--bronze); text-transform:uppercase; letter-spacing:1.5px; margin:16px 0 8px; }
+
   p { font-size:15px; line-height:1.75; color:#2a1e0a; margin-bottom:9px; }
-
-  .section { margin-bottom:32px; }
-  .ornament-divider { text-align:center; color:var(--gold); font-size:18px; letter-spacing:10px; margin:24px 0; opacity:.65; }
-  .footer { text-align:center; padding:16px 0 8px; font-family:'Cinzel',serif; font-size:10px; color:var(--gold-dark); letter-spacing:1.8px; text-transform:uppercase; border-top:1px solid rgba(139,105,20,.28); margin-top:16px; }
+  .section { margin-bottom:30px; }
+  .ornament-divider { text-align:center; color:var(--gold); font-size:17px; letter-spacing:10px; margin:22px 0; opacity:.6; }
+  .footer { text-align:center; padding:14px 0 8px; font-family:'Philosopher',serif; font-size:10px; color:var(--bronze); letter-spacing:2px; text-transform:uppercase; border-top:1px solid rgba(139,105,20,.25); margin-top:14px; }
 
   /* ── Tables ── */
-  .rules-table { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:13.5px; }
+  .rules-table { width:100%; border-collapse:collapse; margin:8px 0 16px; font-size:14px; }
   .rules-table thead tr { background:var(--navy); color:var(--gold-light); }
-  .rules-table thead th { font-family:'Cinzel',serif; font-size:10.5px; letter-spacing:1.2px; padding:8px 12px; text-align:left; text-transform:uppercase; }
-  .rules-table tbody tr { border-bottom:1px solid rgba(139,105,20,.22); }
-  .rules-table tbody tr:nth-child(even) { background:rgba(139,105,20,.055); }
-  .rules-table tbody td { padding:7px 12px; vertical-align:top; line-height:1.55; }
-  .rules-table td.bold { font-family:'Cinzel',serif; font-size:12px; color:var(--navy); font-weight:600; white-space:nowrap; }
-  .rules-table td.dc { text-align:center; font-family:'Cinzel',serif; font-size:12px; color:var(--red); font-weight:700; white-space:nowrap; }
+  .rules-table thead th { font-family:'Philosopher',serif; font-size:10px; letter-spacing:1.5px; padding:8px 12px; text-align:left; text-transform:uppercase; }
+  .rules-table tbody tr { border-bottom:1px solid rgba(139,105,20,.2); }
+  .rules-table tbody tr:nth-child(even) { background:rgba(139,105,20,.05); }
+  .rules-table tbody td { padding:7px 12px; vertical-align:top; line-height:1.55; font-size:13.5px; }
+  .rules-table td.b { font-family:'Philosopher',serif; font-weight:700; font-size:12.5px; color:var(--navy); white-space:nowrap; }
+  .rules-table td.dc { text-align:center; font-family:'Philosopher',serif; font-weight:700; font-size:13px; color:var(--red); white-space:nowrap; }
+  .rules-table td.attr { font-style:italic; color:var(--bronze); font-size:13px; }
 
-  /* ── Callouts ── */
-  .callout { border-left:4px solid var(--gold); background:rgba(201,168,76,.09); padding:11px 16px; margin:14px 0; border-radius:0 4px 4px 0; font-size:14.5px; line-height:1.65; }
-  .callout strong { font-family:'Cinzel',serif; font-size:11.5px; color:var(--red); text-transform:uppercase; letter-spacing:.9px; display:block; margin-bottom:5px; }
+  /* ── Callout ── */
+  .callout { border-left:4px solid var(--gold); background:rgba(201,168,76,.08); padding:11px 16px; margin:12px 0; border-radius:0 4px 4px 0; font-size:14px; line-height:1.65; }
+  .callout.red { border-left-color:var(--red); background:rgba(139,26,26,.07); }
+  .callout strong { font-family:'Philosopher',serif; font-weight:700; font-size:11.5px; color:var(--red); text-transform:uppercase; letter-spacing:.8px; display:block; margin-bottom:5px; }
 
-  /* ── Round Phase Cards ── */
-  .phase-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:14px 0 20px; }
-  .phase-card { background:var(--navy); padding:14px 12px; border:1px solid var(--gold-dark); border-top:3px solid var(--gold); text-align:center; }
-  .phase-card .pnum { font-family:'Cinzel Decorative',serif; font-size:22px; color:var(--gold); display:block; line-height:1; margin-bottom:4px; }
-  .phase-name { font-family:'Cinzel',serif; font-size:11px; letter-spacing:1.2px; color:var(--gold-light); text-transform:uppercase; display:block; margin-bottom:6px; }
-  .phase-card p { color:rgba(245,237,216,.78); font-size:12px; line-height:1.45; margin:0; }
+  /* ── Phase cards ── */
+  .phase-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0 18px; }
+  .phase-card { background:var(--navy); padding:14px 11px; border:1px solid var(--gold-dark); border-top:3px solid var(--gold); text-align:center; }
+  .phase-card .pnum { font-family:'Philosopher',serif; font-style:italic; font-size:26px; color:var(--gold); display:block; line-height:1; margin-bottom:4px; }
+  .phase-name { font-family:'Philosopher',serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:var(--gold-light); text-transform:uppercase; display:block; margin-bottom:6px; }
+  .phase-card p { color:rgba(245,237,216,.75); font-size:12px; line-height:1.45; margin:0; }
 
-  /* ── Distance Bands ── */
-  .distance-row { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:12px 0 18px; }
+  /* ── Distance cards ── */
+  .distance-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:12px 0 16px; }
   .dist-card { border:1px solid var(--gold-dark); overflow:hidden; }
-  .dist-label { background:var(--navy); color:var(--gold-light); font-family:'Cinzel',serif; font-size:13px; letter-spacing:1px; padding:8px 14px; text-align:center; }
+  .dist-label { background:var(--navy); color:var(--gold-light); font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; padding:8px 14px; text-align:center; display:block; }
   .dist-body { padding:10px 14px; font-size:13.5px; line-height:1.55; color:#2a1e0a; }
-  .dist-body .ru { font-size:13.5px; }
 
-  /* ── Role Headers ── */
-  .role-section { margin-bottom:18px; }
-  .role-hdr { background:var(--navy); color:var(--gold-light); padding:9px 16px; font-family:'Cinzel',serif; font-size:12.5px; letter-spacing:.8px; }
-  .role-hdr .role-meta { color:rgba(232,204,122,.6); font-size:11px; margin-top:2px; }
-
-  /* ── Damage Tracks ── */
-  .track { display:flex; align-items:stretch; border:1px solid var(--gold-dark); overflow:hidden; margin:8px 0 16px; }
-  .track-step { flex:1; padding:6px 4px; text-align:center; font-family:'Cinzel',serif; font-size:9.5px; letter-spacing:.4px; border-right:1px solid var(--gold-dark); background:rgba(245,237,216,.5); color:var(--navy); line-height:1.3; }
-  .track-step:last-child { border-right:none; }
-  .track-step.t2 { background:rgba(201,168,76,.18); }
-  .track-step.t3 { background:rgba(180,80,40,.1); }
-  .track-step.t4 { background:rgba(139,26,26,.15); }
-  .track-step.t5 { background:rgba(139,26,26,.28); color:var(--red); }
-  .track-step .ru { font-family:'EB Garamond',serif; font-weight:700; font-size:11px; letter-spacing:.2px; }
-  .track-step .en { font-size:9.5px; }
-  .track-label { font-family:'Cinzel',serif; font-size:10px; color:var(--bronze); text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; display:block; }
+  /* ── Role header ── */
+  .role-hdr { background:var(--navy); color:var(--gold-light); padding:8px 14px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:.5px; margin-bottom:0; }
 
   /* ── Lists ── */
-  ul, ol { padding-left:20px; margin:6px 0 12px; }
+  ul,ol { padding-left:20px; margin:6px 0 12px; }
   li { font-size:14.5px; line-height:1.65; color:#2a1e0a; margin-bottom:4px; }
   li::marker { color:var(--gold-dark); }
   ul li::marker { content:"⚓ "; font-size:10px; }
 
   @media (max-width:640px) {
-    .content-inner { padding:26px 16px 34px; }
+    .content-inner { padding:26px 16px 32px; }
     .phase-row { grid-template-columns:1fr 1fr; }
     .distance-row { grid-template-columns:1fr; }
-    h1 { font-size:20px; }
+    h1 { font-size:28px; }
     .rules-table { font-size:12.5px; }
-    .rules-table td.bold { white-space:normal; }
+    .rules-table td.b { white-space:normal; }
   }
 </style>
 </head>
@@ -148,652 +169,424 @@
   </div>
 </div>
 
-<div class="page-wrap">
-<div class="scroll-container">
+<div class="page-wrap"><div class="scroll-container">
 
   <!-- Corners -->
-  <div class="corner tl"><svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 66M6 6L66 6" stroke="#8B6914" stroke-width="2"/><path d="M14 14L14 58M14 14L58 14" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 18 6 26 18C34 30 30 44 42 52C54 60 66 60 66 60" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="4" fill="#C9A84C"/></svg></div>
-  <div class="corner tr"><svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 66M6 6L66 6" stroke="#8B6914" stroke-width="2"/><path d="M14 14L14 58M14 14L58 14" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 18 6 26 18C34 30 30 44 42 52C54 60 66 60 66 60" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="4" fill="#C9A84C"/></svg></div>
-  <div class="corner bl"><svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 66M6 6L66 6" stroke="#8B6914" stroke-width="2"/><path d="M14 14L14 58M14 14L58 14" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 18 6 26 18C34 30 30 44 42 52C54 60 66 60 66 60" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="4" fill="#C9A84C"/></svg></div>
-  <div class="corner br"><svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 66M6 6L66 6" stroke="#8B6914" stroke-width="2"/><path d="M14 14L14 58M14 14L58 14" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 18 6 26 18C34 30 30 44 42 52C54 60 66 60 66 60" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="4" fill="#C9A84C"/></svg></div>
+  <div class="corner tl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
 
   <div class="wave-band"></div>
   <div class="content-inner">
 
-    <!-- TITLE -->
+    <!-- ══ TITLE ══ -->
     <div class="title-block">
-      <div class="subtitle-pre en">Supplement Rules for D&amp;D 2024</div>
-      <div class="subtitle-pre ru">Дополнительные правила для D&amp;D 2024</div>
-      <h1 class="en">Odyssey of the Dragonlords: Naval Combat</h1>
-      <h1 class="ru">Одиссея Повелителей Драконов: Морской Бой</h1>
-      <div class="title-sub en">Ship-to-Ship Battle Rules</div>
-      <div class="title-sub ru">Правила корабельных сражений</div>
+      <div class="subtitle-pre en">Rules of Naval Combat in the Age of Heroes &middot; D&D 2024 Supplement</div>
+      <div class="subtitle-pre ru">Правила морских сражений эпохи героев &middot; Дополнение к D&amp;D 2024</div>
+      <h1>Naumachia</h1>
+      <div class="title-sub en">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; The Sea Battle</div>
+      <div class="title-sub ru">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; Морской бой</div>
       <div class="title-divider"><div class="line"></div><div class="orn">&#9875;</div><div class="line"></div></div>
     </div>
 
-    <!-- I: OVERVIEW -->
+    <!-- ══ I: OVERVIEW ══ -->
     <div class="section">
       <h2><span class="num">I</span><span class="en">Overview</span><span class="ru">Обзор</span></h2>
-      <p class="en">Naval combat runs alongside standard D&amp;D rounds. Each round, one <strong>Ship Action</strong> is taken by the crew, followed by all characters taking their normal personal actions. Only one Ship Action may be taken per round. Six crew roles must be filled; a character in a role may only use that role's Ship Actions. An unfilled role functions automatically with no special effects.</p>
-      <p class="ru">Морской бой идёт параллельно со стандартными раундами D&amp;D. Каждый раунд экипаж совершает одно <strong>Корабельное действие</strong>, после чего все персонажи совершают свои обычные личные действия. За раунд можно совершить только одно Корабельное действие. Шесть ролей экипажа должны быть заняты; персонаж в роли может использовать только Корабельные действия своей роли. Незанятая роль функционирует автоматически без особых эффектов.</p>
+      <p class="en">Naval combat runs in parallel with standard D&amp;D rounds. Each round, a ship takes one <strong>Ship Action</strong>, then all characters take their normal turns. A ship has six <strong>Crew Roles</strong>; each role provides one specific Ship Action. A character assigned to a role may only use that role's Ship Action.</p>
+      <p class="ru">Морской бой идёт параллельно со стандартными раундами D&amp;D. Каждый раунд корабль совершает одно <strong>Корабельное действие</strong>, после чего все персонажи совершают свои обычные ходы. На корабле есть шесть <strong>Ролей экипажа</strong>; каждая роль даёт одно конкретное Корабельное действие. Персонаж, назначенный на роль, может использовать только Корабельное действие своей роли.</p>
+      <p class="en">If a role is unfilled, an NPC crewmate may perform that action by rolling a straight d20 with no ability score or proficiency modifiers, against the same DC.</p>
+      <p class="ru">Если роль не занята, член экипажа НПС может выполнить это действие, бросая к20 без модификаторов характеристик или мастерства, против того же Сл.</p>
     </div>
 
-    <!-- II: CREW ROLES -->
+    <!-- ══ II: CREW ROLES ══ -->
     <div class="section">
       <h2><span class="num">II</span><span class="en">Crew Roles</span><span class="ru">Роли экипажа</span></h2>
       <table class="rules-table">
-        <thead>
-          <tr>
-            <th><span class="en">Role</span><span class="ru">Роль</span></th>
-            <th><span class="en">Attributes</span><span class="ru">Характеристики</span></th>
-            <th><span class="en">Skills</span><span class="ru">Навыки</span></th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th><span class="en">Role</span><span class="ru">Роль</span></th>
+          <th><span class="en">Ship Action</span><span class="ru">Корабельное действие</span></th>
+          <th><span class="en">Attribute</span><span class="ru">Характеристика</span></th>
+          <th><span class="en">Skills (either)</span><span class="ru">Навыки (любой)</span></th>
+        </tr></thead>
         <tbody>
           <tr>
-            <td class="bold"><span class="en">Captain (Trierarchos)</span><span class="ru">Капитан (Trierarchos)</span></td>
-            <td><span class="en">Charisma</span><span class="ru">Харизма</span></td>
+            <td class="b"><span class="en">Captain (Trierarchos)</span><span class="ru">Капитан (Trierarchos)</span></td>
+            <td><a href="estor-arkelander.html"><em><span class="en">Captain's Call — see below</span><span class="ru">Призыв капитана — см. ниже</span></em></a></td>
+            <td class="attr"><span class="en">Charisma</span><span class="ru">Харизма</span></td>
             <td><span class="en">Persuasion, Intimidation</span><span class="ru">Убеждение, Запугивание</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Helmsman (Kybernetes)</span><span class="ru">Кормчий (Kybernetes)</span></td>
-            <td><span class="en">Dexterity</span><span class="ru">Ловкость</span></td>
-            <td><span class="en">Acrobatics</span><span class="ru">Акробатика</span></td>
+            <td class="b"><span class="en">Helmsman (Kybernetes)</span><span class="ru">Кормчий (Kybernetes)</span></td>
+            <td><span class="en">Ram</span><span class="ru">Таран</span></td>
+            <td class="attr"><span class="en">Dexterity</span><span class="ru">Ловкость</span></td>
+            <td><span class="en">Acrobatics, Insight</span><span class="ru">Акробатика, Проницательность</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Oar-Master (Keleustes)</span><span class="ru">Нач. гребцов (Keleustes)</span></td>
-            <td><span class="en">Constitution</span><span class="ru">Телосложение</span></td>
-            <td><span class="en">Athletics</span><span class="ru">Атлетика</span></td>
+            <td class="b"><span class="en">Oar-Master (Keleustes)</span><span class="ru">Нач. гребцов (Keleustes)</span></td>
+            <td><span class="en">Surge</span><span class="ru">Рывок</span></td>
+            <td class="attr"><span class="en">Constitution</span><span class="ru">Телосложение</span></td>
+            <td><span class="en">Athletics, Performance</span><span class="ru">Атлетика, Выступление</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Marine Cmdr. (Epibatai)</span><span class="ru">Ком. морпехов (Epibatai)</span></td>
-            <td><span class="en">Strength</span><span class="ru">Сила</span></td>
-            <td><span class="en">Intimidation</span><span class="ru">Запугивание</span></td>
+            <td class="b"><span class="en">Marine Cmdr. (Epibatai)</span><span class="ru">Ком. морпехов (Epibatai)</span></td>
+            <td><span class="en">Board</span><span class="ru">Абордаж</span></td>
+            <td class="attr"><span class="en">Strength</span><span class="ru">Сила</span></td>
+            <td><span class="en">Intimidation, Sleight of Hand</span><span class="ru">Запугивание, Ловкость рук</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Lookout (Prorates)</span><span class="ru">Наблюдатель (Prorates)</span></td>
-            <td><span class="en">Wisdom</span><span class="ru">Мудрость</span></td>
-            <td><span class="en">Perception, Survival</span><span class="ru">Восприятие, Выживание</span></td>
+            <td class="b"><span class="en">Lookout (Prorates)</span><span class="ru">Наблюдатель (Prorates)</span></td>
+            <td><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td class="attr"><span class="en">Wisdom</span><span class="ru">Мудрость</span></td>
+            <td><span class="en">Perception, Investigation</span><span class="ru">Восприятие, Расследование</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Bow Officer (Proreus)</span><span class="ru">Носовой офицер (Proreus)</span></td>
-            <td><span class="en">Intelligence</span><span class="ru">Интеллект</span></td>
-            <td><span class="en">Investigation, Medicine</span><span class="ru">Расследование, Медицина</span></td>
+            <td class="b"><span class="en">Bow Officer (Proreus)</span><span class="ru">Носовой офицер (Proreus)</span></td>
+            <td><span class="en">Maneuver</span><span class="ru">Манёвр</span></td>
+            <td class="attr"><span class="en">Intelligence</span><span class="ru">Интеллект</span></td>
+            <td><span class="en">Survival, History</span><span class="ru">Выживание, История</span></td>
           </tr>
         </tbody>
       </table>
+      <div class="callout">
+        <strong><span class="en">Captain's Call</span><span class="ru">Призыв капитана</span></strong>
+        <span class="en">The Captain has no Ship Action of their own. When a PC fills this role, they may make a Charisma (Persuasion or Intimidation) D20 Test (DC 12) at the start of the Ship Action phase. On a success, the crew member taking the Ship Action this round rolls with Advantage.</span>
+        <span class="ru">У Капитана нет своего Корабельного действия. Если ПИ занимает эту роль, он может сделать Тест к20 Харизмы (Убеждение или Запугивание, КС 12) в начале фазы Корабельных действий. При успехе член экипажа, совершающий Корабельное действие в этом раунде, бросает с Преимуществом.</span>
+      </div>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
-    <!-- III: SHIP INITIATIVE & ROUND -->
+    <!-- ══ III: ROUND STRUCTURE ══ -->
     <div class="section">
-      <h2><span class="num">III</span><span class="en">Ship Initiative &amp; Round Structure</span><span class="ru">Инициатива корабля и структура раунда</span></h2>
-      <p class="en">Initiative is decided by the D20 roll <strong>at the start of every round</strong> — there is no fixed order. The ties are rerolled.</p>
-      <p class="ru">Инициатива определяется броском D20 <strong>в начале каждого раунда</strong> — порядок не фиксирован. Ничья перебрасывается.</p>
+      <h2><span class="num">III</span><span class="en">Round Structure</span><span class="ru">Структура раунда</span></h2>
       <div class="phase-row">
         <div class="phase-card">
           <span class="pnum">1</span>
-          <span class="phase-name"><span class="en">Declare</span></span><span class="phase-name"><span class="ru">Объявить</span></span>
-          <p class="en">Both captains secretly declare their Ship Action.</p>
-          <p class="ru">Оба капитана тайно объявляют своё Корабельное действие.</p>
+          <span class="phase-name"><span class="en">Declare</span><span class="ru">Объявить</span></span>
+          <p><span class="en">All ships announce their Ship Action for the round.</span><span class="ru">Все корабли объявляют своё Корабельное действие на раунд.</span></p>
         </div>
         <div class="phase-card">
           <span class="pnum">2</span>
-          <span class="phase-name"><span class="en">Initiative</span></span><span class="phase-name"><span class="ru">Инициатива</span></span>
-          <p class="en">Both captains roll a straight d20. No modifiers.</p>
-          <p class="ru">Оба капитана бросают к20 без модификаторов.</p>
+          <span class="phase-name"><span class="en">Initiative</span><span class="ru">Инициатива</span></span>
+          <p><span class="en">Each captain rolls a straight d20. No modifiers. Higher roll acts first; ties resolve simultaneously.</span><span class="ru">Каждый капитан бросает прямой к20 без модификаторов. Высший бросок действует первым; равенство разрешается одновременно.</span></p>
         </div>
         <div class="phase-card">
           <span class="pnum">3</span>
-          <span class="phase-name"><span class="en">Ship Action</span></span><span class="phase-name"><span class="ru">Корабельное действие</span></span>
-          <p class="en">Resolve one Ship Action per ship, higher initiative first.</p>
-          <p class="ru">Разрешить по одному Корабельному действию, начиная с высшей инициативы.</p>
+          <span class="phase-name"><span class="en">Ship Action</span><span class="ru">Корабельное действие</span></span>
+          <p><span class="en">One Ship Action resolves per ship, in initiative order.</span><span class="ru">По одному Корабельному действию разрешается на корабль, в порядке инициативы.</span></p>
         </div>
         <div class="phase-card">
           <span class="pnum">4</span>
-          <span class="phase-name"><span class="en">Personal Actions</span></span><span class="phase-name"><span class="ru">Личные действия</span></span>
-          <p class="en">All characters take their standard D&amp;D actions and movement.</p>
-          <p class="ru">Все персонажи совершают стандартные действия и движение D&amp;D.</p>
+          <span class="phase-name"><span class="en">Personal Actions</span><span class="ru">Личные действия</span></span>
+          <p><span class="en">All characters take their standard D&amp;D turns using normal Initiative.</span><span class="ru">Все персонажи совершают стандартные ходы D&amp;D в обычном порядке инициативы.</span></p>
         </div>
       </div>
-      <div class="callout en"><strong>Boarding Transition</strong>When the Board action succeeds, phases 3–4 merge: the ship decks become the encounter map and combat continues as normal D&amp;D initiative order for all characters.</div>
-      <div class="callout ru"><strong>Переход к абордажу</strong>При успехе Абордажа фазы 3–4 сливаются: палубы кораблей становятся картой столкновения, а бой продолжается в обычном порядке инициативы D&amp;D для всех персонажей.</div>
+      <div class="callout red">
+        <strong><span class="en">Boarding Transition</span><span class="ru">Переход к абордажу</span></strong>
+        <span class="en">When Board succeeds, Phases 3–4 merge: the decks become the encounter map and all characters act in standard D&amp;D Initiative order.</span>
+        <span class="ru">При успехе Абордажа фазы 3–4 сливаются: палубы становятся картой столкновения и все персонажи действуют в стандартном порядке Инициативы D&amp;D.</span>
+      </div>
     </div>
 
-    <!-- IV: DISTANCE -->
+    <!-- ══ IV: DISTANCE ══ -->
     <div class="section">
-      <h2><span class="num">IV</span><span class="en">Distance &amp; Positioning</span><span class="ru">Дистанция и позиционирование</span></h2>
-      <p class="en">No grid is required. Track the distance between ships with one of three bands. The DM sets starting distance based on the encounter.</p>
-      <p class="ru">Сетка не нужна. Отслеживайте дистанцию между кораблями в трёх полосах. Мастер задаёт начальную дистанцию исходя из обстановки.</p>
+      <h2><span class="num">IV</span><span class="en">Distance</span><span class="ru">Дистанция</span></h2>
+      <p class="en">No grid is used. The distance between ships is tracked as one of three bands. The DM sets starting distance based on the encounter.</p>
+      <p class="ru">Сетка не используется. Дистанция между кораблями отслеживается в трёх полосах. Мастер задаёт начальную дистанцию исходя из обстановки.</p>
       <div class="distance-row">
         <div class="dist-card">
-          <div class="dist-label en">Distant</div>
-          <div class="dist-label ru">Далеко</div>
-          <div class="dist-body en">Out of effective weapon range. No Ram, Volley, or Board. All support and positioning actions available.</div>
-          <div class="dist-body ru">Вне зоны досягаемости оружия. Без Тарана, Залпа, Абордажа. Все вспомогательные и позиционные действия доступны.</div>
+          <span class="dist-label en">Distant</span>
+          <span class="dist-label ru">Далеко</span>
+          <div class="dist-body en">Out of attack range. Only Surge and Maneuver are available. Ram, Ballistas, and Board cannot be used.</div>
+          <div class="dist-body ru">Вне зоны досягаемости. Доступны только Рывок и Манёвр. Таран, Баллисты и Абордаж недоступны.</div>
         </div>
         <div class="dist-card">
-          <div class="dist-label en">Close</div>
-          <div class="dist-label ru">Близко</div>
-          <div class="dist-body en">Within arrow range. Volley and Ram available. Boarding not yet possible.</div>
-          <div class="dist-body ru">В зоне досягаемости стрел. Залп и Таран доступны. Абордаж пока невозможен.</div>
+          <span class="dist-label en">Close</span>
+          <span class="dist-label ru">Близко</span>
+          <div class="dist-body en">Within weapon range. All Ship Actions are available except Board. Ram moves to Locked on success.</div>
+          <div class="dist-body ru">В зоне досягаемости. Доступны все Корабельные действия кроме Абордажа. Таран переходит в Сцепление при успехе.</div>
         </div>
         <div class="dist-card">
-          <div class="dist-label en">Locked</div>
-          <div class="dist-label ru">Сцеплены</div>
-          <div class="dist-body en">Grappled or post-ram contact. All Ship Actions available. Board initiates deck combat.</div>
-          <div class="dist-body ru">Сцеплены крюками или после тарана. Все Корабельные действия доступны. Абордаж начинает бой на палубе.</div>
+          <span class="dist-label en">Locked</span>
+          <span class="dist-label ru">Сцеплены</span>
+          <div class="dist-body en">Grappled or in direct contact. All Ship Actions available. Board initiates deck combat. To disengage, the Oar-Master must use Surge.</div>
+          <div class="dist-body ru">Сцеплены крюками или в прямом контакте. Все Корабельные действия доступны. Абордаж начинает бой на палубе. Для отрыва Нач. гребцов должен использовать Рывок.</div>
         </div>
       </div>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
-    <!-- V: SHIP ACTIONS -->
+    <!-- ══ V: SHIP ACTIONS ══ -->
     <div class="section">
       <h2><span class="num">V</span><span class="en">Ship Actions</span><span class="ru">Корабельные действия</span></h2>
-      <p class="en">Each role has three Ship Actions. A failed check means the action has no effect this round. Range conditions are noted where relevant.</p>
-      <p class="ru">У каждой роли три Корабельных действия. Провал проверки означает, что действие не имеет эффекта в этом раунде. Условия дальности указаны там, где применимо.</p>
+      <p class="en">Each role performs its Ship Action by making a D20 Test using the listed attribute and either of the two listed skills. On a failure, the action has no effect unless stated otherwise.</p>
+      <p class="ru">Каждая роль выполняет своё Корабельное действие, совершая Тест к20 с указанной характеристикой и любым из двух перечисленных навыков. При провале действие не имеет эффекта, если не указано иное.</p>
 
-      <!-- CAPTAIN -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Captain (Trierarchos) — Charisma · Wisdom</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Капитан (Trierarchos) — Харизма · Мудрость</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Rally</span><span class="ru">Воодушевление</span></td>
-              <td><span class="en">Cha (Persuasion or Intimidation)</span><span class="ru">Хар (Убеждение или Запугивание)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en">Restore 1 step on the Morale Track, OR grant one PC advantage on their Personal Action this round.</span><span class="ru">Восстановить 1 ступень Шкалы морали, ИЛИ дать одному ПИ преимущество на его Личное действие в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Command</span><span class="ru">Приказ</span></td>
-              <td><span class="en">Wis (Insight)</span><span class="ru">Мудр (Проницательность)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en">Grant one allied crew role advantage on their Ship Action roll this round.</span><span class="ru">Дать одной союзной роли преимущество на её бросок Корабельного действия в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Demoralize</span><span class="ru">Деморализация</span></td>
-              <td><span class="en">Cha (Intimidation) vs. enemy Wis (Insight)</span><span class="ru">Хар (Запугивание) против Мудр врага (Проницательность)</span></td>
-              <td class="dc"><span class="en">Contested</span><span class="ru">Состязание</span></td>
-              <td><span class="en">Enemy captain rerolls their initiative die and takes the lower result.</span><span class="ru">Вражеский капитан перебрасывает кость инициативы и берёт меньший результат.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- HELMSMAN -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Helmsman (Kybernetes) — Dexterity · Wisdom</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Кормчий (Kybernetes) — Ловкость · Мудрость</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Ram</span><span class="ru">Таран</span></td>
-              <td><span class="en">Dex (Athletics)</span><span class="ru">Ловк (Атлетика)</span></td>
-              <td class="dc">13</td>
-              <td><span class="en"><em>Close only.</em> Move to Locked. Roll the Hull Damage Die on the enemy; roll the Oarsmen Die on your own ship.</span><span class="ru"><em>Только Близко.</em> Перейти в Сцепление. Бросить Кость урона корпуса на врага; бросить Кость гребцов на свой корабль.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Maneuver</span><span class="ru">Манёвр</span></td>
-              <td><span class="en">Dex (Acrobatics)</span><span class="ru">Ловк (Акробатика)</span></td>
-              <td class="dc">11</td>
-              <td><span class="en">Impose disadvantage on one incoming Ship Action targeting your ship this round.</span><span class="ru">Наложить помеху на одно входящее Корабельное действие против вашего корабля в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Open Water</span><span class="ru">Открытое море</span></td>
-              <td><span class="en">Dex (Athletics or Acrobatics)</span><span class="ru">Ловк (Атлетика или Акробатика)</span></td>
-              <td class="dc">12 <span style="font-weight:400;font-family:'EB Garamond',serif;font-size:12px;">(15 <span class="en">if Locked</span><span class="ru">в Сцеплении</span>)</span></td>
-              <td><span class="en">Move distance one step farther.</span><span class="ru">Увеличить дистанцию на одну ступень.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- OAR-MASTER -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Oar-Master (Keleustes) — Strength · Constitution</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Начальник гребцов (Keleustes) — Сила · Телосложение</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Sprint</span><span class="ru">Рывок</span></td>
-              <td><span class="en">Str (Athletics or Intimidation)</span><span class="ru">Сила (Атлетика или Запугивание)</span></td>
-              <td class="dc">11</td>
-              <td><span class="en">Move distance one step closer.</span><span class="ru">Уменьшить дистанцию на одну ступень.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Hold Stroke</span><span class="ru">Держать ритм</span></td>
-              <td><span class="en">Con (Athletics or Performance)</span><span class="ru">Тел (Атлетика или Выступление)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en">Prevent the enemy from changing distance this round.</span><span class="ru">Запретить врагу менять дистанцию в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Emergency Pull</span><span class="ru">Экстренный гребок</span></td>
-              <td><span class="en">No roll</span><span class="ru">Без броска</span></td>
-              <td class="dc">—</td>
-              <td><span class="en">Move distance two steps in any direction. Automatically advance own Oarsmen Track 1 step.</span><span class="ru">Сместить дистанцию на две ступени в любом направлении. Автоматически продвинуть Шкалу гребцов своего корабля на 1 ступень.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- MARINE COMMANDER -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Marine Commander (Epibatai) — Strength · Dexterity</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Командир морпехов (Epibatai) — Сила · Ловкость</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Volley</span><span class="ru">Залп</span></td>
-              <td><span class="en">Dex (Athletics or Acrobatics)</span><span class="ru">Ловк (Атлетика или Акробатика)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en"><em>Close or Locked only.</em> Roll the Crew Damage Die on the enemy; enemy captain must make a Morale check.</span><span class="ru"><em>Только Близко или Сцеплены.</em> Бросить Кость урона экипажа на врага; вражеский капитан делает Проверку морали.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Board</span><span class="ru">Абордаж</span></td>
-              <td><span class="en">Str (Athletics)</span><span class="ru">Сила (Атлетика)</span></td>
-              <td class="dc">14</td>
-              <td><span class="en"><em>Locked only.</em> Boarding action begins; transition to individual D&amp;D combat on the enemy deck.</span><span class="ru"><em>Только Сцеплены.</em> Начинается абордаж; переход к индивидуальному бою D&amp;D на палубе врага.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Defend Deck</span><span class="ru">Защита палубы</span></td>
-              <td><span class="en">Str (Intimidation)</span><span class="ru">Сила (Запугивание)</span></td>
-              <td class="dc">11</td>
-              <td><span class="en">All crew gain half cover (+2 AC, +2 Dex saves). Enemy Volley this round is made with disadvantage.</span><span class="ru">Весь экипаж получает полукрытие (+2 КБ, +2 к спасброскам Ловкости). Вражеский Залп в этом раунде делается с помехой.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- LOOKOUT -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Lookout (Prorates) — Wisdom · Intelligence</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Наблюдатель (Prorates) — Мудрость · Интеллект</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Spot</span><span class="ru">Высматривать</span></td>
-              <td><span class="en">Wis (Perception)</span><span class="ru">Мудр (Восприятие)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en">Grant advantage on the next Ram or Volley action your crew takes this round.</span><span class="ru">Дать преимущество на следующий Таран или Залп вашего экипажа в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Read Enemy</span><span class="ru">Прочитать врага</span></td>
-              <td><span class="en">Int (Investigation)</span><span class="ru">Инт (Расследование)</span></td>
-              <td class="dc">13</td>
-              <td><span class="en">Reveal the enemy's declared Ship Action before initiative is rolled this round.</span><span class="ru">Раскрыть объявленное Корабельное действие врага до броска инициативы в этом раунде.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Warn</span><span class="ru">Предупреждение</span></td>
-              <td><span class="en">Wis (Perception or Survival)</span><span class="ru">Мудр (Восприятие или Выживание)</span></td>
-              <td class="dc">10</td>
-              <td><span class="en">Negate or halve one sea hazard effect this round, OR grant one ally +5 on a Personal Action against a sea monster.</span><span class="ru">Отменить или вдвое снизить эффект морской опасности в этом раунде, ИЛИ дать одному союзнику +5 на Личное действие против морского монстра.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- PROREUS -->
-      <div class="role-section">
-        <div class="role-hdr">
-          <div class="en">Bow Officer (Proreus) — Intelligence · Dexterity</div>
-          <div class="ru" style="font-family:'EB Garamond',serif;font-size:14px;">Носовой офицер (Proreus) — Интеллект · Ловкость</div>
-        </div>
-        <table class="rules-table">
-          <thead><tr>
-            <th><span class="en">Action</span><span class="ru">Действие</span></th>
-            <th><span class="en">Check</span><span class="ru">Проверка</span></th>
-            <th>DC</th>
-            <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          </tr></thead>
-          <tbody>
-            <tr>
-              <td class="bold"><span class="en">Repair</span><span class="ru">Ремонт</span></td>
-              <td><span class="en">Int (Investigation) + tools</span><span class="ru">Инт (Расследование) + инструменты</span></td>
-              <td class="dc">14</td>
-              <td><span class="en">Restore the Hull Track 1 step.</span><span class="ru">Восстановить Шкалу корпуса на 1 ступень.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Tend Wounded</span><span class="ru">Помощь раненым</span></td>
-              <td><span class="en">Wis (Medicine)</span><span class="ru">Мудр (Медицина)</span></td>
-              <td class="dc">12</td>
-              <td><span class="en">Restore the Oarsmen Track 1 step.</span><span class="ru">Восстановить Шкалу гребцов на 1 ступень.</span></td>
-            </tr>
-            <tr>
-              <td class="bold"><span class="en">Cut Grapples</span><span class="ru">Рубить тросы</span></td>
-              <td><span class="en">Dex (Athletics or Acrobatics)</span><span class="ru">Ловк (Атлетика или Акробатика)</span></td>
-              <td class="dc">15</td>
-              <td><span class="en"><em>Locked only.</em> Immediately move to Close without requiring Open Water.</span><span class="ru"><em>Только Сцеплены.</em> Немедленно перейти в Близко без использования Открытого моря.</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="rules-table">
+        <thead><tr>
+          <th><span class="en">Action</span><span class="ru">Действие</span></th>
+          <th><span class="en">D20 Test</span><span class="ru">Тест к20</span></th>
+          <th>DC</th>
+          <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="b"><span class="en">Ram</span><span class="ru">Таран</span></td>
+            <td class="attr"><span class="en">Dex (Acrobatics or Insight)</span><span class="ru">Ловк (Акробатика или Проницательность)</span></td>
+            <td class="dc">13</td>
+            <td>
+              <span class="en"><em>Close only.</em> On a <strong>success</strong>, move to Locked and deal Ram damage to the target ship. On a <strong>failure</strong>, roll Ram damage and both ships take half the result.</span>
+              <span class="ru"><em>Только Близко.</em> При <strong>успехе</strong> перейти в Сцепление и нанести урон тараном вражескому кораблю. При <strong>провале</strong> бросить урон тараном — оба корабля получают половину результата.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Surge</span><span class="ru">Рывок</span></td>
+            <td class="attr"><span class="en">Con (Athletics or Performance)</span><span class="ru">Тел (Атлетика или Выступление)</span></td>
+            <td class="dc">12</td>
+            <td>
+              <span class="en">Move the ship two distance bands in any direction.</span>
+              <span class="ru">Переместить корабль на две дистанционные полосы в любом направлении.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Board</span><span class="ru">Абордаж</span></td>
+            <td class="attr"><span class="en">Str (Intimidation or Sleight of Hand)</span><span class="ru">Сила (Запугивание или Ловкость рук)</span></td>
+            <td class="dc"><span class="en">Contested</span><span class="ru">Состязание</span></td>
+            <td>
+              <span class="en"><em>Locked only.</em> Both ships roll the Marine Commander's D20 Test. On a success, boarding combat begins on the enemy deck. The attacker wins ties.</span>
+              <span class="ru"><em>Только Сцеплены.</em> Оба корабля бросают Тест к20 Командира морпехов. При успехе начинается абордажный бой на вражеской палубе. При равенстве побеждает атакующий.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td class="attr"><span class="en">Wis (Perception or Investigation)</span><span class="ru">Мудр (Восприятие или Расследование)</span></td>
+            <td class="dc">12</td>
+            <td>
+              <span class="en"><em>Close or Locked only.</em> Direct the ballista crews to fire upon a designated point on the enemy ship, a specific creature on deck, or a sea monster. On a success, the shot lands on its intended target.</span>
+              <span class="ru"><em>Только Близко или Сцеплены.</em> Направить расчёты баллист открыть огонь по указанной точке вражеского корабля, конкретному существу на палубе или морскому монстру. При успехе выстрел поражает намеченную цель.</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Maneuver</span><span class="ru">Манёвр</span></td>
+            <td class="attr"><span class="en">Int (Survival or History)</span><span class="ru">Инт (Выживание или История)</span></td>
+            <td class="dc">11</td>
+            <td>
+              <span class="en">Choose one: grant <strong>Advantage</strong> on your ship's current Ship Action roll, <em>or</em> impose <strong>Disadvantage</strong> on all enemy Ship Actions until the end of their next Ship Action phase.</span>
+              <span class="ru">Выберите: дать <strong>Преимущество</strong> на текущий бросок Корабельного действия вашего корабля, <em>или</em> наложить <strong>Помеху</strong> на все Корабельные действия врагов до конца их следующей фазы Корабельных действий.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
-    <!-- VI: DAMAGE -->
+    <!-- ══ VI: DAMAGE & CASUALTIES ══ -->
     <div class="section">
-      <h2><span class="num">VI</span><span class="en">Ship Damage &amp; Oarsmen Casualties</span><span class="ru">Повреждения корабля и потери среди гребцов</span></h2>
-      <p class="en">Track two separate conditions: the ship's structural state and the state of its oarsmen. Both are marked on five-step tracks. The DM maintains these tracks; no exact numbers are needed.</p>
-      <p class="ru">Отслеживайте два состояния: структурное состояние корабля и состояние его гребцов. Оба отмечаются на пятиступенчатых шкалах. Мастер ведёт эти шкалы; точные числа не нужны.</p>
+      <h2><span class="num">VI</span><span class="en">Ship Damage &amp; Oarsmen Casualties</span><span class="ru">Повреждения корабля и потери гребцов</span></h2>
+      <p class="en">Ships track two values: <strong>Hull Points</strong> and <strong>Oarsmen</strong>.</p>
+      <p class="ru">Корабли отслеживают два значения: <strong>Очки корпуса</strong> и <strong>Гребцы</strong>.</p>
 
-      <h3 class="en">Hull Track</h3><h3 class="ru">Шкала корпуса</h3>
-      <div class="track">
-        <div class="track-step"><span class="en">Intact</span><span class="ru">Цел</span></div>
-        <div class="track-step t2"><span class="en">Strained</span><span class="ru">Напряжён</span></div>
-        <div class="track-step t3"><span class="en">Damaged</span><span class="ru">Повреждён</span></div>
-        <div class="track-step t4"><span class="en">Crippled</span><span class="ru">Искалечен</span></div>
-        <div class="track-step t5"><span class="en">Sinking</span><span class="ru">Тонет</span></div>
-      </div>
+      <h3 class="en">Hull Points</h3><h3 class="ru">Очки корпуса</h3>
+      <p class="en">Each ship has a Hull Point maximum determined by its type. When a ship is reduced to 0 Hull Points, it begins to sink and is lost within 1d4 rounds. All aboard must succeed on a DC 14 Strength (Athletics) D20 Test or begin drowning.</p>
+      <p class="ru">Каждый корабль имеет максимум Очков корпуса, определяемый его типом. Когда корабль опускается до 0 Очков корпуса, он начинает тонуть и будет потерян через 1к4 раунда. Все на борту должны пройти Тест к20 Силы (Атлетика, КС 14), иначе начнут тонуть.</p>
 
-      <h3 class="en">Oarsmen Track</h3><h3 class="ru">Шкала гребцов</h3>
-      <div class="track">
-        <div class="track-step"><span class="en">Full</span><span class="ru">В строю</span></div>
-        <div class="track-step t2"><span class="en">Tired</span><span class="ru">Устали</span></div>
-        <div class="track-step t3"><span class="en">Depleted</span><span class="ru">Истощены</span></div>
-        <div class="track-step t4"><span class="en">Exhausted</span><span class="ru">Выжаты</span></div>
-        <div class="track-step t5"><span class="en">Lost</span><span class="ru">Потеряны</span></div>
-      </div>
+      <h3 class="en">Oarsmen</h3><h3 class="ru">Гребцы</h3>
+      <p class="en">Each ship has a starting Oarsmen count determined by its type. A ship requires at least half its starting Oarsmen count to remain operational. If Oarsmen fall below that threshold, the Surge action cannot be taken. If Oarsmen reach 0, the ship is dead in the water and must surrender or be abandoned.</p>
+      <p class="ru">Каждый корабль имеет начальное количество Гребцов, определяемое его типом. Для работоспособности кораблю требуется не менее половины начального количества Гребцов. Если Гребцов становится меньше этого порога, действие Рывок недоступно. При 0 Гребцов корабль обездвижен и должен сдаться или быть оставлен.</p>
 
-      <h3 class="en">Damage Dice</h3><h3 class="ru">Кости урона</h3>
-      <p class="en">Roll 1d6 when triggered. The result determines which tracks advance.</p>
-      <p class="ru">Бросайте 1к6 при срабатывании. Результат определяет продвижение шкал.</p>
+      <h3 class="en">Hull-to-Oarsmen Transfer</h3><h3 class="ru">Перенос урона корпуса на гребцов</h3>
+      <p class="en">For every 10 points of Hull damage the ship suffers, 1 oarsman is lost. This reflects structural breaches forcing rowers from their benches, splinter injuries, and flooding of the lower decks.</p>
+      <p class="ru">За каждые 10 очков урона корпуса корабль теряет 1 гребца. Это отражает структурные пробоины, вынуждающие гребцов покидать скамьи, ранения от осколков и затопление нижней палубы.</p>
 
-      <table class="rules-table">
-        <thead><tr>
-          <th><span class="en">Trigger</span><span class="ru">Срабатывание</span></th>
-          <th><span class="en">Die</span><span class="ru">Кость</span></th>
-          <th>1–2</th>
-          <th>3–4</th>
-          <th>5–6</th>
-        </tr></thead>
-        <tbody>
-          <tr>
-            <td class="bold"><span class="en">Hull Damage Die</span><span class="ru">Кость урона корпуса</span></td>
-            <td>1d6</td>
-            <td><span class="en">No advance</span><span class="ru">Нет продвижения</span></td>
-            <td><span class="en">Hull +1 step</span><span class="ru">Корпус +1</span></td>
-            <td><span class="en">Hull +1 step; Oarsmen +1 step</span><span class="ru">Корпус +1; Гребцы +1</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Crew Damage Die</span><span class="ru">Кость урона экипажа</span></td>
-            <td>1d6</td>
-            <td><span class="en">No advance</span><span class="ru">Нет продвижения</span></td>
-            <td><span class="en">Oarsmen +1 step</span><span class="ru">Гребцы +1</span></td>
-            <td><span class="en">Oarsmen +1 step; Morale check required</span><span class="ru">Гребцы +1; требуется Проверка морали</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <h3 class="en">Ram Damage</h3><h3 class="ru">Урон тараном</h3>
+      <p class="en">A ram deals <strong>10d10 bludgeoning damage</strong>. On a failed Ram check, roll this damage and both ships take half the total.</p>
+      <p class="ru">Таран наносит <strong>10к10 дробящего урона</strong>. При провале броска тарана бросьте этот урон — оба корабля получают половину суммы.</p>
 
-      <p class="en">The <strong>Hull Damage Die</strong> is rolled on a successful Ram, sea hazard, or monster attack. The <strong>Crew Damage Die</strong> is rolled on a successful Volley, Emergency Pull, or when Hull is at Damaged or worse at the end of each round.</p>
-      <p class="ru"><strong>Кость урона корпуса</strong> бросается при успешном Таране, морской опасности или атаке монстра. <strong>Кость урона экипажа</strong> бросается при успешном Залпе, Экстренном гребке, или когда Корпус находится в состоянии Повреждён или хуже в конце каждого раунда.</p>
-
-      <h3 class="en">Track Effects (cumulative)</h3><h3 class="ru">Эффекты шкал (накопительные)</h3>
-      <table class="rules-table">
-        <thead><tr>
-          <th><span class="en">Hull Stage</span><span class="ru">Ступень корпуса</span></th>
-          <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-          <th><span class="en">Oarsmen Stage</span><span class="ru">Ступень гребцов</span></th>
-          <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
-        </tr></thead>
-        <tbody>
-          <tr>
-            <td class="bold"><span class="en">Strained</span><span class="ru">Напряжён</span></td>
-            <td><span class="en">All Ship Action DCs +1.</span><span class="ru">Все DC Корабельных действий +1.</span></td>
-            <td class="bold"><span class="en">Tired</span><span class="ru">Устали</span></td>
-            <td><span class="en">Sprint and Emergency Pull checks at disadvantage.</span><span class="ru">Проверки Рывка и Экстренного гребка с помехой.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Damaged</span><span class="ru">Повреждён</span></td>
-            <td><span class="en">All DCs +2. Roll Crew Damage Die at end of each round.</span><span class="ru">Все DC +2. Бросать Кость урона экипажа в конце каждого раунда.</span></td>
-            <td class="bold"><span class="en">Depleted</span><span class="ru">Истощены</span></td>
-            <td><span class="en">Cannot Sprint or Emergency Pull. Distance DCs +2.</span><span class="ru">Нельзя Рывок или Экстренный гребок. DC дистанции +2.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Crippled</span><span class="ru">Искалечен</span></td>
-            <td><span class="en">All DCs +3. Cannot Ram. Cannot Emergency Pull.</span><span class="ru">Все DC +3. Нельзя Таран. Нельзя Экстренный гребок.</span></td>
-            <td class="bold"><span class="en">Exhausted</span><span class="ru">Выжаты</span></td>
-            <td><span class="en">Cannot change distance at all.</span><span class="ru">Нельзя менять дистанцию вообще.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Sinking</span><span class="ru">Тонет</span></td>
-            <td><span class="en">Ship sinks in 1d4 rounds. All hands must abandon ship or repair.</span><span class="ru">Корабль тонет через 1к4 раунда. Все должны покинуть корабль или чинить.</span></td>
-            <td class="bold"><span class="en">Lost</span><span class="ru">Потеряны</span></td>
-            <td><span class="en">Ship cannot move. Surrender or die.</span><span class="ru">Корабль не может двигаться. Сдаться или погибнуть.</span></td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="en">Both tracks reset fully after one day of safe harbor.</p>
-      <p class="ru">Обе шкалы полностью сбрасываются после одного дня в безопасной гавани.</p>
+      <div class="callout en"><strong>Ballista Weapon Stats</strong>Ballista statistics are found in the D&amp;D 2024 core rules. Hull-to-Oarsmen transfer applies to all hull damage, regardless of source.</div>
+      <div class="callout ru"><strong>Характеристики баллисты</strong>Характеристики баллисты приведены в основных правилах D&amp;D 2024. Перенос урона корпуса на гребцов применяется ко всему урону корпуса вне зависимости от источника.</div>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
-    <!-- VII: MORALE -->
+    <!-- ══ VII: CREW MORALE ══ -->
     <div class="section">
       <h2><span class="num">VII</span><span class="en">Crew Morale</span><span class="ru">Мораль экипажа</span></h2>
+      <p class="en">The crew's fighting spirit is tracked using the <strong>Exhaustion</strong> condition from D&amp;D 2024. Each level of Exhaustion imposes a <strong>&minus;2 penalty to all D20 Tests</strong> made for Ship Actions. At <strong>Exhaustion 5</strong>, the crew cannot take the Surge action. At <strong>Exhaustion 10</strong>, the crew mutinies or abandons ship.</p>
+      <p class="ru">Боевой дух экипажа отслеживается с помощью состояния <strong>Истощение</strong> из D&amp;D 2024. Каждый уровень Истощения накладывает штраф <strong>&minus;2 ко всем Тестам к20</strong> для Корабельных действий. При <strong>Истощении 5</strong> экипаж не может использовать действие Рывок. При <strong>Истощении 10</strong> экипаж бунтует или оставляет корабль.</p>
 
-      <h3 class="en">Morale Track</h3><h3 class="ru">Шкала морали</h3>
-      <div class="track">
-        <div class="track-step"><span class="en">High</span><span class="ru">Высокая</span></div>
-        <div class="track-step t2"><span class="en">Steady</span><span class="ru">Стабильная</span></div>
-        <div class="track-step t3"><span class="en">Shaken</span><span class="ru">Потрясены</span></div>
-        <div class="track-step t4"><span class="en">Wavering</span><span class="ru">Колеблются</span></div>
-        <div class="track-step t5"><span class="en">Broken</span><span class="ru">Сломлены</span></div>
-      </div>
-
+      <h3 class="en">Daily Provisions</h3><h3 class="ru">Ежедневные припасы</h3>
+      <p class="en">At the end of each day of travel, apply the following based on available provisions.</p>
+      <p class="ru">В конце каждого дня плавания применяйте следующее в зависимости от доступных припасов.</p>
       <table class="rules-table">
         <thead><tr>
-          <th><span class="en">Stage</span><span class="ru">Ступень</span></th>
+          <th><span class="en">Provisions</span><span class="ru">Припасы</span></th>
           <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
         </tr></thead>
         <tbody>
           <tr>
-            <td class="bold"><span class="en">High</span><span class="ru">Высокая</span></td>
-            <td><span class="en">One Ship Action roll per round may be rerolled, taking the higher result.</span><span class="ru">Один бросок Корабельного действия за раунд можно перебросить, взяв высший результат.</span></td>
+            <td class="b"><span class="en">Full rations + wine</span><span class="ru">Полный паёк + вино</span></td>
+            <td><span class="en">Remove 1 Exhaustion level.</span><span class="ru">Снять 1 уровень Истощения.</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Steady</span><span class="ru">Стабильная</span></td>
-            <td><span class="en">No effect.</span><span class="ru">Без эффекта.</span></td>
+            <td class="b"><span class="en">Full rations, no wine</span><span class="ru">Полный паёк, без вина</span></td>
+            <td><span class="en">No change.</span><span class="ru">Без изменений.</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Shaken</span><span class="ru">Потрясены</span></td>
-            <td><span class="en">All Ship Action DCs +1.</span><span class="ru">Все DC Корабельных действий +1.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Wavering</span><span class="ru">Колеблются</span></td>
-            <td><span class="en">All DCs +2. Crew will not initiate boarding.</span><span class="ru">Все DC +2. Экипаж не будет инициировать абордаж.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Broken</span><span class="ru">Сломлены</span></td>
-            <td><span class="en">No offensive Ship Actions. Open Water auto-succeeds. Crew will surrender at first opportunity.</span><span class="ru">Нет наступательных Корабельных действий. Открытое море автоматически успешно. Экипаж сдастся при первой возможности.</span></td>
+            <td class="b"><span class="en">No rations</span><span class="ru">Нет пайка</span></td>
+            <td><span class="en">Gain 1 Exhaustion level.</span><span class="ru">Получить 1 Уровень Истощения.</span></td>
           </tr>
         </tbody>
       </table>
 
-      <h3 class="en">In Battle</h3><h3 class="ru">В бою</h3>
-      <p class="en">The captain makes a Morale check (Cha, DC 12) when: Hull advances to Damaged or Crippled; a Volley's Crew Damage Die rolls 5–6; or the captain is incapacitated. On failure, Morale advances 1 step.</p>
-      <p class="ru">Капитан делает Проверку морали (Хар, КС 12) когда: Корпус продвигается до Повреждён или Искалечен; Кость урона экипажа Залпа выпадает 5–6; или капитан недееспособен. При провале Мораль продвигается на 1 ступень.</p>
-
-      <h3 class="en">During Travel</h3><h3 class="ru">В плавании</h3>
-      <p class="en">At the end of each travel day, the captain makes a Morale check. The DC depends on available provisions. On a success by 5 or more, Morale improves 1 step if below High.</p>
-      <p class="ru">В конце каждого дня плавания капитан делает Проверку морали. КС зависит от доступных припасов. При успехе на 5 или более Мораль улучшается на 1 ступень, если она ниже Высокой.</p>
-
+      <h3 class="en">Exhaustion Triggers</h3><h3 class="ru">Факторы истощения</h3>
+      <p class="en">The following events cause the crew to gain <strong>1 Exhaustion level</strong>. The Captain may make a <strong>Charisma D20 Test (DC 12)</strong> to negate each trigger. If no PC fills the Captain role, the trigger automatically applies.</p>
+      <p class="ru">Следующие события приводят к получению <strong>1 уровня Истощения</strong>. Капитан может сделать <strong>Тест к20 Харизмы (КС 12)</strong>, чтобы отменить каждый триггер. Если роль Капитана не занята ПИ, триггер применяется автоматически.</p>
       <table class="rules-table">
         <thead><tr>
-          <th><span class="en">Provision Condition</span><span class="ru">Состояние припасов</span></th>
-          <th>DC</th>
-        </tr></thead>
-        <tbody>
-          <tr><td><span class="en">Full rations + wine</span><span class="ru">Полный паёк + вино</span></td><td class="dc">8</td></tr>
-          <tr><td><span class="en">Full rations, no wine</span><span class="ru">Полный паёк, без вина</span></td><td class="dc">12</td></tr>
-          <tr><td><span class="en">Half rations</span><span class="ru">Половина пайка</span></td><td class="dc">14</td></tr>
-          <tr><td><span class="en">No food</span><span class="ru">Нет еды</span></td><td class="dc">18</td></tr>
-        </tbody>
-      </table>
-      <p class="en">Morale resets to Steady upon arrival at a friendly port with full provisions.</p>
-      <p class="ru">Мораль сбрасывается до Стабильной по прибытии в дружественный порт с полными припасами.</p>
-    </div>
-
-    <!-- VIII: HAZARDS -->
-    <div class="section">
-      <h2><span class="num">VIII</span><span class="en">Sea Hazards &amp; Monsters</span><span class="ru">Морские опасности и монстры</span></h2>
-      <p class="en">Hazards and sea monsters use the same round structure. The DM rolls a d20 for the hazard's initiative, then declares its <strong>Threat</strong>. Crew members respond with appropriate Ship Actions or personal actions. If no response is made, the full effect applies.</p>
-      <p class="ru">Опасности и морские монстры используют ту же структуру раунда. Мастер бросает к20 для инициативы опасности, затем объявляет её <strong>Угрозу</strong>. Члены экипажа реагируют соответствующими Корабельными действиями или личными действиями. Если реакции нет, применяется полный эффект.</p>
-
-      <table class="rules-table">
-        <thead><tr>
-          <th><span class="en">Threat</span><span class="ru">Угроза</span></th>
-          <th><span class="en">Best Response</span><span class="ru">Лучшая реакция</span></th>
-          <th><span class="en">Role</span><span class="ru">Роль</span></th>
-          <th><span class="en">Failure Effect</span><span class="ru">Эффект провала</span></th>
+          <th><span class="en">Trigger</span><span class="ru">Фактор</span></th>
+          <th><span class="en">When</span><span class="ru">Когда</span></th>
         </tr></thead>
         <tbody>
           <tr>
-            <td class="bold"><span class="en">Collision course (rocks, shoals)</span><span class="ru">Курс на столкновение (скалы, мели)</span></td>
-            <td><span class="en">Maneuver or Open Water</span><span class="ru">Манёвр или Открытое море</span></td>
-            <td><span class="en">Helmsman</span><span class="ru">Кормчий</span></td>
-            <td><span class="en">Roll Hull Damage Die.</span><span class="ru">Бросить Кость урона корпуса.</span></td>
+            <td class="b"><span class="en">Heavy Casualties</span><span class="ru">Тяжёлые потери</span></td>
+            <td><span class="en">Oarsmen fall below the operational threshold during or after battle.</span><span class="ru">Гребцы опускаются ниже оперативного порога во время или после битвы.</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Storm / Gale</span><span class="ru">Буря / Шквал</span></td>
-            <td><span class="en">Hold Stroke</span><span class="ru">Держать ритм</span></td>
-            <td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td>
-            <td><span class="en">Oarsmen Track +1 step.</span><span class="ru">Шкала гребцов +1 ступень.</span></td>
+            <td class="b"><span class="en">Monstrous Encounter</span><span class="ru">Встреча с чудовищем</span></td>
+            <td><span class="en">The ship encounters a sea monster or supernatural creature.</span><span class="ru">Корабль встречает морское чудовище или сверхъестественное существо.</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Navigation hazard (fog, reef)</span><span class="ru">Навигационная опасность (туман, риф)</span></td>
-            <td><span class="en">Warn</span><span class="ru">Предупреждение</span></td>
-            <td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td>
-            <td><span class="en">Morale check required.</span><span class="ru">Требуется Проверка морали.</span></td>
-          </tr>
-          <tr>
-            <td class="bold"><span class="en">Hull breach (monster, ram, hazard)</span><span class="ru">Пробоина (монстр, таран, опасность)</span></td>
-            <td><span class="en">Repair</span><span class="ru">Ремонт</span></td>
-            <td><span class="en">Bow Officer</span><span class="ru">Носовой офицер</span></td>
-            <td><span class="en">Hull Track +1 step immediately.</span><span class="ru">Шкала корпуса +1 ступень немедленно.</span></td>
+            <td class="b"><span class="en">Captain Lost</span><span class="ru">Потеря капитана</span></td>
+            <td><span class="en">The Captain is incapacitated or killed. This trigger cannot be negated.</span><span class="ru">Капитан недееспособен или убит. Этот триггер нельзя отменить.</span></td>
           </tr>
         </tbody>
       </table>
-
-      <h3 class="en">Sea Monsters</h3><h3 class="ru">Морские монстры</h3>
-      <p class="en">A sea monster acts as a third ship: the DM rolls its initiative each round and declares one of two Threat types. An <strong>Attack</strong> targets the Hull or Oarsmen (responded to by Maneuver or Defend Deck). A <strong>Sweep</strong> is an environmental effect affecting all (responded to by Warn or Hold Stroke). Lookout's Read Enemy reveals which type is coming. Marines attack the monster using standard personal combat at Locked range.</p>
-      <p class="ru">Морской монстр действует как третий корабль: Мастер бросает его инициативу каждый раунд и объявляет один из двух типов угрозы. <strong>Атака</strong> нацелена на Корпус или Гребцов (реакция — Манёвр или Защита палубы). <strong>Удар</strong> — это эффект окружения, затрагивающий всех (реакция — Предупреждение или Держать ритм). Прочитать врага Наблюдателя раскрывает тип угрозы. Морпехи атакуют монстра в стандартном личном бою при Сцеплении.</p>
+      <p class="en">Exhaustion resets to 0 after a <strong>Long Rest</strong> in a friendly port with full provisions and wine.</p>
+      <p class="ru">Истощение сбрасывается до 0 после <strong>Длительного отдыха</strong> в дружественном порту с полными припасами и вином.</p>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
-    <!-- IX: QUICK REFERENCE -->
+    <!-- ══ VIII: QUICK REFERENCE ══ -->
     <div class="section">
-      <h2><span class="num">&#10022;</span><span class="en">Quick Reference Card</span><span class="ru">Таблица быстрых правил</span></h2>
+      <h2><span class="num">&#10022;</span><span class="en">Quick Reference</span><span class="ru">Быстрый справочник</span></h2>
+
+      <h3 class="en">Ship Actions</h3><h3 class="ru">Корабельные действия</h3>
       <table class="rules-table">
         <thead><tr>
           <th><span class="en">Action</span><span class="ru">Действие</span></th>
           <th><span class="en">Role</span><span class="ru">Роль</span></th>
-          <th><span class="en">Check</span><span class="ru">Проверка</span></th>
+          <th><span class="en">D20 Test</span><span class="ru">Тест к20</span></th>
           <th>DC</th>
-          <th><span class="en">Notes</span><span class="ru">Примечания</span></th>
+          <th><span class="en">Key Rule</span><span class="ru">Ключевое правило</span></th>
         </tr></thead>
         <tbody>
-          <tr><td class="bold"><span class="en">Rally</span><span class="ru">Воодушевление</span></td><td><span class="en">Captain</span><span class="ru">Капитан</span></td><td><span class="en">Cha (Persuasion/Intimidation)</span><span class="ru">Хар (Убеждение/Запугивание)</span></td><td class="dc">12</td><td><span class="en">Restore Morale or grant PC advantage</span><span class="ru">Восстановить Мораль или дать преимущество ПИ</span></td></tr>
-          <tr><td class="bold"><span class="en">Command</span><span class="ru">Приказ</span></td><td><span class="en">Captain</span><span class="ru">Капитан</span></td><td><span class="en">Wis (Insight)</span><span class="ru">Мудр (Проницательность)</span></td><td class="dc">12</td><td><span class="en">Grant one role advantage on their Ship Action</span><span class="ru">Дать одной роли преимущество</span></td></tr>
-          <tr><td class="bold"><span class="en">Demoralize</span><span class="ru">Деморализация</span></td><td><span class="en">Captain</span><span class="ru">Капитан</span></td><td><span class="en">Cha (Intimidation) vs. Wis</span><span class="ru">Хар (Запугивание) vs. Мудр</span></td><td class="dc"><span class="en">Contested</span><span class="ru">Состязание</span></td><td><span class="en">Enemy rerolls initiative, takes lower</span><span class="ru">Враг перебрасывает инициативу, берёт меньший</span></td></tr>
-          <tr><td class="bold"><span class="en">Ram</span><span class="ru">Таран</span></td><td><span class="en">Helmsman</span><span class="ru">Кормчий</span></td><td><span class="en">Dex (Athletics)</span><span class="ru">Ловк (Атлетика)</span></td><td class="dc">13</td><td><span class="en">Close only → Locked; Hull Die + Oarsmen Die</span><span class="ru">Только Близко → Сцепление; Кость корпуса + Кость гребцов</span></td></tr>
-          <tr><td class="bold"><span class="en">Maneuver</span><span class="ru">Манёвр</span></td><td><span class="en">Helmsman</span><span class="ru">Кормчий</span></td><td><span class="en">Dex (Acrobatics)</span><span class="ru">Ловк (Акробатика)</span></td><td class="dc">11</td><td><span class="en">Disadvantage on one incoming Ship Action</span><span class="ru">Помеха на одно входящее Корабельное действие</span></td></tr>
-          <tr><td class="bold"><span class="en">Open Water</span><span class="ru">Открытое море</span></td><td><span class="en">Helmsman</span><span class="ru">Кормчий</span></td><td><span class="en">Dex (Athletics/Acrobatics)</span><span class="ru">Ловк (Атлетика/Акробатика)</span></td><td class="dc">12/15</td><td><span class="en">Distance +1 step (15 if Locked)</span><span class="ru">Дистанция +1 (15 если Сцеплены)</span></td></tr>
-          <tr><td class="bold"><span class="en">Sprint</span><span class="ru">Рывок</span></td><td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td><td><span class="en">Str (Athletics/Intimidation)</span><span class="ru">Сила (Атлетика/Запугивание)</span></td><td class="dc">11</td><td><span class="en">Distance −1 step</span><span class="ru">Дистанция −1</span></td></tr>
-          <tr><td class="bold"><span class="en">Hold Stroke</span><span class="ru">Держать ритм</span></td><td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td><td><span class="en">Con (Athletics/Performance)</span><span class="ru">Тел (Атлетика/Выступление)</span></td><td class="dc">12</td><td><span class="en">Lock distance this round</span><span class="ru">Заблокировать дистанцию в раунде</span></td></tr>
-          <tr><td class="bold"><span class="en">Emergency Pull</span><span class="ru">Экстренный гребок</span></td><td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td><td><span class="en">No roll</span><span class="ru">Без броска</span></td><td class="dc">—</td><td><span class="en">Distance ±2 steps; Oarsmen Track +1</span><span class="ru">Дистанция ±2; Шкала гребцов +1</span></td></tr>
-          <tr><td class="bold"><span class="en">Volley</span><span class="ru">Залп</span></td><td><span class="en">Marine Cmdr.</span><span class="ru">Ком. морпехов</span></td><td><span class="en">Dex (Athletics/Acrobatics)</span><span class="ru">Ловк (Атлетика/Акробатика)</span></td><td class="dc">12</td><td><span class="en">Close/Locked; Crew Die + enemy Morale check</span><span class="ru">Близко/Сцеплены; Кость экипажа + Проверка морали врага</span></td></tr>
-          <tr><td class="bold"><span class="en">Board</span><span class="ru">Абордаж</span></td><td><span class="en">Marine Cmdr.</span><span class="ru">Ком. морпехов</span></td><td><span class="en">Str (Athletics)</span><span class="ru">Сила (Атлетика)</span></td><td class="dc">14</td><td><span class="en">Locked only; start deck combat</span><span class="ru">Только Сцеплены; начать бой на палубе</span></td></tr>
-          <tr><td class="bold"><span class="en">Defend Deck</span><span class="ru">Защита палубы</span></td><td><span class="en">Marine Cmdr.</span><span class="ru">Ком. морпехов</span></td><td><span class="en">Str (Intimidation)</span><span class="ru">Сила (Запугивание)</span></td><td class="dc">11</td><td><span class="en">Half cover; enemy Volley at disadvantage</span><span class="ru">Полукрытие; вражеский Залп с помехой</span></td></tr>
-          <tr><td class="bold"><span class="en">Spot</span><span class="ru">Высматривать</span></td><td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td><td><span class="en">Wis (Perception)</span><span class="ru">Мудр (Восприятие)</span></td><td class="dc">12</td><td><span class="en">Advantage on next Ram or Volley</span><span class="ru">Преимущество на следующий Таран или Залп</span></td></tr>
-          <tr><td class="bold"><span class="en">Read Enemy</span><span class="ru">Прочитать врага</span></td><td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td><td><span class="en">Int (Investigation)</span><span class="ru">Инт (Расследование)</span></td><td class="dc">13</td><td><span class="en">Reveal enemy's declared action</span><span class="ru">Раскрыть объявленное действие врага</span></td></tr>
-          <tr><td class="bold"><span class="en">Warn</span><span class="ru">Предупреждение</span></td><td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td><td><span class="en">Wis (Perception/Survival)</span><span class="ru">Мудр (Восприятие/Выживание)</span></td><td class="dc">10</td><td><span class="en">Negate/halve hazard; +5 vs monster</span><span class="ru">Отменить/снизить опасность; +5 против монстра</span></td></tr>
-          <tr><td class="bold"><span class="en">Repair</span><span class="ru">Ремонт</span></td><td><span class="en">Bow Officer</span><span class="ru">Нос. офицер</span></td><td><span class="en">Int (Investigation) + tools</span><span class="ru">Инт (Расследование) + инструменты</span></td><td class="dc">14</td><td><span class="en">Hull Track −1 step</span><span class="ru">Шкала корпуса −1 ступень</span></td></tr>
-          <tr><td class="bold"><span class="en">Tend Wounded</span><span class="ru">Помощь раненым</span></td><td><span class="en">Bow Officer</span><span class="ru">Нос. офицер</span></td><td><span class="en">Wis (Medicine)</span><span class="ru">Мудр (Медицина)</span></td><td class="dc">12</td><td><span class="en">Oarsmen Track −1 step</span><span class="ru">Шкала гребцов −1 ступень</span></td></tr>
-          <tr><td class="bold"><span class="en">Cut Grapples</span><span class="ru">Рубить тросы</span></td><td><span class="en">Bow Officer</span><span class="ru">Нос. офицер</span></td><td><span class="en">Dex (Athletics/Acrobatics)</span><span class="ru">Ловк (Атлетика/Акробатика)</span></td><td class="dc">15</td><td><span class="en">Locked → Close without Open Water</span><span class="ru">Сцепление → Близко без Открытого моря</span></td></tr>
-          <tr><td class="bold"><span class="en">Morale check (battle)</span><span class="ru">Проверка морали (бой)</span></td><td><span class="en">Captain</span><span class="ru">Капитан</span></td><td><span class="en">Cha</span><span class="ru">Хар</span></td><td class="dc">12</td><td><span class="en">On fail: Morale +1 step</span><span class="ru">При провале: Мораль +1 ступень</span></td></tr>
-          <tr><td class="bold"><span class="en">Morale check (travel)</span><span class="ru">Проверка морали (плавание)</span></td><td><span class="en">Captain</span><span class="ru">Капитан</span></td><td><span class="en">Cha</span><span class="ru">Хар</span></td><td class="dc">8–18</td><td><span class="en">DC by rations; see Section VII</span><span class="ru">КС по припасам; см. Раздел VII</span></td></tr>
+          <tr>
+            <td class="b"><span class="en">Captain's Call</span><span class="ru">Призыв капитана</span></td>
+            <td><span class="en">Captain</span><span class="ru">Капитан</span></td>
+            <td><span class="en">Cha (Persuasion / Intimidation)</span><span class="ru">Хар (Убеждение / Запугивание)</span></td>
+            <td class="dc">12</td>
+            <td><span class="en">Grant Advantage on the Ship Action roll.</span><span class="ru">Дать Преимущество на бросок Корабельного действия.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Ram</span><span class="ru">Таран</span></td>
+            <td><span class="en">Helmsman</span><span class="ru">Кормчий</span></td>
+            <td><span class="en">Dex (Acrobatics / Insight)</span><span class="ru">Ловк (Акробатика / Проницательность)</span></td>
+            <td class="dc">13</td>
+            <td><span class="en">Close → Locked. Success: 10d10 to target. Failure: both take half.</span><span class="ru">Близко → Сцепление. Успех: 10к10 по цели. Провал: оба берут половину.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Surge</span><span class="ru">Рывок</span></td>
+            <td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td>
+            <td><span class="en">Con (Athletics / Performance)</span><span class="ru">Тел (Атлетика / Выступление)</span></td>
+            <td class="dc">12</td>
+            <td><span class="en">Move 2 distance bands. Unavailable at Exhaustion 5.</span><span class="ru">Движение на 2 полосы. Недоступно при Истощении 5.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Board</span><span class="ru">Абордаж</span></td>
+            <td><span class="en">Marine Cmdr.</span><span class="ru">Ком. морпехов</span></td>
+            <td><span class="en">Str (Intimidation / Sleight of Hand)</span><span class="ru">Сила (Запугивание / Ловкость рук)</span></td>
+            <td class="dc"><span class="en">Contested</span><span class="ru">Состязание</span></td>
+            <td><span class="en">Locked only. Win → deck combat. Attacker wins ties.</span><span class="ru">Только Сцеплены. Победа → бой на палубе. Атакующий побеждает при равенстве.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td>
+            <td><span class="en">Wis (Perception / Investigation)</span><span class="ru">Мудр (Восприятие / Расследование)</span></td>
+            <td class="dc">12</td>
+            <td><span class="en">Close / Locked only. Success: shot hits target. See D&amp;D 2024 for ballista stats.</span><span class="ru">Только Близко / Сцеплены. Успех: выстрел попадает. Характеристики в D&amp;D 2024.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Maneuver</span><span class="ru">Манёвр</span></td>
+            <td><span class="en">Bow Officer</span><span class="ru">Нос. офицер</span></td>
+            <td><span class="en">Int (Survival / History)</span><span class="ru">Инт (Выживание / История)</span></td>
+            <td class="dc">11</td>
+            <td><span class="en">Choose: Advantage on own Ship Action, or Disadvantage on all enemy Ship Actions until end of their next Ship Action.</span><span class="ru">Выбор: Преимущество на своё действие, или Помеха всем Корабельным действиям врагов до конца их следующего.</span></td>
+          </tr>
         </tbody>
       </table>
 
-      <h3 class="en">Damage Dice Summary</h3><h3 class="ru">Сводка по костям урона</h3>
+      <h3 class="en">Damage &amp; Casualties</h3><h3 class="ru">Урон и потери</h3>
       <table class="rules-table">
         <thead><tr>
-          <th><span class="en">Die</span><span class="ru">Кость</span></th>
-          <th>1–2</th><th>3–4</th><th>5–6</th>
+          <th><span class="en">Rule</span><span class="ru">Правило</span></th>
+          <th><span class="en">Effect</span><span class="ru">Эффект</span></th>
         </tr></thead>
         <tbody>
           <tr>
-            <td class="bold"><span class="en">Hull Damage Die (1d6)</span><span class="ru">Кость урона корпуса (1к6)</span></td>
-            <td><span class="en">Nothing</span><span class="ru">Ничего</span></td>
-            <td><span class="en">Hull +1</span><span class="ru">Корпус +1</span></td>
-            <td><span class="en">Hull +1; Oarsmen +1</span><span class="ru">Корпус +1; Гребцы +1</span></td>
+            <td class="b"><span class="en">Hull-to-Oarsmen</span><span class="ru">Корпус → Гребцы</span></td>
+            <td><span class="en">Every 10 HP of hull damage = 1 oarsman lost.</span><span class="ru">Каждые 10 очков урона корпуса = 1 потерянный гребец.</span></td>
           </tr>
           <tr>
-            <td class="bold"><span class="en">Crew Damage Die (1d6)</span><span class="ru">Кость урона экипажа (1к6)</span></td>
-            <td><span class="en">Nothing</span><span class="ru">Ничего</span></td>
-            <td><span class="en">Oarsmen +1</span><span class="ru">Гребцы +1</span></td>
-            <td><span class="en">Oarsmen +1; Morale check</span><span class="ru">Гребцы +1; Проверка морали</span></td>
+            <td class="b"><span class="en">Ram (success)</span><span class="ru">Таран (успех)</span></td>
+            <td><span class="en">10d10 bludgeoning to target ship.</span><span class="ru">10к10 дробящего по вражескому кораблю.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Ram (failure)</span><span class="ru">Таран (провал)</span></td>
+            <td><span class="en">Roll 10d10; both ships take half the result.</span><span class="ru">Бросить 10к10; оба корабля получают половину результата.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Oarsmen below half</span><span class="ru">Гребцы ниже половины</span></td>
+            <td><span class="en">Surge cannot be taken. Captain makes DC 12 Exhaustion trigger check.</span><span class="ru">Рывок недоступен. Капитан делает проверку КС 12 триггера Истощения.</span></td>
+          </tr>
+          <tr>
+            <td class="b"><span class="en">Oarsmen = 0</span><span class="ru">Гребцы = 0</span></td>
+            <td><span class="en">Ship is dead in the water. Surrender or abandon.</span><span class="ru">Корабль обездвижен. Сдаться или оставить.</span></td>
           </tr>
         </tbody>
       </table>
+
+      <h3 class="en">Crew Morale (Exhaustion)</h3><h3 class="ru">Мораль экипажа (Истощение)</h3>
+      <table class="rules-table">
+        <thead><tr>
+          <th><span class="en">Exhaustion</span><span class="ru">Истощение</span></th>
+          <th><span class="en">Provisions Effect (end of travel day)</span><span class="ru">Эффект припасов (конец дня)</span></th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="b"><span class="en">Per level: &minus;2 to all Ship Action D20 Tests</span><span class="ru">За уровень: &minus;2 ко всем Тестам к20 Корабельных действий</span></td><td><span class="en">Full + wine → &minus;1 level &nbsp;|&nbsp; Full, no wine → no change &nbsp;|&nbsp; Half → +1 &nbsp;|&nbsp; None → +2</span><span class="ru">Полный + вино → &minus;1 уровень &nbsp;|&nbsp; Полный, без вина → без изм. &nbsp;|&nbsp; Половина → +1 &nbsp;|&nbsp; Нет → +2</span></td></tr>
+          <tr><td class="b"><span class="en">Level 5: Surge unavailable</span><span class="ru">Уровень 5: Рывок недоступен</span></td><td rowspan="2"><span class="en">Triggers (Captain DC 12 Cha to negate): Oarsmen below half · Sea monster encountered · Captain Lost (auto, no negate)</span><span class="ru">Триггеры (Капитан КС 12 Хар для отмены): Гребцы ниже половины · Встреча с монстром · Гибель капитана (авто, без отмены)</span></td></tr>
+          <tr><td class="b"><span class="en">Level 10: Mutiny or abandon ship</span><span class="ru">Уровень 10: Бунт или покинуть корабль</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <strong><span class="en">NPC Crewmates</span><span class="ru">НПС экипаж</span></strong>
+        <span class="en">An unfilled role is covered by an NPC crewmate rolling a straight d20 — no attribute or skill modifiers — against the same DC. Exhaustion penalties still apply.</span>
+        <span class="ru">Незанятую роль берёт на себя НПС экипажа, бросая прямой к20 — без модификаторов характеристик или навыков — против того же КС. Штрафы Истощения всё равно применяются.</span>
+      </div>
     </div>
 
     <div class="footer">
-      <span class="en">OotD Naval Combat &middot; D&amp;D 2024 Supplement &middot; Not official Wizards of the Coast material</span>
-      <span class="ru">ОПД морской бой &middot; Дополнение к D&amp;D 2024 &middot; Не является официальным материалом Wizards of the Coast</span>
+      <span class="en">Naumachia &middot; Naval Combat Supplement for D&amp;D 2024 &middot; Not official Wizards of the Coast material</span>
+      <span class="ru">Naumachia &middot; Дополнение к D&amp;D 2024 &middot; Не является официальным материалом Wizards of the Coast</span>
     </div>
 
   </div><!-- content-inner -->
   <div class="wave-band bottom"></div>
-</div><!-- scroll-container -->
-</div><!-- page-wrap -->
+</div></div><!-- scroll / page-wrap -->
 
 <script>
   function setLang(lang) {
