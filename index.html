@@ -7,30 +7,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A84C; --gold-light: #E8CC7A; --gold-dark: #8B6914;
-    --ink: #1A1208; --parchment: #F5EDD8; --parchment-dark: #E2D4B4;
-    --red: #8B1A1A; --navy: #1A2744; --bronze: #7A4E2D; --wave: #2C5F7A;
+    /* ── Bronze Age Aegean palette ── */
+    --parchment:      #EDE0C0;   /* sun-bleached papyrus — scroll bg     */
+    --parchment-dark: #CCBA8E;   /* aged edge — gradients                */
+    --parchment-mid:  #DDD0A8;   /* mid parchment — card fills           */
+    --ink:            #1A0C04;   /* darkest umber — body text            */
+    --terra:          #A85C2C;   /* rich terracotta — primary accent     */
+    --terra-dark:     #6E2C0C;   /* deep sienna — headers, bands         */
+    --terra-light:    #C88050;   /* warm terracotta — borders            */
+    --ochre:          #B8921A;   /* Mycenaean gold — secondary accent    */
+    --ochre-light:    #D4AC3C;   /* bright ochre — highlights            */
+    --verdigris:      #3A6E64;   /* oxidised bronze — tertiary accent    */
+    --verdigris-light:#5C9E94;   /* light verdigris — subtle             */
+    --aegean:         #3A6E64;   /* deep Aegean — special elements       */
+    --umber:          #3C1404;   /* burnt umber — deepest darks          */
+    --outer:          #4A2008;   /* outer body — dark mahogany           */
+
+    /* legacy aliases so unchanged rules keep working */
+    --gold:        var(--ochre);
+    --gold-light:  var(--ochre-light);
+    --gold-dark:   var(--terra);
+    --red:         var(--terra-dark);
+    --navy:        var(--aegean);
+    --bronze:      var(--terra);
+    --wave:        var(--terra);
+    --clay:        var(--parchment);
+    --clay-dark:   var(--parchment-dark);
+    --clay-mid:    var(--parchment-mid);
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    background-color: var(--navy);
+    background-color: var(--outer);
     background-image:
-      radial-gradient(ellipse at 20% 50%, rgba(44,95,122,.4) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(26,39,68,.8) 0%, transparent 50%);
+      radial-gradient(ellipse at 15% 35%, rgba(180,100,40,.40) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 75%, rgba(80,30,8,.55) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 8%,  rgba(28,62,90,.22) 0%, transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
     font-family: 'EB Garamond', serif;
     color: var(--ink);
     padding: 40px 20px;
     min-height: 100vh;
   }
 
-  /* ── Language rules — !important prevents layout-class conflicts ── */
+  /* ── Language rules ── */
   .ru { display: none !important; }
   body.lang-ru .en { display: none !important; }
   body.lang-ru .ru { display: revert !important; }
-
-  /* Restore correct display types when shown in RU mode */
   body.lang-ru p.ru       { display: block !important; }
   body.lang-ru li.ru      { display: list-item !important; }
   body.lang-ru tr.ru      { display: table-row !important; }
@@ -41,22 +65,26 @@
   body.lang-ru .phase-name.ru,
   body.lang-ru .dist-label.ru,
   body.lang-ru .role-hdr-inner.ru { display: block !important; }
+  body.lang-ru nav.ru { display: flex !important; }
 
   /* ── Lang Toggle ── */
   .lang-toggle-wrap { display:flex; justify-content:center; margin-bottom:20px; }
-  .lang-toggle { display:flex; background:rgba(26,39,68,.9); border:1px solid var(--gold-dark); border-radius:3px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.5); }
-  .lang-btn { padding:9px 30px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1.5px; color:var(--gold-light); background:transparent; border:none; cursor:pointer; transition:background .2s, opacity .2s; text-transform:uppercase; opacity:.5; }
-  .lang-btn.active { background:var(--gold-dark); color:var(--parchment); opacity:1; }
+  .lang-toggle { display:flex; background:var(--umber); border:1px solid var(--terra-light); border-radius:2px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.50); }
+  .lang-btn { padding:9px 30px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1.5px; color:var(--parchment); background:transparent; border:none; cursor:pointer; transition:background .2s, opacity .2s; text-transform:uppercase; opacity:.5; }
+  .lang-btn.active { background:var(--terra-dark); color:var(--parchment); opacity:1; }
   .lang-btn:hover:not(.active) { opacity:.8; }
-  .lang-sep { width:1px; background:var(--gold-dark); opacity:.6; }
+  .lang-sep { width:1px; background:var(--terra-light); opacity:.5; }
 
   /* ── Page & Scroll ── */
   .page-wrap { max-width:860px; margin:0 auto; }
   .scroll-container {
     background: var(--parchment);
-    background-image: linear-gradient(180deg, var(--parchment-dark) 0%, var(--parchment) 5%, var(--parchment) 95%, var(--parchment-dark) 100%);
-    border:3px solid var(--gold-dark);
-    box-shadow:0 0 0 1px var(--gold), 0 0 50px rgba(0,0,0,.65), inset 0 0 80px rgba(139,105,20,.06);
+    background-image: linear-gradient(180deg, var(--parchment-dark) 0%, var(--parchment) 4%, var(--parchment) 96%, var(--parchment-dark) 100%);
+    border:3px solid var(--terra);
+    box-shadow:
+      0 0 0 1px var(--terra-light),
+      0 0 60px rgba(0,0,0,.55),
+      inset 0 0 100px rgba(110,46,15,.06);
     position:relative; overflow:hidden;
   }
 
@@ -68,86 +96,205 @@
 
   /* Wave bands */
   .wave-band {
-    height:24px; background:var(--wave);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q15 3 30 12 Q45 21 60 12 Q75 3 90 12 Q105 21 120 12 L120 0 L0 0 Z' fill='%231A2744'/%3E%3Cpath d='M0 17 Q15 8 30 17 Q45 26 60 17 Q75 8 90 17 Q105 26 120 17 L120 0 L0 0 Z' fill='%23C9A84C' opacity='.25'/%3E%3C/svg%3E");
-    background-size:120px 24px; background-repeat:repeat-x;
+    height:28px; background:var(--terra-dark);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 28' preserveAspectRatio='none'%3E%3Cpath d='M0 14 Q15 3 30 14 Q45 25 60 14 Q75 3 90 14 Q105 25 120 14 L120 0 L0 0 Z' fill='%236E2C0C'/%3E%3Cpath d='M0 20 Q15 9 30 20 Q45 31 60 20 Q75 9 90 20 Q105 31 120 20 L120 0 L0 0 Z' fill='%23EDE0C0' opacity='.14'/%3E%3Cpath d='M0 8 Q15 2 30 8 Q45 14 60 8 Q75 2 90 8 Q105 14 120 8 L120 0 L0 0 Z' fill='%23B8921A' opacity='.10'/%3E%3C/svg%3E");
+    background-size:120px 28px; background-repeat:repeat-x;
+    animation: waveScroll 8s linear infinite;
   }
   .wave-band.bottom { transform:scaleY(-1); }
 
+  @keyframes waveScroll {
+    from { background-position-x: 0; }
+    to   { background-position-x: 120px; }
+  }
+
   .content-inner { padding:46px 64px 54px; }
+
+  /* ── Chapter Navigation ── */
+  .chapter-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 0;
+    margin-bottom: 26px;
+    font-family: 'Philosopher', serif;
+    font-size: 11px;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+  }
+  .chapter-nav a {
+    color: var(--terra);
+    text-decoration: none;
+    padding: 4px 9px;
+    border: 1px solid transparent;
+    transition: color .2s, border-color .2s, background .2s;
+    opacity: .72;
+  }
+  .chapter-nav a:hover {
+    color: var(--ochre);
+    border-color: rgba(184,146,26,.3);
+    background: rgba(184,146,26,.06);
+    opacity: 1;
+  }
+  .chapter-nav .nav-sep {
+    color: var(--terra-light);
+    padding: 4px 1px;
+    opacity: .35;
+    pointer-events: none;
+    user-select: none;
+  }
 
   /* ── Typography ── */
   h1 {
     font-family:'Philosopher', serif; font-weight:700;
     font-size:clamp(32px, 5vw, 52px);
-    color:var(--red); letter-spacing:4px; text-transform:uppercase;
-    text-shadow:2px 3px 0 rgba(139,105,20,.15), 0 0 40px rgba(139,26,26,.1);
+    color:var(--terra-dark); letter-spacing:4px; text-transform:uppercase;
+    text-shadow:1px 2px 0 rgba(110,46,15,.20);
     line-height:1.1; margin-bottom:8px;
   }
   .title-sub {
     font-family:'EB Garamond', serif; font-style:italic;
-    font-size:15px; color:var(--gold-dark); letter-spacing:2px;
+    font-size:15px; color:var(--terra); letter-spacing:2px;
   }
   .subtitle-pre {
     font-family:'Philosopher', serif; font-size:10px;
-    letter-spacing:5px; color:var(--bronze); text-transform:uppercase; margin-bottom:14px;
+    letter-spacing:5px; color:var(--terra); text-transform:uppercase; margin-bottom:14px;
+    opacity:.75;
   }
   .title-block { text-align:center; margin-bottom:36px; }
   .title-divider { display:flex; align-items:center; gap:14px; margin:16px auto; max-width:440px; }
-  .title-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dark),transparent); }
-  .title-divider .orn { color:var(--gold); font-size:16px; }
+  .title-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--ochre),transparent); }
+  .title-divider .orn { color:var(--ochre); font-size:16px; }
 
   h2 {
     font-family:'Philosopher', serif; font-weight:700;
-    font-size:18px; color:var(--red); text-transform:uppercase; letter-spacing:1.5px;
-    border-bottom:2px solid var(--gold); padding-bottom:7px; margin-bottom:16px;
+    font-size:18px; color:var(--terra-dark); text-transform:uppercase; letter-spacing:1.5px;
+    border-bottom:2px solid var(--terra-light); padding-bottom:7px; margin-bottom:16px;
     display:flex; align-items:center; gap:10px;
   }
-  h2 .num { font-family:'Philosopher', serif; font-style:italic; font-size:22px; color:var(--gold); line-height:1; font-weight:400; }
-  h3 { font-family:'Philosopher', serif; font-weight:700; font-size:13px; color:var(--bronze); text-transform:uppercase; letter-spacing:1.5px; margin:16px 0 8px; }
+  h2 .num { font-family:'Philosopher', serif; font-style:italic; font-size:22px; color:var(--terra); line-height:1; font-weight:400; }
+  h3 { font-family:'Philosopher', serif; font-weight:700; font-size:13px; color:var(--terra); text-transform:uppercase; letter-spacing:1.5px; margin:16px 0 8px; }
 
-  p { font-size:15px; line-height:1.75; color:#2a1e0a; margin-bottom:9px; }
+  p { font-size:15px; line-height:1.75; color:var(--ink); margin-bottom:9px; }
   .section { margin-bottom:30px; }
-  .ornament-divider { text-align:center; color:var(--gold); font-size:17px; letter-spacing:10px; margin:22px 0; opacity:.6; }
-  .footer { text-align:center; padding:14px 0 8px; font-family:'Philosopher',serif; font-size:10px; color:var(--bronze); letter-spacing:2px; text-transform:uppercase; border-top:1px solid rgba(139,105,20,.25); margin-top:14px; }
+  .ornament-divider { text-align:center; color:var(--ochre-light); font-size:17px; letter-spacing:10px; margin:22px 0; opacity:.55; }
+  .footer { text-align:center; padding:14px 0 8px; font-family:'Philosopher',serif; font-size:10px; color:var(--terra); letter-spacing:2px; text-transform:uppercase; border-top:1px solid rgba(168,92,44,.3); margin-top:14px; }
+
+  /* ── External link — blends in, clearly a link ── */
+  a.ext-link {
+    color: var(--ochre);
+    text-decoration: underline;
+    text-decoration-color: rgba(184,146,26,.42);
+    text-underline-offset: 2px;
+    font-style: italic;
+    transition: color .2s, text-decoration-color .2s;
+  }
+  a.ext-link:hover {
+    color: var(--ochre-light);
+    text-decoration-color: rgba(212,172,60,.7);
+  }
 
   /* ── Tables ── */
   .rules-table { width:100%; border-collapse:collapse; margin:8px 0 16px; font-size:14px; }
-  .rules-table thead tr { background:var(--navy); color:var(--gold-light); }
+  .rules-table thead tr { background:var(--terra-dark); color:var(--parchment); }
   .rules-table thead th { font-family:'Philosopher',serif; font-size:10px; letter-spacing:1.5px; padding:8px 12px; text-align:left; text-transform:uppercase; }
-  .rules-table tbody tr { border-bottom:1px solid rgba(139,105,20,.2); }
-  .rules-table tbody tr:nth-child(even) { background:rgba(139,105,20,.05); }
+  .rules-table tbody tr { border-bottom:1px solid rgba(168,92,44,.22); transition:background .18s; }
+  .rules-table tbody tr:nth-child(even) { background:rgba(168,92,44,.07); }
+  .rules-table tbody tr:hover { background:rgba(168,92,44,.16); }
   .rules-table tbody td { padding:7px 12px; vertical-align:top; line-height:1.55; font-size:13.5px; }
-  .rules-table td.b { font-family:'Philosopher',serif; font-weight:700; font-size:12.5px; color:var(--navy); white-space:nowrap; }
-  .rules-table td.dc { text-align:center; font-family:'Philosopher',serif; font-weight:700; font-size:13px; color:var(--red); white-space:nowrap; }
-  .rules-table td.attr { font-style:italic; color:var(--bronze); font-size:13px; }
+  .rules-table td.b { font-family:'Philosopher',serif; font-weight:700; font-size:12.5px; color:var(--umber); white-space:nowrap; }
+  .rules-table td.dc { text-align:center; font-family:'Philosopher',serif; font-weight:700; font-size:13px; color:var(--terra-dark); white-space:nowrap; }
+  .rules-table td.attr { font-style:italic; color:var(--terra); font-size:13px; }
 
-  /* ── Callout ── */
-  .callout { border-left:4px solid var(--gold); background:rgba(201,168,76,.08); padding:11px 16px; margin:12px 0; border-radius:0 4px 4px 0; font-size:14px; line-height:1.65; }
-  .callout.red { border-left-color:var(--red); background:rgba(139,26,26,.07); }
-  .callout strong { font-family:'Philosopher',serif; font-weight:700; font-size:11.5px; color:var(--red); text-transform:uppercase; letter-spacing:.8px; display:block; margin-bottom:5px; }
+  /* ── Callout — all use verdigris accent ── */
+  .callout { border-left:4px solid var(--verdigris-light); background:rgba(58,110,100,.07); padding:11px 16px; margin:12px 0; border-radius:0 4px 4px 0; font-size:14px; line-height:1.65; }
+  .callout.red { border-left-color:var(--verdigris); background:rgba(58,110,100,.09); }
+  .callout.dark-pact {
+    border-left: 4px solid var(--verdigris);
+    border-right: 1px solid rgba(58,110,100,.22);
+    background: rgba(58,110,100,.09);
+  }
+  .callout strong { font-family:'Philosopher',serif; font-weight:700; font-size:11.5px; color:var(--verdigris); text-transform:uppercase; letter-spacing:.8px; display:block; margin-bottom:5px; }
+  .callout.dark-pact strong { color:var(--verdigris); }
+  .pact-cost {
+    display: inline-block;
+    margin-top: 9px;
+    padding: 5px 11px;
+    background: rgba(58,110,100,.11);
+    border: 1px solid rgba(58,110,100,.28);
+    border-radius: 2px;
+    font-family: 'Philosopher', serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--verdigris);
+    text-transform: uppercase;
+    letter-spacing: .8px;
+  }
 
   /* ── Phase cards ── */
   .phase-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:14px 0 18px; }
-  .phase-card { background:var(--navy); padding:14px 11px; border:1px solid var(--gold-dark); border-top:3px solid var(--gold); text-align:center; }
-  .phase-card .pnum { font-family:'Philosopher',serif; font-style:italic; font-size:26px; color:var(--gold); display:block; line-height:1; margin-bottom:4px; }
-  .phase-name { font-family:'Philosopher',serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:var(--gold-light); text-transform:uppercase; display:block; margin-bottom:6px; }
-  .phase-card p { color:rgba(245,237,216,.75); font-size:12px; line-height:1.45; margin:0; }
+  .phase-card {
+    background:var(--terra-dark); padding:14px 11px;
+    border:1px solid var(--terra); border-top:3px solid var(--terra-light);
+    text-align:center; cursor:default;
+    transition:background .2s, border-top-color .2s, transform .15s, box-shadow .2s;
+  }
+  .phase-card:hover {
+    background:#923E18;
+    border-top-color:var(--ochre-light);
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(0,0,0,.35);
+  }
+  .phase-card .pnum { font-family:'Philosopher',serif; font-style:italic; font-size:26px; color:var(--parchment-dark); display:block; line-height:1; margin-bottom:4px; }
+  .phase-card:hover .pnum { color:var(--ochre-light); }
+  .phase-name { font-family:'Philosopher',serif; font-weight:700; font-size:11px; letter-spacing:1.5px; color:rgba(237,224,192,.70); text-transform:uppercase; display:block; margin-bottom:6px; }
+  .phase-card:hover .phase-name { color:var(--parchment); }
+  .phase-card p { color:rgba(237,224,192,.60); font-size:12px; line-height:1.45; margin:0; }
+  .phase-card:hover p { color:rgba(237,224,192,.85); }
 
   /* ── Distance cards ── */
   .distance-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:12px 0 16px; }
-  .dist-card { border:1px solid var(--gold-dark); overflow:hidden; }
-  .dist-label { background:var(--navy); color:var(--gold-light); font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; padding:8px 14px; text-align:center; display:block; }
-  .dist-body { padding:10px 14px; font-size:13.5px; line-height:1.55; color:#2a1e0a; }
+  .dist-card { border:1px solid var(--terra); overflow:hidden; }
+  .dist-label { background:var(--terra-dark); color:var(--parchment-dark); font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; padding:8px 14px; text-align:center; display:block; }
+  .dist-body { padding:10px 14px; font-size:13.5px; line-height:1.55; color:var(--ink); }
 
   /* ── Role header ── */
-  .role-hdr { background:var(--navy); color:var(--gold-light); padding:8px 14px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:.5px; margin-bottom:0; }
+  .role-hdr { background:var(--terra-dark); color:var(--parchment-dark); padding:8px 14px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:.5px; margin-bottom:0; }
 
   /* ── Lists ── */
   ul,ol { padding-left:20px; margin:6px 0 12px; }
-  li { font-size:14.5px; line-height:1.65; color:#2a1e0a; margin-bottom:4px; }
-  li::marker { color:var(--gold-dark); }
+  li { font-size:14.5px; line-height:1.65; color:var(--ink); margin-bottom:4px; }
+  li::marker { color:var(--terra); }
   ul li::marker { content:"⚓ "; font-size:10px; }
+
+  /* ── Back-to-top magnetic button ── */
+  .top-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 50px;
+    height: 50px;
+    background: var(--aegean);
+    border: 2px solid var(--verdigris-light);
+    border-radius: 50%;
+    color: var(--parchment);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,.50), 0 0 0 1px rgba(92,158,148,.18);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    transition: opacity .3s, background .2s, box-shadow .2s;
+    will-change: transform;
+  }
+  .top-btn.visible { opacity: 1; pointer-events: auto; }
+  .top-btn:hover {
+    background: var(--verdigris);
+    box-shadow: 0 6px 26px rgba(0,0,0,.55), 0 0 0 2px rgba(92,158,148,.38);
+  }
+  .top-btn svg { width:20px; height:20px; fill:none; stroke:var(--parchment); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
 
   @media (max-width:640px) {
     .content-inner { padding:26px 16px 32px; }
@@ -156,10 +303,18 @@
     h1 { font-size:28px; }
     .rules-table { font-size:12.5px; }
     .rules-table td.b { white-space:normal; }
+    .top-btn { bottom:18px; right:16px; width:44px; height:44px; }
+    .chapter-nav { font-size:10px; }
+    .chapter-nav a { padding:3px 6px; }
   }
 </style>
 </head>
 <body>
+
+<!-- ── Back-to-top magnetic button ── -->
+<button class="top-btn" id="topBtn" title="Back to top" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <div class="lang-toggle-wrap">
   <div class="lang-toggle">
@@ -172,18 +327,41 @@
 <div class="page-wrap"><div class="scroll-container">
 
   <!-- Corners -->
-  <div class="corner tl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
-  <div class="corner tr"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
-  <div class="corner bl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
-  <div class="corner br"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#8B6914" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C9A84C" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#C9A84C" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#C9A84C"/></svg></div>
+  <div class="corner tl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#6E2C0C" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C88050" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#B8921A" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#B8921A"/></svg></div>
+  <div class="corner tr"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#6E2C0C" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C88050" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#B8921A" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#B8921A"/></svg></div>
+  <div class="corner bl"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#6E2C0C" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C88050" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#B8921A" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#B8921A"/></svg></div>
+  <div class="corner br"><svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6L6 62M6 6L62 6" stroke="#6E2C0C" stroke-width="2"/><path d="M13 13L13 55M13 13L55 13" stroke="#C88050" stroke-width="1"/><path d="M6 6C6 6 17 6 24 17C31 28 27 42 39 50C51 58 62 58 62 58" stroke="#B8921A" stroke-width="1.5" fill="none"/><circle cx="6" cy="6" r="3.5" fill="#B8921A"/></svg></div>
 
   <div class="wave-band"></div>
   <div class="content-inner">
 
     <!-- ══ TITLE ══ -->
-    <div class="title-block">
-      <div class="subtitle-pre en">Rules of Naval Combat in the Age of Heroes &middot; D&D 2024 Supplement</div>
-      <div class="subtitle-pre ru">Правила морских сражений эпохи героев &middot; Дополнение к D&amp;D 2024</div>
+    <div class="title-block" id="top">
+      <!--<div class="subtitle-pre en">Rules of Naval Combat in the Age of Heroes &middot; D&D 2024 Supplement</div>
+      <div class="subtitle-pre ru">Правила морских сражений эпохи героев &middot; Дополнение к D&amp;D 2024</div>-->
+
+      <!-- ── Chapter navigation ── -->
+      <nav class="chapter-nav en" aria-label="Chapter navigation">
+        <a href="#ch-overview">I &middot; Overview</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-roles">II &middot; Crew Roles</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-round">III &middot; Round Structure</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-distance">IV &middot; Distance</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-actions">V &middot; Ship Actions</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-damage">VI &middot; Damage</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-morale">VII &middot; Crew Morale</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-qref">&#10022; Quick Reference</a>
+      </nav>
+      <nav class="chapter-nav ru" aria-label="Навигация по главам">
+        <a href="#ch-overview">I &middot; Обзор</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-roles">II &middot; Роли</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-round">III &middot; Структура</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-distance">IV &middot; Дистанция</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-actions">V &middot; Действия</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-damage">VI &middot; Урон</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-morale">VII &middot; Мораль</a><span class="nav-sep">&nbsp;|&nbsp;</span>
+        <a href="#ch-qref">&#10022; Быстрый Справочник</a>
+      </nav>
+
       <h1>Naumachia</h1>
       <div class="title-sub en">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; The Sea Battle</div>
       <div class="title-sub ru">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; Морской бой</div>
@@ -191,7 +369,7 @@
     </div>
 
     <!-- ══ I: OVERVIEW ══ -->
-    <div class="section">
+    <div class="section" id="ch-overview">
       <h2><span class="num">I</span><span class="en">Overview</span><span class="ru">Обзор</span></h2>
       <p class="en">Naval combat runs in parallel with standard D&amp;D rounds. Each round, a ship takes one <strong>Ship Action</strong>, then all characters take their normal turns. A ship has six <strong>Crew Roles</strong>; each role provides one specific Ship Action. A character assigned to a role may only use that role's Ship Action.</p>
       <p class="ru">Морской бой идёт параллельно со стандартными раундами D&amp;D. Каждый раунд корабль совершает одно <strong>Корабельное действие</strong>, после чего все персонажи совершают свои обычные ходы. На корабле есть шесть <strong>Ролей экипажа</strong>; каждая роль даёт одно конкретное Корабельное действие. Персонаж, назначенный на роль, может использовать только Корабельное действие своей роли.</p>
@@ -200,7 +378,7 @@
     </div>
 
     <!-- ══ II: CREW ROLES ══ -->
-    <div class="section">
+    <div class="section" id="ch-roles">
       <h2><span class="num">II</span><span class="en">Crew Roles</span><span class="ru">Роли экипажа</span></h2>
       <table class="rules-table">
         <thead><tr>
@@ -212,7 +390,7 @@
         <tbody>
           <tr>
             <td class="b"><span class="en">Captain (Trierarchos)</span><span class="ru">Капитан (Trierarchos)</span></td>
-            <td><a href="estor-arkelander.html"><em><span class="en">Captain's Call — see below</span><span class="ru">Призыв капитана — см. ниже</span></em></a></td>
+            <td><a href="estor-arkelander.html" class="ext-link"><span class="en">Captain's Call — see below</span><span class="ru">Призыв капитана — см. ниже</span></a></td>
             <td class="attr"><span class="en">Charisma</span><span class="ru">Харизма</span></td>
             <td><span class="en">Persuasion, Intimidation</span><span class="ru">Убеждение, Запугивание</span></td>
           </tr>
@@ -236,7 +414,7 @@
           </tr>
           <tr>
             <td class="b"><span class="en">Lookout (Prorates)</span><span class="ru">Наблюдатель (Prorates)</span></td>
-            <td><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td><span class="en">Aim Ballistas</span><span class="ru">Наведение Баллист</span></td>
             <td class="attr"><span class="en">Wisdom</span><span class="ru">Мудрость</span></td>
             <td><span class="en">Perception, Investigation</span><span class="ru">Восприятие, Расследование</span></td>
           </tr>
@@ -248,17 +426,18 @@
           </tr>
         </tbody>
       </table>
+
       <div class="callout">
         <strong><span class="en">Captain's Call</span><span class="ru">Призыв капитана</span></strong>
-        <span class="en">The Captain has no Ship Action of their own. When a PC fills this role, they may make a Charisma (Persuasion or Intimidation) D20 Test (DC 12) at the start of the Ship Action phase. On a success, the crew member taking the Ship Action this round rolls with Advantage.</span>
-        <span class="ru">У Капитана нет своего Корабельного действия. Если ПИ занимает эту роль, он может сделать Тест к20 Харизмы (Убеждение или Запугивание, КС 12) в начале фазы Корабельных действий. При успехе член экипажа, совершающий Корабельное действие в этом раунде, бросает с Преимуществом.</span>
+        <span class="en">The Captain's Ship Action is <a href="estor-arkelander.html" class="ext-link"><em>Captain's Call</em></a> — a desperate invocation that reaches beyond mortal command. The Captain chooses one other Ship Action declared this round and dramatically alters its execution.</span>
+        <span class="ru">Корабельное действие Капитана — это <a href="estor-arkelander.html" class="ext-link"><em>Призыв капитана</em></a>, отчаянное воззвание, которое достигает пределов за смертным командованием. Капитан выбирает одно другое Корабельное действие, объявленное в этом раунде, и кардинально меняет его исполнение.</span>
       </div>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
     <!-- ══ III: ROUND STRUCTURE ══ -->
-    <div class="section">
+    <div class="section" id="ch-round">
       <h2><span class="num">III</span><span class="en">Round Structure</span><span class="ru">Структура раунда</span></h2>
       <div class="phase-row">
         <div class="phase-card">
@@ -282,7 +461,7 @@
           <p><span class="en">All characters take their standard D&amp;D turns using normal Initiative.</span><span class="ru">Все персонажи совершают стандартные ходы D&amp;D в обычном порядке инициативы.</span></p>
         </div>
       </div>
-      <div class="callout red">
+      <div class="callout">
         <strong><span class="en">Boarding Transition</span><span class="ru">Переход к абордажу</span></strong>
         <span class="en">When Board succeeds, Phases 3–4 merge: the decks become the encounter map and all characters act in standard D&amp;D Initiative order.</span>
         <span class="ru">При успехе Абордажа фазы 3–4 сливаются: палубы становятся картой столкновения и все персонажи действуют в стандартном порядке Инициативы D&amp;D.</span>
@@ -290,24 +469,24 @@
     </div>
 
     <!-- ══ IV: DISTANCE ══ -->
-    <div class="section">
+    <div class="section" id="ch-distance">
       <h2><span class="num">IV</span><span class="en">Distance</span><span class="ru">Дистанция</span></h2>
       <p class="en">No grid is used. The distance between ships is tracked as one of three bands. The DM sets starting distance based on the encounter.</p>
       <p class="ru">Сетка не используется. Дистанция между кораблями отслеживается в трёх полосах. Мастер задаёт начальную дистанцию исходя из обстановки.</p>
-      <div class="distance-row">
+      <div class="distance-row" id="distanceRow">
         <div class="dist-card">
           <span class="dist-label en">Distant</span>
           <span class="dist-label ru">Далеко</span>
           <div class="dist-body en">Out of attack range. Only Surge and Maneuver are available. Ram, Ballistas, and Board cannot be used.</div>
           <div class="dist-body ru">Вне зоны досягаемости. Доступны только Рывок и Манёвр. Таран, Баллисты и Абордаж недоступны.</div>
         </div>
-        <div class="dist-card">
+        <div class="dist-card" data-dist="close">
           <span class="dist-label en">Close</span>
           <span class="dist-label ru">Близко</span>
           <div class="dist-body en">Within weapon range. All Ship Actions are available except Board. Ram moves to Locked on success.</div>
           <div class="dist-body ru">В зоне досягаемости. Доступны все Корабельные действия кроме Абордажа. Таран переходит в Сцепление при успехе.</div>
         </div>
-        <div class="dist-card">
+        <div class="dist-card" data-dist="locked">
           <span class="dist-label en">Locked</span>
           <span class="dist-label ru">Сцеплены</span>
           <div class="dist-body en">Grappled or in direct contact. All Ship Actions available. Board initiates deck combat. To disengage, the Oar-Master must use Surge.</div>
@@ -319,7 +498,7 @@
     <div class="ornament-divider">· · &#9876; · ·</div>
 
     <!-- ══ V: SHIP ACTIONS ══ -->
-    <div class="section">
+    <div class="section" id="ch-actions">
       <h2><span class="num">V</span><span class="en">Ship Actions</span><span class="ru">Корабельные действия</span></h2>
       <p class="en">Each role performs its Ship Action by making a D20 Test using the listed attribute and either of the two listed skills. On a failure, the action has no effect unless stated otherwise.</p>
       <p class="ru">Каждая роль выполняет своё Корабельное действие, совершая Тест к20 с указанной характеристикой и любым из двух перечисленных навыков. При провале действие не имеет эффекта, если не указано иное.</p>
@@ -346,8 +525,8 @@
             <td class="attr"><span class="en">Con (Athletics or Performance)</span><span class="ru">Тел (Атлетика или Выступление)</span></td>
             <td class="dc">12</td>
             <td>
-              <span class="en">Move the ship two distance bands in any direction.</span>
-              <span class="ru">Переместить корабль на две дистанционные полосы в любом направлении.</span>
+              <span class="en">Move the ship <strong>one distance band</strong> further from or closer to the enemy. Unavailable when Oarsmen are below half strength.</span>
+              <span class="ru">Переместить корабль на <strong>одну дистанционную полосу</strong> дальше от врага или ближе к нему. Недоступно, если Гребцов меньше половины.</span>
             </td>
           </tr>
           <tr>
@@ -360,12 +539,12 @@
             </td>
           </tr>
           <tr>
-            <td class="b"><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td class="b"><span class="en">Aim Ballistas</span><span class="ru">Наведение Баллист</span></td>
             <td class="attr"><span class="en">Wis (Perception or Investigation)</span><span class="ru">Мудр (Восприятие или Расследование)</span></td>
             <td class="dc">12</td>
             <td>
-              <span class="en"><em>Close or Locked only.</em> Direct the ballista crews to fire upon a designated point on the enemy ship, a specific creature on deck, or a sea monster. On a success, the shot lands on its intended target.</span>
-              <span class="ru"><em>Только Близко или Сцеплены.</em> Направить расчёты баллист открыть огонь по указанной точке вражеского корабля, конкретному существу на палубе или морскому монстру. При успехе выстрел поражает намеченную цель.</span>
+              <span class="en"><em>Close or Locked only.</em> You carefully direct the ship’s siege weapons, aligning their aim for maximum accuracy. On a <strong>success</strong>, attacks made with the ship’s ballistas during the Personal Actions phase are made with <strong>Advantage</strong>.</span>
+              <span class="ru"><em>Только Близко или Сцеплены.</em> Вы точно координируете прицеливание осадных орудий корабля, повышая их точность. При <strong>успехе</strong> атаки баллист корабля во время фазы «Личные Действия» совершаются с <strong>Преимуществом</strong>.</span>
             </td>
           </tr>
           <tr>
@@ -373,8 +552,8 @@
             <td class="attr"><span class="en">Int (Survival or History)</span><span class="ru">Инт (Выживание или История)</span></td>
             <td class="dc">11</td>
             <td>
-              <span class="en">Choose one: grant <strong>Advantage</strong> on your ship's current Ship Action roll, <em>or</em> impose <strong>Disadvantage</strong> on all enemy Ship Actions until the end of their next Ship Action phase.</span>
-              <span class="ru">Выберите: дать <strong>Преимущество</strong> на текущий бросок Корабельного действия вашего корабля, <em>или</em> наложить <strong>Помеху</strong> на все Корабельные действия врагов до конца их следующей фазы Корабельных действий.</span>
+              <span class="en">Impose <strong>Disadvantage</strong> on all enemy Ship Actions until the end of their next Ship Action phase.</span>
+              <span class="ru">Наложить <strong>Помеху</strong> на все Корабельные действия врагов до конца их следующей фазы Корабельных действий.</span>
             </td>
           </tr>
         </tbody>
@@ -384,7 +563,7 @@
     <div class="ornament-divider">· · &#9876; · ·</div>
 
     <!-- ══ VI: DAMAGE & CASUALTIES ══ -->
-    <div class="section">
+    <div class="section" id="ch-damage">
       <h2><span class="num">VI</span><span class="en">Ship Damage &amp; Oarsmen Casualties</span><span class="ru">Повреждения корабля и потери гребцов</span></h2>
       <p class="en">Ships track two values: <strong>Hull Points</strong> and <strong>Oarsmen</strong>.</p>
       <p class="ru">Корабли отслеживают два значения: <strong>Очки корпуса</strong> и <strong>Гребцы</strong>.</p>
@@ -394,16 +573,16 @@
       <p class="ru">Каждый корабль имеет максимум Очков корпуса, определяемый его типом. Когда корабль опускается до 0 Очков корпуса, он начинает тонуть и будет потерян через 1к4 раунда. Все на борту должны пройти Тест к20 Силы (Атлетика, КС 14), иначе начнут тонуть.</p>
 
       <h3 class="en">Oarsmen</h3><h3 class="ru">Гребцы</h3>
-      <p class="en">Each ship has a starting Oarsmen count determined by its type. A ship requires at least half its starting Oarsmen count to remain operational. If Oarsmen fall below that threshold, the Surge action cannot be taken. If Oarsmen reach 0, the ship is dead in the water and must surrender or be abandoned.</p>
-      <p class="ru">Каждый корабль имеет начальное количество Гребцов, определяемое его типом. Для работоспособности кораблю требуется не менее половины начального количества Гребцов. Если Гребцов становится меньше этого порога, действие Рывок недоступно. При 0 Гребцов корабль обездвижен и должен сдаться или быть оставлен.</p>
+      <p class="en">Each ship has a starting Oarsmen count determined by its type. A ship requires at least half its starting Oarsmen count to remain operational. If Oarsmen fall below that threshold, the Surge action cannot be taken.</p>
+      <p class="ru">Каждый корабль имеет начальное количество Гребцов, определяемое его типом. Для работоспособности кораблю требуется не менее половины начального количества Гребцов. Если Гребцов становится меньше этого порога, действие Рывок недоступно.</p>
 
-      <h3 class="en">Hull-to-Oarsmen Transfer</h3><h3 class="ru">Перенос урона корпуса на гребцов</h3>
+      <h3 class="en">Hull-to-Oarsmen Damage</h3><h3 class="ru">Перенос урона корпуса на гребцов</h3>
       <p class="en">For every 10 points of Hull damage the ship suffers, 1 oarsman is lost. This reflects structural breaches forcing rowers from their benches, splinter injuries, and flooding of the lower decks.</p>
       <p class="ru">За каждые 10 очков урона корпуса корабль теряет 1 гребца. Это отражает структурные пробоины, вынуждающие гребцов покидать скамьи, ранения от осколков и затопление нижней палубы.</p>
 
       <h3 class="en">Ram Damage</h3><h3 class="ru">Урон тараном</h3>
-      <p class="en">A ram deals <strong>10d10 bludgeoning damage</strong>. On a failed Ram check, roll this damage and both ships take half the total.</p>
-      <p class="ru">Таран наносит <strong>10к10 дробящего урона</strong>. При провале броска тарана бросьте этот урон — оба корабля получают половину суммы.</p>
+      <p class="en">A ram deals <strong>8d10 bludgeoning damage</strong>. On a failed Ram check, roll this damage and both ships take half the total.</p>
+      <p class="ru">Таран наносит <strong>8к10 дробящего урона</strong>. При провале броска тарана бросьте этот урон — оба корабля получают половину суммы.</p>
 
       <div class="callout en"><strong>Ballista Weapon Stats</strong>Ballista statistics are found in the D&amp;D 2024 core rules. Hull-to-Oarsmen transfer applies to all hull damage, regardless of source.</div>
       <div class="callout ru"><strong>Характеристики баллисты</strong>Характеристики баллисты приведены в основных правилах D&amp;D 2024. Перенос урона корпуса на гребцов применяется ко всему урону корпуса вне зависимости от источника.</div>
@@ -412,10 +591,10 @@
     <div class="ornament-divider">· · &#9876; · ·</div>
 
     <!-- ══ VII: CREW MORALE ══ -->
-    <div class="section">
+    <div class="section" id="ch-morale">
       <h2><span class="num">VII</span><span class="en">Crew Morale</span><span class="ru">Мораль экипажа</span></h2>
-      <p class="en">The crew's fighting spirit is tracked using the <strong>Exhaustion</strong> condition from D&amp;D 2024. Each level of Exhaustion imposes a <strong>&minus;2 penalty to all D20 Tests</strong> made for Ship Actions. At <strong>Exhaustion 5</strong>, the crew cannot take the Surge action. At <strong>Exhaustion 10</strong>, the crew mutinies or abandons ship.</p>
-      <p class="ru">Боевой дух экипажа отслеживается с помощью состояния <strong>Истощение</strong> из D&amp;D 2024. Каждый уровень Истощения накладывает штраф <strong>&minus;2 ко всем Тестам к20</strong> для Корабельных действий. При <strong>Истощении 5</strong> экипаж не может использовать действие Рывок. При <strong>Истощении 10</strong> экипаж бунтует или оставляет корабль.</p>
+      <p class="en">The crew's fighting spirit is tracked using the <strong>Exhaustion</strong> condition from D&amp;D 2024. Each level of Exhaustion imposes a <strong>&minus;2 penalty to all D20 Tests</strong> made for Ship Actions. At <strong>Exhaustion 3</strong>, the crew cannot take the Surge action. At <strong>Exhaustion 6</strong>, the crew is considered dead or abandons ship.</p>
+      <p class="ru">Боевой дух экипажа отслеживается с помощью состояния <strong>Истощение</strong> из D&amp;D 2024. Каждый уровень Истощения накладывает штраф <strong>&minus;2 ко всем Тестам к20</strong> для Корабельных действий. При <strong>Истощении 3</strong> экипаж не может использовать действие Рывок. При <strong>Истощении 6</strong> экипаж считается погибшим или оставляет корабль.</p>
 
       <h3 class="en">Daily Provisions</h3><h3 class="ru">Ежедневные припасы</h3>
       <p class="en">At the end of each day of travel, apply the following based on available provisions.</p>
@@ -442,36 +621,34 @@
       </table>
 
       <h3 class="en">Exhaustion Triggers</h3><h3 class="ru">Факторы истощения</h3>
-      <p class="en">The following events cause the crew to gain <strong>1 Exhaustion level</strong>. The Captain may make a <strong>Charisma D20 Test (DC 12)</strong> to negate each trigger. If no PC fills the Captain role, the trigger automatically applies.</p>
-      <p class="ru">Следующие события приводят к получению <strong>1 уровня Истощения</strong>. Капитан может сделать <strong>Тест к20 Харизмы (КС 12)</strong>, чтобы отменить каждый триггер. Если роль Капитана не занята ПИ, триггер применяется автоматически.</p>
+      <p class="en">Certain harrowing events may cause the crew to gain <strong>1 Exhaustion level</strong>, at the DM's discretion based on the severity and context of what transpires. When such an event occurs, the Captain may make a <strong>Charisma (Persuasion or Intimidation) D20 Test (DC 12)</strong> to steady the crew's nerves and negate the trigger. If no PC fills the Captain role, the trigger applies automatically.</p>
+      <p class="ru">Определённые тяжёлые события могут привести к получению экипажем <strong>1 уровня Истощения</strong> — по усмотрению Мастера, исходя из тяжести и контекста произошедшего. Когда подобное событие случается, Капитан может сделать <strong>Тест к20 Харизмы (Убеждение или Запугивание, КС 12)</strong>, чтобы укрепить дух экипажа и отменить триггер. Если роль Капитана не занята ПИ, триггер применяется автоматически.</p>
       <table class="rules-table">
         <thead><tr>
           <th><span class="en">Trigger</span><span class="ru">Фактор</span></th>
-          <th><span class="en">When</span><span class="ru">Когда</span></th>
+          <th><span class="en">Circumstances</span><span class="ru">Обстоятельства</span></th>
         </tr></thead>
         <tbody>
           <tr>
             <td class="b"><span class="en">Heavy Casualties</span><span class="ru">Тяжёлые потери</span></td>
-            <td><span class="en">Oarsmen fall below the operational threshold during or after battle.</span><span class="ru">Гребцы опускаются ниже оперативного порога во время или после битвы.</span></td>
+            <td><span class="en">The ship suffers grievous losses — whether of oarsmen, marines, or officers — severe enough that the DM judges the surviving crew's resolve to be shaken.</span><span class="ru">Корабль несёт тяжёлые потери среди гребцов, морпехов или офицеров, достаточно серьёзные, чтобы Мастер счёл стойкость выживших подорванной.</span></td>
           </tr>
           <tr>
-            <td class="b"><span class="en">Monstrous Encounter</span><span class="ru">Встреча с чудовищем</span></td>
-            <td><span class="en">The ship encounters a sea monster or supernatural creature.</span><span class="ru">Корабль встречает морское чудовище или сверхъестественное существо.</span></td>
+            <td class="b"><span class="en">Dreadful Omen</span><span class="ru">Ужасное предзнаменование</span></td>
+            <td><span class="en">The crew witnesses something deeply unsettling upon the waters — a monstrous presence, a curse made manifest, or a supernatural horror — as the DM sees fit to judge its impact on morale.</span><span class="ru">Экипаж становится свидетелем чего-то глубоко тревожного на водах — чудовищного присутствия, воплощённого проклятия или сверхъестественного ужаса — по усмотрению Мастера относительно влияния на боевой дух.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Captain Lost</span><span class="ru">Потеря капитана</span></td>
-            <td><span class="en">The Captain is incapacitated or killed. This trigger cannot be negated.</span><span class="ru">Капитан недееспособен или убит. Этот триггер нельзя отменить.</span></td>
+            <td><span class="en">The Captain is removed from command — killed, incapacitated, or otherwise unable to lead. <em>This trigger cannot be negated.</em></span><span class="ru">Капитан отстранён от командования — убит, недееспособен или иным образом не способен руководить. <em>Этот триггер нельзя отменить.</em></span></td>
           </tr>
         </tbody>
       </table>
-      <p class="en">Exhaustion resets to 0 after a <strong>Long Rest</strong> in a friendly port with full provisions and wine.</p>
-      <p class="ru">Истощение сбрасывается до 0 после <strong>Длительного отдыха</strong> в дружественном порту с полными припасами и вином.</p>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
 
     <!-- ══ VIII: QUICK REFERENCE ══ -->
-    <div class="section">
+    <div class="section" id="ch-qref">
       <h2><span class="num">&#10022;</span><span class="en">Quick Reference</span><span class="ru">Быстрый справочник</span></h2>
 
       <h3 class="en">Ship Actions</h3><h3 class="ru">Корабельные действия</h3>
@@ -488,8 +665,8 @@
             <td class="b"><span class="en">Captain's Call</span><span class="ru">Призыв капитана</span></td>
             <td><span class="en">Captain</span><span class="ru">Капитан</span></td>
             <td><span class="en">Cha (Persuasion / Intimidation)</span><span class="ru">Хар (Убеждение / Запугивание)</span></td>
-            <td class="dc">12</td>
-            <td><span class="en">Grant Advantage on the Ship Action roll.</span><span class="ru">Дать Преимущество на бросок Корабельного действия.</span></td>
+            <td class="dc">-</td>
+            <td><span class="en">Captain takes an altrnative version of one Ship Action.</span><span class="ru">Капитан совершает одно альтернативное Корабельное действие.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Ram</span><span class="ru">Таран</span></td>
@@ -503,7 +680,7 @@
             <td><span class="en">Oar-Master</span><span class="ru">Нач. гребцов</span></td>
             <td><span class="en">Con (Athletics / Performance)</span><span class="ru">Тел (Атлетика / Выступление)</span></td>
             <td class="dc">12</td>
-            <td><span class="en">Move 2 distance bands. Unavailable at Exhaustion 5.</span><span class="ru">Движение на 2 полосы. Недоступно при Истощении 5.</span></td>
+            <td><span class="en">Move 1 distance band closer to or further from the enemy. Unavailable below half Oarsmen or at Exhaustion 5.</span><span class="ru">Движение на 1 полосу ближе к врагу или дальше. Недоступно ниже половины Гребцов или при Истощении 5.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Board</span><span class="ru">Абордаж</span></td>
@@ -513,18 +690,18 @@
             <td><span class="en">Locked only. Win → deck combat. Attacker wins ties.</span><span class="ru">Только Сцеплены. Победа → бой на палубе. Атакующий побеждает при равенстве.</span></td>
           </tr>
           <tr>
-            <td class="b"><span class="en">Ballistas</span><span class="ru">Баллисты</span></td>
+            <td class="b"><span class="en">Aim Ballistas</span><span class="ru">Наведение Баллист</span></td>
             <td><span class="en">Lookout</span><span class="ru">Наблюдатель</span></td>
             <td><span class="en">Wis (Perception / Investigation)</span><span class="ru">Мудр (Восприятие / Расследование)</span></td>
             <td class="dc">12</td>
-            <td><span class="en">Close / Locked only. Success: shot hits target. See D&amp;D 2024 for ballista stats.</span><span class="ru">Только Близко / Сцеплены. Успех: выстрел попадает. Характеристики в D&amp;D 2024.</span></td>
+            <td><span class="en">Close / Locked only. Success: Ballista attacks gain advantage during the Personal Actions phase.</span><span class="ru">Только Близко / Сцеплены. Успех: атаки баллист совершаются с Преимуществом в фазе Личные Действия.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Maneuver</span><span class="ru">Манёвр</span></td>
             <td><span class="en">Bow Officer</span><span class="ru">Нос. офицер</span></td>
             <td><span class="en">Int (Survival / History)</span><span class="ru">Инт (Выживание / История)</span></td>
             <td class="dc">11</td>
-            <td><span class="en">Choose: Advantage on own Ship Action, or Disadvantage on all enemy Ship Actions until end of their next Ship Action.</span><span class="ru">Выбор: Преимущество на своё действие, или Помеха всем Корабельным действиям врагов до конца их следующего.</span></td>
+            <td><span class="en">Disadvantage on all enemy Ship Actions until end of their next Ship Action.</span><span class="ru">Помеха всем Корабельным действиям врагов до конца их следующего.</span></td>
           </tr>
         </tbody>
       </table>
@@ -542,19 +719,15 @@
           </tr>
           <tr>
             <td class="b"><span class="en">Ram (success)</span><span class="ru">Таран (успех)</span></td>
-            <td><span class="en">10d10 bludgeoning to target ship.</span><span class="ru">10к10 дробящего по вражескому кораблю.</span></td>
+            <td><span class="en">8d10 bludgeoning to target ship.</span><span class="ru">8к10 дробящего по вражескому кораблю.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Ram (failure)</span><span class="ru">Таран (провал)</span></td>
-            <td><span class="en">Roll 10d10; both ships take half the result.</span><span class="ru">Бросить 10к10; оба корабля получают половину результата.</span></td>
+            <td><span class="en">Roll 8d10; both ships take half the result.</span><span class="ru">Бросить 8к10; оба корабля получают половину результата.</span></td>
           </tr>
           <tr>
             <td class="b"><span class="en">Oarsmen below half</span><span class="ru">Гребцы ниже половины</span></td>
-            <td><span class="en">Surge cannot be taken. Captain makes DC 12 Exhaustion trigger check.</span><span class="ru">Рывок недоступен. Капитан делает проверку КС 12 триггера Истощения.</span></td>
-          </tr>
-          <tr>
-            <td class="b"><span class="en">Oarsmen = 0</span><span class="ru">Гребцы = 0</span></td>
-            <td><span class="en">Ship is dead in the water. Surrender or abandon.</span><span class="ru">Корабль обездвижен. Сдаться или оставить.</span></td>
+            <td><span class="en">Surge cannot be taken. May trigger Exhaustion at DM's discretion (Captain DC 12 Cha to negate).</span><span class="ru">Рывок недоступен. Может вызвать Истощение по усмотрению Мастера (Капитан КС 12 Хар для отмены).</span></td>
           </tr>
         </tbody>
       </table>
@@ -566,9 +739,9 @@
           <th><span class="en">Provisions Effect (end of travel day)</span><span class="ru">Эффект припасов (конец дня)</span></th>
         </tr></thead>
         <tbody>
-          <tr><td class="b"><span class="en">Per level: &minus;2 to all Ship Action D20 Tests</span><span class="ru">За уровень: &minus;2 ко всем Тестам к20 Корабельных действий</span></td><td><span class="en">Full + wine → &minus;1 level &nbsp;|&nbsp; Full, no wine → no change &nbsp;|&nbsp; Half → +1 &nbsp;|&nbsp; None → +2</span><span class="ru">Полный + вино → &minus;1 уровень &nbsp;|&nbsp; Полный, без вина → без изм. &nbsp;|&nbsp; Половина → +1 &nbsp;|&nbsp; Нет → +2</span></td></tr>
-          <tr><td class="b"><span class="en">Level 5: Surge unavailable</span><span class="ru">Уровень 5: Рывок недоступен</span></td><td rowspan="2"><span class="en">Triggers (Captain DC 12 Cha to negate): Oarsmen below half · Sea monster encountered · Captain Lost (auto, no negate)</span><span class="ru">Триггеры (Капитан КС 12 Хар для отмены): Гребцы ниже половины · Встреча с монстром · Гибель капитана (авто, без отмены)</span></td></tr>
-          <tr><td class="b"><span class="en">Level 10: Mutiny or abandon ship</span><span class="ru">Уровень 10: Бунт или покинуть корабль</span></td></tr>
+          <tr><td class="b"><span class="en">Per level: &minus;2 to all Ship Action D20 Tests</span><span class="ru">За уровень: &minus;2 ко всем Тестам к20 Корабельных действий</span></td><td><span class="en">Full + wine → &minus;1 level &nbsp;|&nbsp; Full, no wine → no change &nbsp;|&nbsp; None → +1</span><span class="ru">Полный + вино → &minus;1 уровень &nbsp;|&nbsp; Полный, без вина → без изм. &nbsp;|&nbsp; Нет → +1</span></td></tr>
+          <tr><td class="b"><span class="en">Level 3: Surge unavailable</span><span class="ru">Уровень 3: Рывок недоступен</span></td><td rowspan="2"><span class="en">Triggers at DM's discretion (Captain DC 12 Cha (Persuasion / Intimidation) to negate): Heavy Casualties · Dreadful Omen · Captain Lost (auto, cannot negate)</span><span class="ru">Триггеры по усмотрению Мастера (Капитан КС 12 Хар (Убеждение/Запугивание) для отмены): Тяжёлые потери · Ужасное предзнаменование · Гибель капитана (авто, нельзя отменить)</span></td></tr>
+          <tr><td class="b"><span class="en">Level 6: Dead or abandon ship</span><span class="ru">Уровень 6: Смерть или покинуть корабль</span></td></tr>
         </tbody>
       </table>
 
@@ -589,12 +762,52 @@
 </div></div><!-- scroll / page-wrap -->
 
 <script>
+  /* ── Language toggle ── */
   function setLang(lang) {
     document.body.classList.toggle('lang-ru', lang === 'ru');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
     document.documentElement.lang = lang;
   }
+
+  /* ── Back-to-top button ── */
+  const topBtn = document.getElementById('topBtn');
+
+  window.addEventListener('scroll', () => {
+    topBtn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+
+  topBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* Magnetic pull effect */
+  topBtn.addEventListener('mousemove', e => {
+    const r = topBtn.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = (e.clientX - cx) * 0.30;
+    const dy = (e.clientY - cy) * 0.30;
+    topBtn.style.transform = `translate(${dx}px, ${dy}px)`;
+  });
+  topBtn.addEventListener('mouseleave', () => {
+    topBtn.style.transform = '';
+    topBtn.style.transition = 'transform .25s ease, opacity .3s, background .2s, box-shadow .2s';
+  });
+  topBtn.addEventListener('mouseenter', () => {
+    topBtn.style.transition = 'opacity .3s, background .2s, box-shadow .2s';
+  });
+
+  /* ── Smooth scroll for chapter nav ── */
+  document.querySelectorAll('.chapter-nav a').forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 </script>
 </body>
 </html>
