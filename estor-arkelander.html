@@ -110,12 +110,17 @@
 
   /* ── Wave bands ── */
   .wave-band {
-    height:24px; position:relative; z-index:2;
+    height:28px; position:relative; z-index:2;
     background:#060A0C;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 12 Q15 3 30 12 Q45 21 60 12 Q75 3 90 12 Q105 21 120 12 L120 0 L0 0 Z' fill='%230D1417'/%3E%3Cpath d='M0 17 Q15 8 30 17 Q45 26 60 17 Q75 8 90 17 Q105 26 120 17 L120 0 L0 0 Z' fill='%234FFFC4' opacity='.12'/%3E%3C/svg%3E");
-    background-size:120px 24px; background-repeat:repeat-x;
+    background-size:120px 28px; background-repeat:repeat-x;
+    animation: waveScroll 9s linear infinite;
   }
   .wave-band.bottom { transform:scaleY(-1); }
+  @keyframes waveScroll {
+    from { background-position-x: 0; }
+    to   { background-position-x: 120px; }
+  }
 
   .content-inner { padding:44px 62px 52px; position:relative; z-index:2; }
 
@@ -364,6 +369,23 @@
   ul.ghost-list li::before { content:'⟡'; position:absolute; left:0; color:var(--mint-dim); font-size:11px; top:5px; text-shadow:0 0 6px var(--mint); }
   ul.ghost-list li strong { color:var(--mint); font-family:'Philosopher',serif; font-weight:700; }
 
+  /* ── Back to index link ── */
+  .back-link-wrap { text-align:center; margin-bottom:18px; }
+  .back-link {
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:'Philosopher',serif; font-size:10px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--text-dim);
+    text-decoration:none;
+    border:1px solid var(--border); padding:6px 16px; border-radius:2px;
+    background:rgba(79,255,196,.03);
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  .back-link:hover {
+    color:var(--mint-dim); border-color:var(--border-hi);
+    background:rgba(79,255,196,.06);
+  }
+  .back-link svg { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
   /* Advantage badge */
   .adv-pill {
     display:inline-block; background:rgba(79,255,196,.1); border:1px solid var(--border-hi);
@@ -406,8 +428,15 @@
 
     <!-- TITLE -->
     <div class="title-block">
-      <div class="subtitle-pre en">Captain's Curse &middot; Ghost Possession &middot; D&D 2024 Supplement</div>
-      <div class="subtitle-pre ru">Проклятие капитана &middot; Одержимость призраком &middot; Дополнение к D&amp;D 2024</div>
+      <div class="back-link-wrap">
+        <a href="index.html" class="back-link">
+          <svg viewBox="0 0 12 12"><polyline points="7 2 3 6 7 10"/><line x1="3" y1="6" x2="11" y2="6"/></svg>
+          <span class="en">Naumachia — Main Rules</span>
+          <span class="ru">Naumachia — Основные Правила</span>
+        </a>
+      </div>
+      <!--<div class="subtitle-pre en">Captain's Curse &middot; Ghost Possession &middot; D&D 2024 Supplement</div>
+      <div class="subtitle-pre ru">Проклятие капитана &middot; Одержимость призраком &middot; Дополнение к D&amp;D 2024</div>-->
       <h1>Estor Arkelander</h1>
       <div class="title-sub en">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; First Captain of the Ultros</div>
       <div class="title-sub ru">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; Первый капитан Ультроса</div>
@@ -445,8 +474,8 @@
       <p class="ru">Когда капитан на борту Ультроса взывает к духу Эстора Аркеландера, призрак легендарного первого капитана пробуждается в корпусе корабля. На скамьях материализуются призрачные гребцы, фантомные морпехи занимают позиции у бортов, и железная воля Эстора течёт через голос живого капитана.</p>
       <div class="callout">
         <strong><span class="en">Using These Actions</span><span class="ru">Использование этих действий</span></strong>
-        <span class="en">Ghost Captain Actions replace the normal Ship Action for that round. They are made with <span class="adv-pill">Advantage</span> on the D20 Test. Each use increases Ghost Possession by one level. At level 5, the possession is total and irreversible — Estor takes permanent control of the body.</span>
-        <span class="ru">Действия Капитана-призрака заменяют обычное Корабельное действие в этом раунде. Тест к20 совершается с <span class="adv-pill">Преимуществом</span>. Каждое использование увеличивает Одержимость призраком на один уровень. На уровне 5 одержимость становится полной и необратимой — Эстор навсегда берёт контроль над телом.</span>
+        <span class="en">Ghost Captain Actions replace the normal Ship Action for that round. They are made as normal D20 Tests — <em>no Advantage is granted</em>. Each carries a powerful effect on success and a meaningful risk on failure. Each use increases Ghost Possession by one level. At level 5, the possession is total and irreversible — Estor takes permanent control of the body.</span>
+        <span class="ru">Действия Капитана-призрака заменяют обычное Корабельное действие в этом раунде. Они совершаются как обычные Тесты к20 — <em>Преимущество не предоставляется</em>. Каждое несёт мощный эффект при успехе и реальный риск при провале. Каждое использование увеличивает Одержимость призраком на один уровень. На уровне 5 одержимость становится полной и необратимой — Эстор навсегда берёт контроль над телом.</span>
       </div>
     </div>
 
@@ -458,8 +487,8 @@
       <div class="action-card">
         <div class="action-header">
           <div class="action-name-block">
-            <div class="action-name en">Spectral Ram <span class="adv-pill">Advantage</span></div>
-            <div class="action-name ru">Призрачный таран <span class="adv-pill">Преимущество</span></div>
+            <div class="action-name en">Spectral Ram</div>
+            <div class="action-name ru">Призрачный таран</div>
             <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#956;&#946;&#959;&#955;&#942; — Phantasmatikí Emvolí</div>
             <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#956;&#946;&#959;&#955;&#942;</div>
           </div>
@@ -470,10 +499,12 @@
           <div class="attr-line en">Dexterity (Acrobatics or Insight) · DC 13 · Replaces: Ram</div>
           <div class="attr-line ru">Ловкость (Акробатика или Проницательность) · КС 13 · Заменяет: Таран</div>
           <ul class="ghost-list">
-            <li class="en">The Ultros's bronze ram takes on the form of a spectral serpent's head. It strikes through the enemy hull and <strong>passes through</strong> any defensive Ward or magical protection, dealing Ram damage as if the target had no damage threshold.</li>
-            <li class="ru">Бронзовый таран Ультроса принимает форму головы призрачной змеи. Он пробивает корпус врага и <strong>проходит сквозь</strong> любую Защиту или магическую защиту, нанося урон тараном, как если бы у цели не было порога урона.</li>
-            <li class="en">On a <strong>failure</strong>, both ships still take half damage as normal — but the spectral impact <strong>Frightens</strong> all creatures on the enemy deck until the start of the next round. Wisdom saving throw (DC 14) negates the Frightened condition.</li>
-            <li class="ru">При <strong>провале</strong> оба корабля всё равно получают половину урона как обычно — но призрачный удар <strong>пугает</strong> всех существ на вражеской палубе до начала следующего раунда. Спасбросок Мудрости (КС 14) отменяет состояние Испуга.</li>
+            <li class="en">Dead oarsmen lock their benches into a perfect ramming brace while Estor's helmsman — a shade who has driven this prow through fifty ships — steadies the line with cold, fleshless hands. The living crew simply hold on.</li>
+            <li class="ru">Мёртвые гребцы стягивают весельные банки в идеальный таранный упор, пока рулевой Эстора — тень, что уже пробивала этим форштевнем пятьдесят кораблей — держит курс холодными, бесплотными руками. Живому экипажу остаётся лишь держаться.</li>
+            <li class="en">On a <strong>success</strong>, move to Locked and deal Ram damage as normal. Additionally, deal <strong>3d10 necrotic damage</strong> to the target ship and all creatures on its deck must succeed on a DC 14 Constitution saving throw or gain the <strong>Poisoned</strong> condition until the end of their next turn as grave-cold floods through the hull breach.</li>
+            <li class="ru">При <strong>успехе</strong> перейти в Сцепление и нанести урон тараном как обычно. Дополнительно нанести <strong>3к10 некротического урона</strong> вражескому кораблю, а все существа на его палубе должны пройти спасбросок Телосложения КС 14, иначе получают состояние <strong>Отравления</strong> до конца своего следующего хода, пока могильный холод заполняет пробоину.</li>
+            <li class="en">On a <strong>failure</strong>, the ghostly crew drives the ram home regardless — both ships take the <strong>full</strong> 10d10 bludgeoning damage instead of half. The dead feel no hesitation and do not pull back.</li>
+            <li class="ru">При <strong>провале</strong> призрачный экипаж всё равно вгоняет таран — оба корабля получают <strong>полный</strong> урон 10к10 дробящим вместо половины. Мёртвые не ведают колебаний и не отступают.</li>
           </ul>
         </div>
       </div>
@@ -482,8 +513,8 @@
       <div class="action-card">
         <div class="action-header">
           <div class="action-name-block">
-            <div class="action-name en">Phantom Surge <span class="adv-pill">Advantage</span></div>
-            <div class="action-name ru">Фантомный рывок <span class="adv-pill">Преимущество</span></div>
+            <div class="action-name en">Phantom Surge</div>
+            <div class="action-name ru">Фантомный рывок</div>
             <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#714;&#927;&#961;&#956;&#951; — Phantasmatikí Ormí</div>
             <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#714;&#927;&#961;&#956;&#951;</div>
           </div>
@@ -494,10 +525,12 @@
           <div class="attr-line en">Constitution (Athletics or Performance) · DC 12 · Replaces: Surge</div>
           <div class="attr-line ru">Телосложение (Атлетика или Выступление) · КС 12 · Заменяет: Рывок</div>
           <ul class="ghost-list">
-            <li class="en">Estor's dead crew materializes on all three banks of oars and rows with the strength of the grave. On a <strong>success</strong>, move the ship <strong>three</strong> distance bands instead of two — and the movement cannot be countered by an enemy Surge this round.</li>
-            <li class="ru">Мёртвая команда Эстора материализуется на всех трёх рядах вёсел и гребёт с силой могилы. При <strong>успехе</strong> корабль перемещается на <strong>три</strong> дистанционные полосы вместо двух — и это движение не может быть нейтрализовано вражеским Рывком в этом раунде.</li>
-            <li class="en">This action is available regardless of the ship's current Oarsmen count. The ghost oarsmen suffer no Exhaustion penalties.</li>
-            <li class="ru">Это действие доступно вне зависимости от текущего количества Гребцов на корабле. Призрачные гребцы не получают штрафов Истощения.</li>
+            <li class="en">The ghost crew fills every empty bench, matching the living rowers stroke for stroke in perfect silence. The hull shudders with twice the force of any mortal crew.</li>
+            <li class="ru">Призрачный экипаж занимает каждую пустую скамью и гребёт рядом с живыми гребец в гребец, в полной тишине. Корпус содрогается с удвоенной силой любого смертного экипажа.</li>
+            <li class="en">On a <strong>success</strong>, move the ship <strong>two</strong> distance bands instead of one. This movement cannot be countered by an enemy Surge this round. This action is available regardless of the ship's current living Oarsmen count — ghost hands fill what the living cannot.</li>
+            <li class="ru">При <strong>успехе</strong> переместить корабль на <strong>две</strong> дистанционные полосы вместо одной. Это движение не может быть нейтрализовано вражеским Рывком в этом раунде. Действие доступно вне зависимости от числа живых Гребцов — призрачные руки восполняют то, чего не хватает живым.</li>
+            <li class="en">On a <strong>failure</strong>, the ghost oarsmen's frenzy overpowers the living crew's rhythm. The ship lurches one distance band in a direction of the DM's choice, and all living oarsmen gain <strong>1 Exhaustion level</strong> from the violent, uncontrolled pull.</li>
+            <li class="ru">При <strong>провале</strong> исступление призрачных гребцов ломает ритм живого экипажа. Корабль рывком перемещается на одну дистанционную полосу по выбору Мастера, а все живые гребцы получают <strong>1 уровень Истощения</strong> из-за насильственного, неуправляемого рывка.</li>
           </ul>
         </div>
       </div>
@@ -506,8 +539,8 @@
       <div class="action-card">
         <div class="action-header">
           <div class="action-name-block">
-            <div class="action-name en">Ghost Boarding <span class="adv-pill">Advantage</span></div>
-            <div class="action-name ru">Призрачный абордаж <span class="adv-pill">Преимущество</span></div>
+            <div class="action-name en">Ghost Boarding</div>
+            <div class="action-name ru">Призрачный абордаж</div>
             <div class="action-greek en">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#960;&#953;&#946;&#943;&#946;&#945;&#963;&#951; — Phantasmatikí Epivási</div>
             <div class="action-greek ru">&#934;&#945;&#957;&#964;&#945;&#963;&#956;&#945;&#964;&#953;&#954;&#942; &#917;&#960;&#953;&#946;&#943;&#946;&#945;&#963;&#951;</div>
           </div>
@@ -518,10 +551,12 @@
           <div class="attr-line en">Strength (Intimidation or Sleight of Hand) · Contested · Replaces: Board</div>
           <div class="attr-line ru">Сила (Запугивание или Ловкость рук) · Состязание · Заменяет: Абордаж</div>
           <ul class="ghost-list">
-            <li class="en">Spectral marines pour over the rails before the grapple lines are even thrown — no Locked distance is required. This action may be used at <strong>Close</strong> or <strong>Locked</strong>. On a success, the boarding attempt begins on the enemy deck as normal.</li>
-            <li class="ru">Призрачные морпехи перехлёстывают через борт ещё до того, как брошены абордажные крюки — дистанция Сцепление не требуется. Это действие можно использовать при <strong>Близко</strong> или <strong>Сцеплены</strong>. При успехе абордаж начинается на вражеской палубе как обычно.</li>
-            <li class="en">All enemy creatures on deck must succeed on a DC 15 Wisdom saving throw at the start of the boarding combat or gain the <strong>Frightened</strong> condition. Creatures that are already Frightened are <strong>Paralyzed</strong> instead until the end of their next turn.</li>
-            <li class="ru">Все вражеские существа на палубе должны пройти спасбросок Мудрости КС 15 в начале абордажного боя, иначе получат состояние <strong>Испуга</strong>. Существа, уже находящиеся в Испуге, вместо этого получают состояние <strong>Паралича</strong> до конца своего следующего хода.</li>
+            <li class="en">The ghost marines go over the rail first — passing through wood and iron without slowing — while the living marines follow in their wake. This action may be used at <strong>Close</strong> or <strong>Locked</strong> distance. No Locked position is required; the dead do not need grappling hooks.</li>
+            <li class="ru">Призрачные морпехи первыми перелетают через борт — проходя сквозь дерево и железо, не замедляясь, — а живые морпехи следуют за ними. Это действие можно использовать на дистанции <strong>Близко</strong> или <strong>Сцеплены</strong>. Позиция Сцеплены не обязательна; мёртвым не нужны абордажные крюки.</li>
+            <li class="en">On a <strong>success</strong>, boarding combat begins as normal. All enemy creatures on deck must succeed on a <strong>DC 15 Wisdom saving throw</strong> or gain the <strong>Frightened</strong> condition until the end of their next turn. Frightened creatures that fail a second saving throw against any effect this combat are <strong>Paralyzed</strong> for 1 round instead.</li>
+            <li class="ru">При <strong>успехе</strong> абордажный бой начинается как обычно. Все вражеские существа на палубе должны пройти <strong>спасбросок Мудрости КС 15</strong>, иначе получают состояние <strong>Испуга</strong> до конца своего следующего хода. Испуганные существа, провалившие второй спасбросок против любого эффекта в этом бою, вместо этого получают <strong>Паралич</strong> на 1 раунд.</li>
+            <li class="en">On a <strong>failure</strong>, the boarding attempt fails — and the spectral chaos engulfs your own deck. All living crew on your ship must succeed on a DC 13 Wisdom saving throw or gain the <strong>Frightened</strong> condition until the end of the round.</li>
+            <li class="ru">При <strong>провале</strong> попытка абордажа проваливается — и призрачный хаос накрывает вашу собственную палубу. Все живые члены экипажа на вашем корабле должны пройти спасбросок Мудрости КС 13, иначе получают состояние <strong>Испуга</strong> до конца раунда.</li>
           </ul>
         </div>
       </div>
@@ -530,8 +565,8 @@
       <div class="action-card">
         <div class="action-header">
           <div class="action-name-block">
-            <div class="action-name en">Undead Ballistas <span class="adv-pill">Advantage</span></div>
-            <div class="action-name ru">Мёртвые баллисты <span class="adv-pill">Преимущество</span></div>
+            <div class="action-name en">Undead Ballistas</div>
+            <div class="action-name ru">Мёртвые баллисты</div>
             <div class="action-greek en">&#925;&#949;&#954;&#961;&#972;&#962; &#914;&#945;&#955;&#955;&#943;&#963;&#964;&#945; — Nekrós Valísta</div>
             <div class="action-greek ru">&#925;&#949;&#954;&#961;&#972;&#962; &#914;&#945;&#955;&#955;&#943;&#963;&#964;&#945;</div>
           </div>
@@ -542,10 +577,12 @@
           <div class="attr-line en">Wisdom (Perception or Investigation) · DC 12 · Replaces: Ballistas</div>
           <div class="attr-line ru">Мудрость (Восприятие или Расследование) · КС 12 · Заменяет: Баллисты</div>
           <ul class="ghost-list">
-            <li class="en">Ghost artillerists load and loose bolts of pale fire simultaneously from every ballista. On a <strong>success</strong>, the shot hits its intended target as normal, but the bolt carries the cold of the Underworld — damage dealt is <strong>half bludgeoning, half necrotic</strong> and ignores resistance to bludgeoning damage.</li>
-            <li class="ru">Призрачные артиллеристы одновременно заряжают и выпускают болты бледного пламени из каждой баллисты. При <strong>успехе</strong> выстрел поражает намеченную цель как обычно, но болт несёт холод Подземного царства — урон <strong>наполовину дробящий, наполовину некротический</strong> и игнорирует сопротивление дробящему урону.</li>
-            <li class="en">Any creature hit must succeed on a DC 13 Constitution saving throw or have its Speed reduced to 0 until the start of the next round, as the necrotic chill seizes its limbs.</li>
-            <li class="ru">Любое поражённое существо должно пройти спасбросок Телосложения КС 13, иначе его Скорость снижается до 0 до начала следующего раунда, пока некротический холод сковывает его конечности.</li>
+            <li class="en">Ghost artillerists shoulder every ballista simultaneously — cold hands that never tremble, dead eyes that never blink. They load and loose without waiting for an order, guided only by Estor's will.</li>
+            <li class="ru">Призрачные артиллеристы встают к каждой баллисте одновременно — холодные руки, что никогда не дрожат, мёртвые глаза, что никогда не моргают. Они заряжают и стреляют, не дожидаясь команды, ведомые лишь волей Эстора.</li>
+            <li class="en">On a <strong>success</strong>, fire <strong>two</strong> ballista shots instead of one. Each shot may target independently — different creatures, different points on the hull, or the same target for concentrated fire. Damage for each shot is resolved separately per the D&amp;D 2024 ballista rules.</li>
+            <li class="ru">При <strong>успехе</strong> произвести <strong>два</strong> выстрела из баллист вместо одного. Каждый выстрел может выбирать цель независимо — разные существа, разные точки корпуса или одна цель для сосредоточенного огня. Урон от каждого выстрела определяется отдельно по правилам баллист из D&amp;D 2024.</li>
+            <li class="en">On a <strong>failure</strong>, the ghost artillerists fire before the Lookout has finished aiming. The DM chooses the target of the stray bolt — which may be a creature on your own ship, a point on your own hull, or the water alongside.</li>
+            <li class="ru">При <strong>провале</strong> призрачные артиллеристы стреляют прежде, чем Наблюдатель заканчивает наводку. Мастер выбирает цель случайного болта — это может быть существо на вашем собственном корабле, точка вашего корпуса или вода рядом.</li>
           </ul>
         </div>
       </div>
@@ -554,8 +591,8 @@
       <div class="action-card">
         <div class="action-header">
           <div class="action-name-block">
-            <div class="action-name en">Dead Man's Wake <span class="adv-pill">Advantage</span></div>
-            <div class="action-name ru">След мертвеца <span class="adv-pill">Преимущество</span></div>
+            <div class="action-name en">Dead Man's Wake</div>
+            <div class="action-name ru">След мертвеца</div>
             <div class="action-greek en">&#925;&#949;&#954;&#961;&#972;&#962; &#913;&#960;&#972;&#960;&#955;&#959;&#965;&#962; — Nekrós Ápoplous</div>
             <div class="action-greek ru">&#925;&#949;&#954;&#961;&#972;&#962; &#913;&#960;&#972;&#960;&#955;&#959;&#965;&#962;</div>
           </div>
@@ -566,10 +603,12 @@
           <div class="attr-line en">Intelligence (Survival or History) · DC 11 · Replaces: Maneuver</div>
           <div class="attr-line ru">Интеллект (Выживание или История) · КС 11 · Заменяет: Манёвр</div>
           <ul class="ghost-list">
-            <li class="en">Estor's centuries of tactical memory flow through the captain's mind in an instant. On a <strong>success</strong>, this action applies <strong>both</strong> effects simultaneously — your ship's current Ship Action is made with Advantage <em>and</em> all enemy Ship Actions suffer Disadvantage until the end of their next Ship Action phase.</li>
-            <li class="ru">Вековая тактическая память Эстора мгновенно вливается в разум капитана. При <strong>успехе</strong> это действие применяет <strong>оба</strong> эффекта одновременно — текущее Корабельное действие вашего корабля совершается с Преимуществом, <em>и</em> все Корабельные действия врагов получают Помеху до конца их следующей фазы Корабельных действий.</li>
-            <li class="en">In addition, the ghostly wake left by the Ultros renders the ship <strong>immune</strong> to enemy Surge this round — no opposing movement can close the distance if the Maneuver succeeds.</li>
-            <li class="ru">Кроме того, призрачный след, оставленный Ультросом, делает корабль <strong>невосприимчивым</strong> к вражескому Рывку в этом раунде — никакое вражеское движение не может сократить дистанцию при успехе Манёвра.</li>
+            <li class="en">Centuries of tactical memory pour through the Bow Officer — every current, every enemy formation, every fatal mistake made on these waters since the Age of Monsters. For one heartbeat, a dead genius stands behind their eyes.</li>
+            <li class="ru">Вековая тактическая память вливается в Носового офицера — каждое течение, каждое вражеское построение, каждая роковая ошибка, совершённая на этих водах со времён Эпохи чудовищ. На один удар сердца за их глазами стоит мёртвый гений.</li>
+            <li class="en">On a <strong>success</strong>, apply <strong>both</strong> standard Maneuver effects simultaneously — grant Advantage on your ship's current Ship Action roll <em>and</em> impose Disadvantage on all enemy Ship Actions until the end of their next Ship Action phase.</li>
+            <li class="ru">При <strong>успехе</strong> применить <strong>оба</strong> стандартных эффекта Манёвра одновременно — дать Преимущество на текущий бросок Корабельного действия вашего корабля <em>и</em> наложить Помеху на все Корабельные действия врагов до конца их следующей фазы Корабельных действий.</li>
+            <li class="en">On a <strong>failure</strong>, the flood of dead memories overwhelms the Bow Officer entirely. They cannot contribute to any Ship Action D20 Test next round — if no other PC fills their role, an NPC takes over with a straight d20 instead.</li>
+            <li class="ru">При <strong>провале</strong> поток мёртвых воспоминаний полностью захлёстывает Носового офицера. В следующем раунде они не могут участвовать ни в каком Тесте к20 Корабельного действия — если их роль не займёт другой ПИ, НПС делает прямой к20 вместо них.</li>
           </ul>
         </div>
       </div>
