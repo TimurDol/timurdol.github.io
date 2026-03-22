@@ -33,7 +33,7 @@
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
     font-family: 'EB Garamond', serif;
     color: var(--text);
-    padding: 40px 20px 60px;
+    padding: 70px 20px 60px;
     min-height: 100vh;
   }
 
@@ -78,6 +78,84 @@
   .lang-btn.active { background:var(--mint-dark); color:var(--mint); opacity:1; box-shadow:inset 0 0 12px rgba(79,255,196,.1); }
   .lang-btn:hover:not(.active) { opacity:.8; }
   .lang-sep { width:1px; background:var(--border-hi); opacity:.5; }
+
+  /* ── Lang Toggle — fixed sticky ── */
+  .lang-toggle-wrap {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+  }
+  .lang-toggle {
+    display: flex;
+    background: rgba(6,14,16,.96);
+    border: 2px solid var(--border-hi);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.65), 0 0 0 1px rgba(79,255,196,.08), 0 0 24px rgba(79,255,196,.1);
+  }
+  .lang-btn {
+    padding: 8px 22px;
+    font-family: 'Philosopher', serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--mint-dim);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background .25s, color .25s, opacity .25s;
+    text-transform: uppercase;
+    opacity: .5;
+  }
+  .lang-btn.active {
+    background: var(--mint-dark);
+    color: var(--mint);
+    opacity: 1;
+    box-shadow: inset 0 0 16px rgba(79,255,196,.18);
+    text-shadow: 0 0 10px rgba(79,255,196,.5);
+  }
+  .lang-btn:hover:not(.active) { opacity: .8; }
+  .lang-sep { width: 1px; background: var(--border-hi); opacity: .5; }
+
+  /* ── Back-to-top ── */
+  .top-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 50px;
+    height: 50px;
+    background: var(--mint-dark);
+    border: 2px solid var(--mint-dim);
+    border-radius: 50%;
+    color: var(--mint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,.6), 0 0 0 1px rgba(79,255,196,.1), 0 0 20px rgba(79,255,196,.12);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    transition: opacity .3s, background .2s, box-shadow .2s;
+  }
+  .top-btn.visible { opacity: 1; pointer-events: auto; }
+  .top-btn:hover {
+    background: #1a6e58;
+    box-shadow: 0 6px 26px rgba(0,0,0,.65), 0 0 0 2px rgba(79,255,196,.3), 0 0 30px rgba(79,255,196,.22);
+  }
+  .top-btn svg { width:20px; height:20px; fill:none; stroke:var(--mint); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+
+  /* ── Possession save line ── */
+  .save-line {
+    font-size: 11.5px; color: var(--red-pos); font-family: 'Philosopher', serif;
+    letter-spacing: .4px; margin-top: 4px; margin-bottom: 8px;
+    opacity: .85;
+  }
+  .save-line strong { font-weight: 700; color: var(--red-pos); font-family: 'Philosopher', serif; }
 
   /* ── Page ── */
   .page-wrap { max-width:860px; margin:0 auto; position:relative; z-index:1; }
@@ -407,6 +485,11 @@
 </head>
 <body>
 
+<!-- ── Back-to-top ── -->
+<button class="top-btn" id="topBtn" title="Back to top" aria-label="Scroll to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
 <div class="lang-toggle-wrap">
   <div class="lang-toggle">
     <button class="lang-btn active" id="btn-en" onclick="setLang('en')">&#127468;&#127463; English</button>
@@ -435,11 +518,9 @@
           <span class="ru">Naumachia — Основные Правила</span>
         </a>
       </div>
-      <!--<div class="subtitle-pre en">Captain's Curse &middot; Ghost Possession &middot; D&D 2024 Supplement</div>
-      <div class="subtitle-pre ru">Проклятие капитана &middot; Одержимость призраком &middot; Дополнение к D&amp;D 2024</div>-->
       <h1>Estor Arkelander</h1>
-      <div class="title-sub en">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; First Captain of the Ultros</div>
-      <div class="title-sub ru">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; Первый капитан Ультроса</div>
+      <div class="title-sub en">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; Captain's Call · Ghost Actions for the Ultros</div>
+      <div class="title-sub ru">&#917;&#963;&#964;&#969;&#961; &#913;&#961;&#954;&#949;&#955;&#940;&#957;&#948;&#961;&#959;&#962; &mdash; Призыв Капитана · Действия призрака для Ультроса</div>
       <div class="title-divider"><div class="line"></div><div class="orn">&#10022;</div><div class="line"></div></div>
     </div>
 
@@ -635,13 +716,25 @@
 </div></div>
 
 <script>
+  /* ─── Back-to-top ─── */
+  const topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', () => {
+    topBtn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+  topBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
   /* ─── Lang ─── */
   function setLang(lang) {
     document.body.classList.toggle('lang-ru', lang === 'ru');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
     document.documentElement.lang = lang;
-    localStorage.setItem('estor_lang', lang);
+    try {
+      localStorage.setItem('naumachia-lang', lang);
+      localStorage.setItem('estor_lang', lang);
+    } catch(e) {}
     updateStatus();
   }
 
@@ -743,7 +836,7 @@
   /* ─── Init ─── */
   buildOrbs();
 
-  const savedLang = localStorage.getItem('estor_lang') || 'en';
+  const savedLang = localStorage.getItem('naumachia-lang') || localStorage.getItem('estor_lang') || 'en';
   if (savedLang === 'ru') {
     document.body.classList.add('lang-ru');
     document.getElementById('btn-en').classList.remove('active');
