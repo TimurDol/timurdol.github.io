@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Naumachia — D&D 2024</title>
+<title>Naumachia — D&D 5.5e</title>
 <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -68,12 +68,47 @@
   body.lang-ru nav.ru { display: flex !important; }
 
   /* ── Lang Toggle ── */
-  .lang-toggle-wrap { display:flex; justify-content:center; margin-bottom:20px; }
-  .lang-toggle { display:flex; background:var(--umber); border:1px solid var(--terra-light); border-radius:2px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,.50); }
-  .lang-btn { padding:9px 30px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1.5px; color:var(--parchment); background:transparent; border:none; cursor:pointer; transition:background .2s, opacity .2s; text-transform:uppercase; opacity:.5; }
-  .lang-btn.active { background:var(--terra-dark); color:var(--parchment); opacity:1; }
-  .lang-btn:hover:not(.active) { opacity:.8; }
-  .lang-sep { width:1px; background:var(--terra-light); opacity:.5; }
+  .lang-toggle-wrap {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+  }
+  .lang-toggle {
+    display: flex;
+    background: var(--aegean);
+    border: 2px solid var(--verdigris-light);
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,.50), 0 0 0 1px rgba(92,158,148,.18);
+  }
+  .lang-btn {
+    padding: 8px 22px;
+    font-family: 'Philosopher', serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--parchment);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background .2s, opacity .2s;
+    text-transform: uppercase;
+    opacity: .55;
+  }
+  .lang-btn.active {
+    background: var(--verdigris);
+    color: var(--parchment);
+    opacity: 1;
+  }
+  .lang-btn:hover:not(.active) { opacity: .85; }
+  .lang-sep { width: 1px; background: var(--verdigris-light); opacity: .5; }
+
+  /* Push body down so content isn't hidden under the sticky bar */
+  body { padding-top: 70px; }
 
   /* ── Page & Scroll ── */
   .page-wrap { max-width:860px; margin:0 auto; }
@@ -254,9 +289,25 @@
 
   /* ── Distance cards ── */
   .distance-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:12px 0 16px; }
-  .dist-card { border:1px solid var(--terra); overflow:hidden; }
-  .dist-label { background:var(--terra-dark); color:var(--parchment-dark); font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; padding:8px 14px; text-align:center; display:block; }
-  .dist-body { padding:10px 14px; font-size:13.5px; line-height:1.55; color:var(--ink); }
+  .dist-card {
+    border:1px solid var(--terra); overflow:hidden;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+    cursor: default;
+  }
+  .dist-card:hover {
+    border-color: var(--ochre);
+    box-shadow: 0 6px 22px rgba(0,0,0,.30), 0 0 0 1px rgba(184,146,26,.35);
+    transform: translateY(-2px);
+  }
+  .dist-card:hover .dist-label {
+    background: #923E18;
+    color: var(--parchment);
+  }
+  .dist-card:hover .dist-body {
+    background: rgba(184,146,26,.06);
+  }
+  .dist-label { background:var(--terra-dark); color:var(--parchment-dark); font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; padding:8px 14px; text-align:center; display:block; transition: background .2s, color .2s; }
+  .dist-body { padding:10px 14px; font-size:13.5px; line-height:1.55; color:var(--ink); transition: background .2s; }
 
   /* ── Role header ── */
   .role-hdr { background:var(--terra-dark); color:var(--parchment-dark); padding:8px 14px; font-family:'Philosopher',serif; font-weight:700; font-size:13px; letter-spacing:.5px; margin-bottom:0; }
@@ -337,8 +388,6 @@
 
     <!-- ══ TITLE ══ -->
     <div class="title-block" id="top">
-      <!--<div class="subtitle-pre en">Rules of Naval Combat in the Age of Heroes &middot; D&D 2024 Supplement</div>
-      <div class="subtitle-pre ru">Правила морских сражений эпохи героев &middot; Дополнение к D&amp;D 2024</div>-->
 
       <!-- ── Chapter navigation ── -->
       <nav class="chapter-nav en" aria-label="Chapter navigation">
@@ -363,8 +412,8 @@
       </nav>
 
       <h1>Naumachia</h1>
-      <div class="title-sub en">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; The Sea Battle</div>
-      <div class="title-sub ru">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; Морской бой</div>
+      <div class="title-sub en">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; The Sea Battle in the Age of Heroes</div>
+      <div class="title-sub ru">&#925;&#945;&#965;&#956;&#945;&#967;&#943;&#945; &mdash; Морской бой в Эпоху Героев</div>
       <div class="title-divider"><div class="line"></div><div class="orn">&#9875;</div><div class="line"></div></div>
     </div>
 
@@ -584,8 +633,8 @@
       <p class="en">A ram deals <strong>8d10 bludgeoning damage</strong>. On a failed Ram check, roll this damage and both ships take half the total.</p>
       <p class="ru">Таран наносит <strong>8к10 дробящего урона</strong>. При провале броска тарана бросьте этот урон — оба корабля получают половину суммы.</p>
 
-      <div class="callout en"><strong>Ballista Weapon Stats</strong>Ballista statistics are found in the D&amp;D 2024 core rules. Hull-to-Oarsmen transfer applies to all hull damage, regardless of source.</div>
-      <div class="callout ru"><strong>Характеристики баллисты</strong>Характеристики баллисты приведены в основных правилах D&amp;D 2024. Перенос урона корпуса на гребцов применяется ко всему урону корпуса вне зависимости от источника.</div>
+      <div class="callout en"><strong>Ballista Weapon Stats</strong>Ballista statistics are found in the D&amp;D 5.5e core rules. Hull-to-Oarsmen transfer applies to all hull damage, regardless of source.</div>
+      <div class="callout ru"><strong>Характеристики баллисты</strong>Характеристики баллисты приведены в основных правилах D&amp;D 5.5e. Перенос урона корпуса на гребцов применяется ко всему урону корпуса вне зависимости от источника.</div>
     </div>
 
     <div class="ornament-divider">· · &#9876; · ·</div>
@@ -593,8 +642,8 @@
     <!-- ══ VII: CREW MORALE ══ -->
     <div class="section" id="ch-morale">
       <h2><span class="num">VII</span><span class="en">Crew Morale</span><span class="ru">Мораль экипажа</span></h2>
-      <p class="en">The crew's fighting spirit is tracked using the <strong>Exhaustion</strong> condition from D&amp;D 2024. Each level of Exhaustion imposes a <strong>&minus;2 penalty to all D20 Tests</strong> made for Ship Actions. At <strong>Exhaustion 3</strong>, the crew cannot take the Surge action. At <strong>Exhaustion 6</strong>, the crew is considered dead or abandons ship.</p>
-      <p class="ru">Боевой дух экипажа отслеживается с помощью состояния <strong>Истощение</strong> из D&amp;D 2024. Каждый уровень Истощения накладывает штраф <strong>&minus;2 ко всем Тестам к20</strong> для Корабельных действий. При <strong>Истощении 3</strong> экипаж не может использовать действие Рывок. При <strong>Истощении 6</strong> экипаж считается погибшим или оставляет корабль.</p>
+      <p class="en">The crew's fighting spirit is tracked using the <strong>Exhaustion</strong> condition from D&amp;D 5.5e. Each level of Exhaustion imposes a <strong>&minus;2 penalty to all D20 Tests</strong> made for Ship Actions. At <strong>Exhaustion 3</strong>, the crew cannot take the Surge action. At <strong>Exhaustion 6</strong>, the crew is considered dead or abandons ship.</p>
+      <p class="ru">Боевой дух экипажа отслеживается с помощью состояния <strong>Истощение</strong> из D&amp;D 5.5e. Каждый уровень Истощения накладывает штраф <strong>&minus;2 ко всем Тестам к20</strong> для Корабельных действий. При <strong>Истощении 3</strong> экипаж не может использовать действие Рывок. При <strong>Истощении 6</strong> экипаж считается погибшим или оставляет корабль.</p>
 
       <h3 class="en">Daily Provisions</h3><h3 class="ru">Ежедневные припасы</h3>
       <p class="en">At the end of each day of travel, apply the following based on available provisions.</p>
@@ -753,8 +802,8 @@
     </div>
 
     <div class="footer">
-      <span class="en">Naumachia &middot; Naval Combat Supplement for D&amp;D 2024 &middot; Not official Wizards of the Coast material</span>
-      <span class="ru">Naumachia &middot; Дополнение к D&amp;D 2024 &middot; Не является официальным материалом Wizards of the Coast</span>
+      <span class="en">Naumachia &middot; Naval Combat Supplement for D&amp;D 5.5e &middot; Not official Wizards of the Coast material</span>
+      <span class="ru">Naumachia &middot; Дополнение к D&amp;D 5.5e &middot; Не является официальным материалом Wizards of the Coast</span>
     </div>
 
   </div><!-- content-inner -->
@@ -768,7 +817,16 @@
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
     document.documentElement.lang = lang;
+    try { localStorage.setItem('naumachia-lang', lang); } catch(e) {}
   }
+
+  /* Restore saved language on load */
+  (function () {
+    try {
+      const saved = localStorage.getItem('naumachia-lang');
+      if (saved === 'ru') setLang('ru');
+    } catch(e) {}
+  })();
 
   /* ── Back-to-top button ── */
   const topBtn = document.getElementById('topBtn');
@@ -779,23 +837,6 @@
 
   topBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  /* Magnetic pull effect */
-  topBtn.addEventListener('mousemove', e => {
-    const r = topBtn.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = (e.clientX - cx) * 0.30;
-    const dy = (e.clientY - cy) * 0.30;
-    topBtn.style.transform = `translate(${dx}px, ${dy}px)`;
-  });
-  topBtn.addEventListener('mouseleave', () => {
-    topBtn.style.transform = '';
-    topBtn.style.transition = 'transform .25s ease, opacity .3s, background .2s, box-shadow .2s';
-  });
-  topBtn.addEventListener('mouseenter', () => {
-    topBtn.style.transition = 'opacity .3s, background .2s, box-shadow .2s';
   });
 
   /* ── Smooth scroll for chapter nav ── */
